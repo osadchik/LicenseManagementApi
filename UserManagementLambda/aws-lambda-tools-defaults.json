@@ -1,0 +1,8 @@
+
+{
+    "region" : "eu-central-1",
+    "profile" : "default",
+    "s3-bucket" : "userkeys",
+    "template"  : "serverless.template",
+    "stack-name" : "LicenseManagementService"
+}
