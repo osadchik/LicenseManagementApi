@@ -1,4 +1,4 @@
-﻿using UserManagementLambda.Entities;
+﻿using Common.Entities;
 
 namespace UserManagementLambda.Interfaces
 {

@@ -1,5 +1,5 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
-using UserManagementLambda.Entities;
+using Common.Entities;
 using UserManagementLambda.Exceptions;
 using UserManagementLambda.Interfaces;
 
@@ -61,23 +61,25 @@ namespace UserManagementLambda.Repositories
         {
             _logger.LogDebug("Trying to save user entity: {@user}", user);
 
-            UserDto existingUser = await GetByIdAsync(user.Uuid);
-            if (user != null)
+            var config = new DynamoDBOperationConfig
             {
-                _logger.LogInformation("User already exists. Updating.");
+                IgnoreNullValues = false
+            };
+
+            UserDto existingUser = await GetByIdAsync(user.Uuid);
+            if (existingUser != null)
+            {
+                _logger.LogDebug("User already exists. Updating...");
             }
             else
             {
-                var config = new DynamoDBOperationConfig
-                {
-                    IgnoreNullValues = false
-                };
-
-                await _dynamoDbContext.SaveAsync(user, config);
-                _logger.LogInformation("Successfully created a new user entity.");
+                _logger.LogDebug("User does not exist. Creating...");
             }
 
-            return existingUser ?? user;
+            await _dynamoDbContext.SaveAsync(user, config);
+            _logger.LogInformation("Successfully created a new user entity.");
+
+            return user;
         }
 
         private async Task<UserDto> GetUserByIdInternalAsync(Guid id)
@@ -101,7 +103,7 @@ namespace UserManagementLambda.Repositories
             }
 
             await _dynamoDbContext.DeleteAsync(id);
-            _logger.LogInformation("Successfully retrieved a new user entity: {@userDto}", user);
+            _logger.LogInformation("Successfully deleted user entity: {@userDto}", user);
             return user;
         }
     }

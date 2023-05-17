@@ -1,6 +1,6 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
 
-namespace UserManagementLambda.Entities
+namespace Common.Entities
 {
     /// <summary>
     /// Represents model for user definition.

@@ -2,7 +2,7 @@
 {
     "region" : "eu-central-1",
     "profile" : "default",
-    "s3-bucket" : "userkeys",
+    "s3-bucket" : "license-management",
     "template"  : "serverless.template",
-    "stack-name" : "LicenseManagementService"
+    "stack-name" : "LicenseManagementApi"
 }

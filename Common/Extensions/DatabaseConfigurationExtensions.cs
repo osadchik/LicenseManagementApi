@@ -1,9 +1,11 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace UserManagementLambda.Extensions
+namespace Common.Extensions
 {
-    public static class DatabaseConfiguration
+    public static class DatabaseConfigurationExtensions
     {
         public static IServiceCollection ConfigureDynamoDB(this IServiceCollection services, IConfiguration configuration)
         {

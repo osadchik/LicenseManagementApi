@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LicenseManagementApi", "LicenseManagementApi\LicenseManagementApi.csproj", "{70816D01-9DF8-4293-BDC9-3CE886A5CAE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LicenseManagementLambda", "LicenseManagementApi\LicenseManagementLambda.csproj", "{70816D01-9DF8-4293-BDC9-3CE886A5CAE0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagementLambda", "UserManagementLambda\UserManagementLambda.csproj", "{46BC2896-9AE4-4C96-8F86-E5345A22FA56}"
 EndProject
@@ -12,6 +12,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CircuitBreaker.Tests", "UnitTests\CircuitBreaker.Tests.csproj", "{2AC52FBB-0513-412E-A766-5CE4ECAFAD2D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resiliency.CircuitBreaker", "Resiliency.CircuitBreaker\Resiliency.CircuitBreaker.csproj", "{D97D52D3-A7E8-4216-871B-C03EC600E029}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{5C14AC94-82AF-49ED-B165-4558F3A2E0F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{350E87FD-825F-4DA9-BD9A-36035FA333F6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserIntegrationLambda", "UserIntegrationLambda\UserIntegrationLambda.csproj", "{A8DDE90F-A71B-450A-943E-A73CDEC29426}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{B26CAF00-D1E0-442C-8E77-B4999B09234D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +43,25 @@ Global
 		{D97D52D3-A7E8-4216-871B-C03EC600E029}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D97D52D3-A7E8-4216-871B-C03EC600E029}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D97D52D3-A7E8-4216-871B-C03EC600E029}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8DDE90F-A71B-450A-943E-A73CDEC29426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8DDE90F-A71B-450A-943E-A73CDEC29426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8DDE90F-A71B-450A-943E-A73CDEC29426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8DDE90F-A71B-450A-943E-A73CDEC29426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26CAF00-D1E0-442C-8E77-B4999B09234D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26CAF00-D1E0-442C-8E77-B4999B09234D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26CAF00-D1E0-442C-8E77-B4999B09234D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26CAF00-D1E0-442C-8E77-B4999B09234D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{70816D01-9DF8-4293-BDC9-3CE886A5CAE0} = {5C14AC94-82AF-49ED-B165-4558F3A2E0F5}
+		{46BC2896-9AE4-4C96-8F86-E5345A22FA56} = {5C14AC94-82AF-49ED-B165-4558F3A2E0F5}
 		{2AC52FBB-0513-412E-A766-5CE4ECAFAD2D} = {F9D1DA42-FE71-4C30-AB18-AB21014C9F6C}
+		{D97D52D3-A7E8-4216-871B-C03EC600E029} = {350E87FD-825F-4DA9-BD9A-36035FA333F6}
+		{A8DDE90F-A71B-450A-943E-A73CDEC29426} = {5C14AC94-82AF-49ED-B165-4558F3A2E0F5}
+		{B26CAF00-D1E0-442C-8E77-B4999B09234D} = {350E87FD-825F-4DA9-BD9A-36035FA333F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BB896613-4754-446F-8F1A-E3AEABE9B8B6}

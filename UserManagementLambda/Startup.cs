@@ -1,6 +1,8 @@
+using Common.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using UserManagementLambda.Extensions;
-using UserManagementLambda.Logging;
+using UserManagementLambda.Interfaces;
+using UserManagementLambda.Repositories;
 
 namespace UserManagementLambda;
 
@@ -17,39 +19,29 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSerilogLogger(_configuration);
+        services.ConfigureLogging();
 
         services.ConfigureDynamoDB(_configuration);
 
         services.AddControllers();
 
         services.ConfigureSwaggerServices();
+
+        services.AddScoped<IUsersRepository, UsersRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
     public void Configure(IApplicationBuilder app)
     {
-        app.UseSwagger();
-
-        app.UseSwaggerUI(o =>
-        {
-            o.RoutePrefix = "";
-            o.SwaggerEndpoint("/swagger/v1/swagger.json", "Users API v1");
-        });
-
         app.UseHttpsRedirection();
 
         app.UseRouting();
 
-        //app.UseAuthorization();
-
-        app.UseEndpoints(endpoints =>
+        app.UseEndpoints(endpoints => 
         {
             endpoints.MapControllers();
-            endpoints.MapGet("/", async context =>
-            {
-                await context.Response.WriteAsync("Welcome to running ASP.NET Core on AWS Lambda");
-            });
         });
+
+        app.UseSwagger(_configuration);
     }
 }
