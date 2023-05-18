@@ -15,11 +15,11 @@ namespace Common.Extensions
         /// </summary>
         /// <param name="serviceCollection"><see cref="IServiceCollection"/></param>
         /// <returns><see cref="ServiceCollection"/></returns>
-        public static IServiceCollection ConfigureLogging(this IServiceCollection serviceCollection, LogEventLevel logEventLevel = LogEventLevel.Information)
+        public static IServiceCollection ConfigureLogging(this IServiceCollection serviceCollection, LogEventLevel logEventLevel = LogEventLevel.Debug)
         {
             var logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .MinimumLevel.Debug()
+                .MinimumLevel.Information()
                 .WriteTo.Console()
                 .CreateLogger();
 

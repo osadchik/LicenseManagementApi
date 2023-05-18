@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using UserManagementLambda.Extensions;
 using UserManagementLambda.Interfaces;
 using UserManagementLambda.Repositories;
+using UserManagementLambda.Services;
 
 namespace UserManagementLambda;
 
@@ -22,11 +23,13 @@ public class Startup
         services.ConfigureLogging();
 
         services.ConfigureDynamoDB(_configuration);
+        services.ConfigureSns();
 
         services.AddControllers();
 
         services.ConfigureSwaggerServices();
 
+        services.AddScoped<ISnsService, SnsService>();
         services.AddScoped<IUsersRepository, UsersRepository>();
     }
 

@@ -8,9 +8,11 @@ namespace UserManagementLambda.Controllers;
 
 [Route("users")]
 [ApiController]
-[SwaggerTag("Controller used for users management")]
+[SwaggerTag("Controller for users management")]
 public class UsersController : ControllerBase
 {
+    private readonly ISnsService _snsService;
+
     private readonly IUsersRepository _usersRepository;
     private readonly ILogger<UsersController> _logger;
 
@@ -18,10 +20,13 @@ public class UsersController : ControllerBase
     /// Initializes a new instance of <see cref="UsersController"/> class.
     /// </summary>
     /// <param name="usersRepository"><see cref="IUsersRepository"/></param>
-    public UsersController(IUsersRepository usersRepository, ILogger<UsersController> logger)
+    /// <param name="logger">Logger instance.</param>
+    public UsersController(IUsersRepository usersRepository, ILogger<UsersController> logger, ISnsService snsService)
     {
         _usersRepository = usersRepository;
         _logger = logger;
+
+        _snsService = snsService;
     }
 
     [HttpGet]
@@ -43,7 +48,7 @@ public class UsersController : ControllerBase
 
     // POST users
     [HttpPost]
-    public void Post([FromBody] string value)
+    public void CreateUser([FromBody] string value)
     {
     }
 
@@ -55,12 +60,16 @@ public class UsersController : ControllerBase
         {
             await _usersRepository.SaveAsync(user);
 
+            var userMessage = new BaseMessage<UserDto>(new Guid().ToString(), ProcessAction.Create);
+
+            await _snsService.PublishToTopicAsync("arn:aws:sns:eu-central-1:812040966008:SampleTopic", userMessage);
+
             return Ok(user);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Saving user has failed.");
-            return new JsonResult(new { Message = ex.Message })
+            return new JsonResult(new { ex.Message })
             {
                 StatusCode = StatusCodes.Status500InternalServerError
             };
