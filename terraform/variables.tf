@@ -10,9 +10,6 @@ variable "users-management-lambda-name" {
 variable "lambda_description" {
   type = string
 }
-variable "filename" {
-  type = string
-}
 variable "runtime" {
   type = string
   default = "dotnet6"
@@ -35,6 +32,11 @@ variable "publish" {
 variable "lambda_alias_current" {
   type = string
   default = "current_version"
+}
+
+# Lambda Source Code Path
+variable "users-management-lambda-filename" {
+  type = string
 }
 
 # DynamoDB

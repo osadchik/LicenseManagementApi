@@ -10,7 +10,7 @@ module "users-management-lambda" {
     name                 = var.users-management-lambda-name
     role_arn             = module.users-management-lambda-role.arn
     description          = var.lambda_description
-    filename             = "${path.module}/../${var.users-management-lambda-name}"
+    filename             = var.users-management-lambda-filename
     runtime              = var.runtime
     handler              = var.handler
     memory_size          = var.memory_size
