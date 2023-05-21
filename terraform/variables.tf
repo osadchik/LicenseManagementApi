@@ -37,6 +37,7 @@ variable "lambda_alias_current" {
 # Lambda Source Code Path
 variable "users-management-lambda-filename" {
   type = string
+  default = ""
 }
 
 # DynamoDB

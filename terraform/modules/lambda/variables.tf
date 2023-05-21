@@ -16,7 +16,6 @@ variable "description" {
 variable "filename" {
     description   = "The path for the function's deployment package within the local filesystem"
     type          = string
-    default       = null
 }
 
 variable "handler" {

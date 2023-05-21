@@ -19,6 +19,8 @@ resource "aws_lambda_function" "lambda_function"{
           variables = environment.value
         }
     }
+
+    depends_on = [ aws_cloudwatch_log_group.log_group ]
 }
 
 resource "aws_lambda_alias" "lambda_alias_current" {
