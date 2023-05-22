@@ -40,3 +40,8 @@ resource "aws_iam_role_policy_attachment" "dynamodb-access" {
     role       = module.user-management-lambda-role.name
     policy_arn = aws_iam_policy.dynamoDBLambdaPolicy.arn
 }
+
+resource "aws_iam_role_policy_attachment" "sns-access" {
+    role       = module.user-management-lambda-role.name
+    policy_arn = aws_iam_policy.snsPublishPolicy.arn
+}
