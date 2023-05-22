@@ -2,6 +2,7 @@ resource "aws_lambda_function" "lambda_function"{
     function_name     = "${var.prefix}-${var.name}"
     description       = var.description
     filename          = var.filename
+    source_code_hash  = "dumb value"
     handler           = var.handler
     runtime           = var.runtime
     memory_size       = var.memory_size
@@ -10,14 +11,19 @@ resource "aws_lambda_function" "lambda_function"{
     publish           = var.publish
 
     tracing_config {
-        mode          = "Active"
+      mode          = "Active"
     }
 
     dynamic "environment" {
-        for_each = length(var.environment_variables) > 0 ? [var.environment_variables] : []
-        content {
-          variables = environment.value
-        }
+      for_each = length(var.environment_variables) > 0 ? [var.environment_variables] : []
+      content {
+        variables = environment.value
+      }
+    }
+
+    vpc_config {
+      subnet_ids         = var.subnet_ids
+      security_group_ids = var.security_group_ids
     }
 
     depends_on = [ aws_cloudwatch_log_group.log_group ]

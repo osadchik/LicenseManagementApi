@@ -4,6 +4,13 @@ terraform {
         source = "hashicorp/aws"
       }
     }
+
+    backend "s3" {
+      bucket  = "licensemanagement-tfstate"
+      key     = "state/terraform.tfstate"
+      region  = "eu-central-1"
+      encrypt = true
+  }
 }
 
 provider "aws" {

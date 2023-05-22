@@ -10,7 +10,6 @@ memory_size                  = "512"
 lambda_timeout               = "15"
 publish                      = true
 lambda_alias_current         = "current_version"
-filename                     = null
 
 # Dynamo DB
 billing_mode    = "PAY_PER_REQUEST"

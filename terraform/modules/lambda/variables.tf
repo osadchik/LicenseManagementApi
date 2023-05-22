@@ -61,3 +61,15 @@ variable "lambda_alias_current" {
     description = "Name of the alias being created."
     type        = string
 }
+
+variable "subnet_ids" {
+    description = "A list of subnet IDs associated with the Lambda Function"
+    type        = list
+    default     = []
+}
+
+variable "security_group_ids" {
+    description = "A list of security group IDs associated with the Lambda Function"
+    type        = list
+    default     = []
+}
