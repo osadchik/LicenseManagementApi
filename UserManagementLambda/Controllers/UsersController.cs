@@ -62,7 +62,7 @@ public class UsersController : ControllerBase
 
             var userMessage = new BaseMessage<UserDto>(new Guid().ToString(), ProcessAction.Create);
 
-            await _snsService.PublishToTopicAsync("arn:aws:sns:eu-central-1:812040966008:SampleTopic", userMessage);
+            await _snsService.PublishToTopicAsync(Environment.GetEnvironmentVariable("SNS_Topic_ARN"), userMessage);
 
             return Ok(user);
         }

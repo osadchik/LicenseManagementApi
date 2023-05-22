@@ -13,9 +13,24 @@ resource "aws_iam_policy" "dynamoDBLambdaPolicy" {
           "dynamodb:PutItem",
           "dynamodb:GetItem"
         ]
-        Resource = [
-          "${module.dynamodb_users_table.arn}"
+        Resource = [ "${module.dynamodb_users_table.arn}" ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "snsPublishPolicy" {
+  name = "${var.prefix}-${var.user_management_lambda_name}-sns-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sns:Publish"
         ]
+        Resource = [ "${module.user-management-lambda-sns.arn}" ]
       }
     ]
   })
