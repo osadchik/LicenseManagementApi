@@ -60,8 +60,3 @@ variable "lambda_alias_current" {
  variable "attributes" {
   type = any
  }
-
- # SNS
- variable "user_management_sns_name" {
-  type = string
- }

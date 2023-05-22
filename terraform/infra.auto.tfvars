@@ -28,6 +28,3 @@ attributes      = [
         type    = "S"
     }
 ]
-
-# SNS
-user_management_sns_name = ""

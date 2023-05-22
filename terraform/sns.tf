@@ -1,5 +1,5 @@
 module "user-management-lambda-sns" {
     source = "./modules/sns"
 
-    sns_name = var.user_management_sns_name
+    sns_name = "${var.prefix}-${var.user_management_lambda_name}-sns"
 }
