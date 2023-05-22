@@ -1,18 +1,18 @@
-module users-management-lambda-role {
+module "user-management-lambda-role" {
     source          = "./modules/lambda-role"
-    iam_role_name   = "${local.prefix}-role-${var.users-management-lambda-name}-${var.aws_region}"
+    iam_role_name   = "${var.prefix}-role-${var.user_management_lambda_name}-${var.aws_region}"
 }
 
-module "users-management-lambda" {
+module "user-management-lambda" {
     source = "./modules/lambda"
 
-    prefix               = local.prefix
-    name                 = var.users-management-lambda-name
-    role_arn             = module.users-management-lambda-role.arn
-    description          = var.lambda_description
-    filename             = var.users-management-lambda-filename
+    prefix               = var.prefix
+    name                 = var.user_management_lambda_name
+    role_arn             = module.user-management-lambda-role.arn
+    description          = var.user_management_lambda_description
+    filename             = var.user_management_lambda_filename
     runtime              = var.runtime
-    handler              = var.handler
+    handler              = var.user_management_lambda_handler
     memory_size          = var.memory_size
     timeout              = var.lambda_timeout
     publish              = var.publish
@@ -21,11 +21,6 @@ module "users-management-lambda" {
     environment_variables = {
         "SWAGGER_ENABLED"          = true
         "Serilog__MinimumLogLevel" = "Debug"
+        "UserManagement_TopicSNS"   = ""
     }  
-}
-
-data "archive_file" "lambda_archive" {
-    type = "zip"
-    source_dir = "${path.module}/../UserManagementLambda"
-    output_path = "${path.module}/../${var.users-management-lambda-name}"
 }

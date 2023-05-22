@@ -1,15 +1,20 @@
 # Providers
 aws_region = "eu-central-1"
 
-# Users Management Lambda
-users-management-lambda-name = "users-management-lambda"
-lambda_description           = "Automated deployment of Users Management Lambda"
+# Shared
+prefix = "LicenseManagement"
+
+# Lambda Common
 runtime                      = "dotnet6"
-handler                      = "UserManagementLambda::UserManagementLambda.LambdaEntryPoint::FunctionHandlerAsync"
 memory_size                  = "512"
 lambda_timeout               = "15"
 publish                      = true
 lambda_alias_current         = "current_version"
+
+# Users Management Lambda
+user_management_lambda_name        = "users-management-lambda"
+user_management_lambda_description = "Automated deployment of Users Management Lambda"
+user_management_lambda_handler     = "UserManagementLambda::UserManagementLambda.LambdaEntryPoint::FunctionHandlerAsync"
 
 # Dynamo DB
 billing_mode    = "PAY_PER_REQUEST"
@@ -23,3 +28,6 @@ attributes      = [
         type    = "S"
     }
 ]
+
+# SNS
+user_management_sns_name = ""

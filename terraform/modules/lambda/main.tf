@@ -2,7 +2,7 @@ resource "aws_lambda_function" "lambda_function"{
     function_name     = "${var.prefix}-${var.name}"
     description       = var.description
     filename          = var.filename
-    source_code_hash  = "dumb value"
+    source_code_hash  = filebase64sha256(var.filename)
     handler           = var.handler
     runtime           = var.runtime
     memory_size       = var.memory_size

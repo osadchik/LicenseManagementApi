@@ -1,7 +1,7 @@
 module "dynamodb_users_table" {
     source = "./modules/dynamodb"
     
-    name = "LicenseManagement-Users"
+    name = "${var.prefix}-Users"
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity
@@ -18,7 +18,7 @@ module "dynamodb_users_table" {
 module "dynamodb_product_table" {
     source = "./modules/dynamodb"
     
-    name = "LicenseManagement-Products"
+    name = "${var.prefix}-Products"
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity
@@ -35,7 +35,7 @@ module "dynamodb_product_table" {
 module "dynamodb_license_table" {
     source = "./modules/dynamodb"
     
-    name = "LicenseManagement-Licenses"
+    name = "${var.prefix}-Licenses"
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity
@@ -52,7 +52,7 @@ module "dynamodb_license_table" {
 module "dynamodb_state_table" {
     source = "./modules/dynamodb"
     
-    name = "LicenseManagement-CircuitBreakerState"
+    name = "${var.prefix}-CircuitBreakerState"
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity

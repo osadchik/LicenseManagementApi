@@ -3,19 +3,29 @@ variable "aws_region" {
   type = string
 }
 
-# Lambda
-variable "users-management-lambda-name" {
+# Shared
+variable "prefix" {
   type = string
 }
-variable "lambda_description" {
+
+# User Management Lambda
+variable "user_management_lambda_name" {
   type = string
 }
+variable "user_management_lambda_description" {
+  type = string
+}
+variable "user_management_lambda_handler" {
+  type = string
+}
+variable "user_management_lambda_filename" {
+  type = string
+}
+
+# Lambda Common
 variable "runtime" {
   type = string
   default = "dotnet6"
-}
-variable "handler" {
-  type = string
 }
 variable "memory_size" {
   type = string
@@ -34,11 +44,6 @@ variable "lambda_alias_current" {
   default = "current_version"
 }
 
-# Lambda Source Code Path
-variable "users-management-lambda-filename" {
-  type = string
-}
-
 # DynamoDB
  variable "billing_mode" {
   type = string   
@@ -54,4 +59,9 @@ variable "users-management-lambda-filename" {
  }
  variable "attributes" {
   type = any
+ }
+
+ # SNS
+ variable "user_management_sns_name" {
+  type = string
  }
