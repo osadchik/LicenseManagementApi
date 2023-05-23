@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
 namespace UserManagementLambda.Extensions
@@ -16,8 +17,7 @@ namespace UserManagementLambda.Extensions
                     Description = "Users API Lambda implementation for License Management Service."
                 });
 
-                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                AddSwaggerXmlComments(options);
             });
 
             return services;
@@ -33,6 +33,14 @@ namespace UserManagementLambda.Extensions
                 });
 
             return app;
+        }
+
+        private static void AddSwaggerXmlComments(SwaggerGenOptions options)
+        {
+            foreach (var xmlDocFile in Directory.EnumerateFiles(AppContext.BaseDirectory, "*.xml"))
+            {
+                options.IncludeXmlComments(xmlDocFile);
+            }
         }
     }
 }
