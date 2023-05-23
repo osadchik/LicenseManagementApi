@@ -22,8 +22,8 @@
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="appsettings.json">
-		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	</Content>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
