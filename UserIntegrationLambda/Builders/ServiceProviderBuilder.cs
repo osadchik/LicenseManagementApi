@@ -2,7 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
+using UserIntegrationLambda.InputProcessStrategies;
+using UserIntegrationLambda.Interfaces;
 using UserIntegrationLambda.Options;
+using UserIntegrationLambda.Services;
 
 namespace UserIntegrationLambda.Builders
 {
@@ -38,13 +41,24 @@ namespace UserIntegrationLambda.Builders
             serviceCollection.ConfigureLogging();
 
             AddLambdaParameters(serviceCollection);
+            AddServices(serviceCollection);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             return serviceProvider;
         }
 
-        private void AddLambdaParameters(IServiceCollection serviceCollection)
+        private void AddServices(IServiceCollection services)
+        {
+            services.AddScoped<ISqsEventProcessingService, SqsEventProcessingService>();
+            services.AddScoped<IDataHandlerStrategySelector, DataHandlerStrategySelector>();
+
+            services
+                .AddScoped<IDataHandlerStrategy, UserIntegrationHandlerStrategy>()
+                .AddScoped<IDataHandlerStrategy, CircuitBreakerMessageHandlerStrategy>();
+        }
+
+        private void AddLambdaParameters(IServiceCollection services)
         {
             // Event Bridge Configuration
             var eventBridgeConfiguration = new EventBridgeOptions
@@ -52,8 +66,7 @@ namespace UserIntegrationLambda.Builders
                 RuleName = _configuration["EVENTBRIDGE_Rule_Name"] ?? throw new ArgumentNullException(nameof(_configuration))
             };
 
-            serviceCollection.AddSingleton(eventBridgeConfiguration);
+            services.AddSingleton(eventBridgeConfiguration);
         }
-
     }
 }
