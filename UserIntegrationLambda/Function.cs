@@ -1,5 +1,4 @@
 using Amazon.Lambda.Core;
-using Amazon.Lambda.SQSEvents;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -9,9 +8,12 @@ using UserIntegrationLambda.Interfaces;
 
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 namespace UserIntegrationLambda;
 
+/// <summary>
+/// Lambda function class.
+/// </summary>
 [ExcludeFromCodeCoverage]
 public class Function
 {
@@ -45,6 +47,6 @@ public class Function
 
         var sqsEventProcessingService = _serviceProvider.GetRequiredService<ISqsEventProcessingService>();
 
-        sqsEventProcessingService.ProcessAsync(input);
+        await sqsEventProcessingService.ProcessAsync(input);
     }
 }

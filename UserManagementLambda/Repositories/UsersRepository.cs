@@ -77,7 +77,7 @@ namespace UserManagementLambda.Repositories
             }
 
             await _dynamoDbContext.SaveAsync(user, config);
-            _logger.LogInformation("Successfully created a new user entity.");
+            _logger.LogInformation("Successfully created a new user entity: {@user}", user);
 
             return user;
         }
@@ -97,7 +97,7 @@ namespace UserManagementLambda.Repositories
             _logger.LogDebug("Trying to delete user entity with id: {id}", id);
 
             UserDto user = await GetByIdAsync(id);
-            if (user != null)
+            if (user == null)
             {
                 throw new UserNotFoundException();
             }

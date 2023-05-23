@@ -12,7 +12,8 @@ module "user-integration-lambda-dlq" {
 }
 
 resource "aws_sns_topic_subscription" "user_integration_sqs_target" {
-    topic_arn = module.user-management-lambda-sns.arn
-    protocol  = "sqs"
-    endpoint = module.user-integration-lambda-sqs.arn
+    topic_arn            = module.user-management-lambda-sns.arn
+    protocol             = "sqs"
+    endpoint             = module.user-integration-lambda-sqs.arn
+    raw_message_delivery = true
 }

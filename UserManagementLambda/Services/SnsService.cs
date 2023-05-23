@@ -28,7 +28,7 @@ namespace UserManagementLambda.Services
         /// <inheritdoc/>
         public async Task PublishToTopicAsync<T>(string topicArn, IMessage<T> message)
         {
-            _logger.LogDebug("Trying to push the content: {@content} to the SNS topic: {topicArn}", message, topicArn);
+            _logger.LogDebug("Started publishing the content: {@content} to the SNS topic: {topicArn}", message, topicArn);
 
             var content = JsonConvert.SerializeObject(message);
             _logger.LogDebug("Serialized content: {content}", content);
@@ -39,9 +39,10 @@ namespace UserManagementLambda.Services
                 TopicArn = topicArn,
                 Message = content
             };
+            _logger.LogDebug("Created a new SNS publish request: {@request}", request);
 
             await _simpleNotificationService.PublishAsync(request);
-            _logger.LogInformation("Successfully published message: {content} ", content);
+            _logger.LogInformation("Successfully published message: {@content} to the SNS topic: {topicArn}", content);
         }   
     }
 }

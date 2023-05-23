@@ -18,32 +18,32 @@ namespace Common.Entities
         /// Unique Id that a user logs in to their system with, often an email address.
         /// </summary>
         [DynamoDBGlobalSecondaryIndexHashKey]
-        public string Username { get; set; }
+        public string Username { get; set; } = null!;
 
         /// <summary>
         /// Title of the user.
         /// </summary>
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         /// <summary>
         /// First name of a user.
         /// </summary>
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>
         /// Last name of a user.
         /// </summary>
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         /// <summary>
         /// Phone number os a user/machine owner.
         /// </summary>
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         /// <summary>
         /// Email address of a user/machine owner.
         /// </summary>
-        public string EmailAddress { get; set; }
+        public string? EmailAddress { get; set; }
 
         /// <summary>
         /// Preferred language services should use.
@@ -53,12 +53,12 @@ namespace Common.Entities
         /// <summary>
         /// User type (e.g Human, Service).
         /// </summary>
-        public string Type { get; set; }
+        public string Type { get; set; } = "Human";
 
         /// <summary>
         /// Uuid of the user who last updated the record.
         /// </summary>
-        public string UpdatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         /// <summary>
         /// Last update date.

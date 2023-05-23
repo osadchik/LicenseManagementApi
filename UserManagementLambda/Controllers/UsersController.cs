@@ -11,9 +11,7 @@ namespace UserManagementLambda.Controllers;
 [SwaggerTag("Controller for users management")]
 public class UsersController : ControllerBase
 {
-    private readonly ISnsService _snsService;
-
-    private readonly IUsersRepository _usersRepository;
+    private readonly IUserManagementService _userManagementService;
     private readonly ILogger<UsersController> _logger;
 
     /// <summary>
@@ -21,64 +19,45 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <param name="usersRepository"><see cref="IUsersRepository"/></param>
     /// <param name="logger">Logger instance.</param>
-    public UsersController(IUsersRepository usersRepository, ILogger<UsersController> logger, ISnsService snsService)
+    public UsersController(IUserManagementService userManagementService, ILogger<UsersController> logger)
     {
-        _usersRepository = usersRepository;
+        _userManagementService = userManagementService;
         _logger = logger;
-
-        _snsService = snsService;
-    }
-
-    [HttpGet]
-    public IActionResult Test()
-    {
-        return Ok("Hello world!");
     }
 
     // GET users/{id}
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
-        _logger.LogInformation("Get method start.");
-
-        UserDto user = await _usersRepository.GetByIdAsync(id);
+        UserDto user = await _userManagementService.GetUserByUuid(id);
 
         return Ok(user);
     }
 
     // POST users
     [HttpPost]
-    public void CreateUser([FromBody] string value)
+    public async Task<IActionResult> CreateUser([FromBody, Required] UserDto user)
     {
+        var createdUser = await _userManagementService.CreateUser(user);
+
+        return Ok(createdUser);
     }
 
     // PUT users
     [HttpPut]
     public async Task<IActionResult> UpdateUser([FromBody, Required] UserDto user)
     {
-        try
-        {
-            await _usersRepository.SaveAsync(user);
+        var updatedUser = await _userManagementService.UpdateUser(user);
 
-            var userMessage = new BaseMessage<UserDto>(new Guid().ToString(), ProcessAction.Create);
-
-            await _snsService.PublishToTopicAsync(Environment.GetEnvironmentVariable("SNS_Topic_ARN"), userMessage);
-
-            return Ok(user);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Saving user has failed.");
-            return new JsonResult(new { ex.Message })
-            {
-                StatusCode = StatusCodes.Status500InternalServerError
-            };
-        }
+        return Ok(updatedUser);
     }
 
     // DELETE users/{id}
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
+        var deletedUser = await _userManagementService.DeleteUser(id);
+
+        return Ok(deletedUser);
     }
 }

@@ -17,6 +17,15 @@ namespace UserIntegrationLambda.Builders
     {
         private IConfiguration _configuration;
 
+        public ServiceProviderBuilder()
+        {
+            _configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+        }
+
         /// <summary>
         /// Creates a <see cref="IServiceProvider"/> containing services provided for solution.
         /// </summary>
@@ -32,15 +41,8 @@ namespace UserIntegrationLambda.Builders
 
             var environmentConfiguration = new ConfigurationBuilder().AddEnvironmentVariables().Build();
 
-            _configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
-
             serviceCollection.ConfigureLogging();
 
-            AddLambdaParameters(serviceCollection);
             AddServices(serviceCollection);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
@@ -48,25 +50,15 @@ namespace UserIntegrationLambda.Builders
             return serviceProvider;
         }
 
-        private void AddServices(IServiceCollection services)
+        private static void AddServices(IServiceCollection services)
         {
             services.AddScoped<ISqsEventProcessingService, SqsEventProcessingService>();
             services.AddScoped<IDataHandlerStrategySelector, DataHandlerStrategySelector>();
+            services.AddScoped<ISqsRecordProcessingService, SqsRecordProcessingService>();
 
             services
                 .AddScoped<IDataHandlerStrategy, UserIntegrationHandlerStrategy>()
                 .AddScoped<IDataHandlerStrategy, CircuitBreakerMessageHandlerStrategy>();
-        }
-
-        private void AddLambdaParameters(IServiceCollection services)
-        {
-            // Event Bridge Configuration
-            var eventBridgeConfiguration = new EventBridgeOptions
-            {
-                RuleName = _configuration["EVENTBRIDGE_Rule_Name"] ?? throw new ArgumentNullException(nameof(_configuration))
-            };
-
-            services.AddSingleton(eventBridgeConfiguration);
         }
     }
 }

@@ -20,8 +20,8 @@ namespace Common.Entities
 
         public DateTimeOffset MessageSentOn { get; set; } = DateTimeOffset.UtcNow;
 
-        public T Content { get; set; }
+        public T Content { get; set; } = default!;
 
-        object IMessage.Content => Content;
+        object IMessage.Content => Content!;
     }
 }

@@ -2,6 +2,7 @@ using Common.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using UserManagementLambda.Extensions;
 using UserManagementLambda.Interfaces;
+using UserManagementLambda.Options;
 using UserManagementLambda.Repositories;
 using UserManagementLambda.Services;
 
@@ -20,6 +21,8 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
+        AddLambdaEnvironmentVariables(services);
+
         services.ConfigureLogging();
 
         services.ConfigureDynamoDB(_configuration);
@@ -46,5 +49,15 @@ public class Startup
         });
 
         app.UseSwagger(_configuration);
+    }
+
+    private void AddLambdaEnvironmentVariables(IServiceCollection services)
+    {
+        services.Configure<LambdaEnvironmentVariables>(act =>
+        {
+            var snsTopicArn = Environment.GetEnvironmentVariable("SNS_Topic_ARN");
+            act.SnsTopicArn = snsTopicArn
+                              ?? throw new ArgumentNullException("SNS Topic ARN is null. Please, check the lambda environment variables configuration.");
+        });
     }
 }
