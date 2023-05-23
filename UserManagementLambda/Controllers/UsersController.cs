@@ -6,6 +6,9 @@ using UserManagementLambda.Interfaces;
 
 namespace UserManagementLambda.Controllers;
 
+/// <summary>
+/// Comtroller used to manipulate user entities in License Management Service.
+/// </summary>
 [Route("users")]
 [ApiController]
 [SwaggerTag("Controller for users management")]
@@ -14,7 +17,7 @@ public class UsersController : ControllerBase
     private readonly IUserManagementService _userManagementService;
     private readonly ILogger<UsersController> _logger;
 
-    /// <summary>
+    /// <summary>   
     /// Initializes a new instance of <see cref="UsersController"/> class.
     /// </summary>
     /// <param name="usersRepository"><see cref="IUsersRepository"/></param>
@@ -25,7 +28,11 @@ public class UsersController : ControllerBase
         _logger = logger;
     }
 
-    // GET users/{id}
+    /// <summary>
+    /// Get user with a specific Uuid.
+    /// </summary>
+    /// <param name="id">User's unique identifier.</param>
+    /// <returns><see cref="IActionResult"/></returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
@@ -34,7 +41,11 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
 
-    // POST users
+    /// <summary>
+    /// Creates a new user.
+    /// </summary>
+    /// <param name="id"><see cref="UserDto"/></param>
+    /// <returns><see cref="IActionResult"/></returns>
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody, Required] UserDto user)
     {
@@ -43,7 +54,11 @@ public class UsersController : ControllerBase
         return Ok(createdUser);
     }
 
-    // PUT users
+    /// <summary>
+    /// Updates a specific user.
+    /// </summary>
+    /// <param name="id"><see cref="UserDto"/></param>
+    /// <returns><see cref="IActionResult"/></returns>
     [HttpPut]
     public async Task<IActionResult> UpdateUser([FromBody, Required] UserDto user)
     {
@@ -52,7 +67,11 @@ public class UsersController : ControllerBase
         return Ok(updatedUser);
     }
 
-    // DELETE users/{id}
+    /// <summary>
+    /// Deletes a user with specific Uuid.
+    /// </summary>
+    /// <param name="id">User's unique indentifier.</param>
+    /// <returns><see cref="IActionResult"/></returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {

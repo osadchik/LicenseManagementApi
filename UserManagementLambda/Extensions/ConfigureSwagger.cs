@@ -1,5 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 namespace UserManagementLambda.Extensions
 {
@@ -7,15 +7,17 @@ namespace UserManagementLambda.Extensions
     {
         public static IServiceCollection ConfigureSwaggerServices(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Users API implementation for License Management Service.",
                     Version = "v1",
+                    Title = "User Management Lambda",
+                    Description = "Users API Lambda implementation for License Management Service."
                 });
 
-                AddSwaggerXmlComments(c);
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
             return services;
@@ -26,19 +28,11 @@ namespace UserManagementLambda.Extensions
             app.UseSwagger()
                 .UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users API implementation for License Management Service.");
+                    c.SwaggerEndpoint("/dev/swagger/v1/swagger.json", "Users API implementation for License Management Service.");
                     c.RoutePrefix = string.Empty;
                 });
 
             return app;
-        }
-
-        private static void AddSwaggerXmlComments(SwaggerGenOptions options)
-        {
-            foreach (var xmlDocFile in Directory.EnumerateFiles(AppContext.BaseDirectory, "*.xml"))
-            {
-                options.IncludeXmlComments(xmlDocFile);
-            }
         }
     }
 }
