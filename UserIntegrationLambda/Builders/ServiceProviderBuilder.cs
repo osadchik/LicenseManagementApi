@@ -36,6 +36,7 @@ namespace UserIntegrationLambda.Builders
                 .Build();
 
             serviceCollection.ConfigureLogging();
+
             AddLambdaParameters(serviceCollection);
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
