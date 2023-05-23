@@ -22,6 +22,20 @@ variable "user_management_lambda_filename" {
   type = string
 }
 
+#User Integration Lambda
+variable "user_integration_lambda_name" {
+  type = string
+}
+variable "user_integration_lambda_description" {
+  type = string
+}
+variable "user_integration_lambda_handler" {
+  type = string
+}
+variable "user_integration_lambda_filename" {
+  type = string
+}
+
 # Lambda Common
 variable "runtime" {
   type = string

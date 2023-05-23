@@ -16,6 +16,11 @@ user_management_lambda_name        = "users-management-lambda"
 user_management_lambda_description = "Automated deployment of Users Management Lambda"
 user_management_lambda_handler     = "UserManagementLambda::UserManagementLambda.LambdaEntryPoint::FunctionHandlerAsync"
 
+# Users Integration Lambda
+user_integration_lambda_name        = "users-integration-lambda"
+user_integration_lambda_description = "Automated deployment of Users Integration Lambda"
+user_integration_lambda_handler     = "UserIntegrationLambda::UserIntegrationLambda.Function::FunctionHandler"
+
 # Dynamo DB
 billing_mode    = "PAY_PER_REQUEST"
 read_capacity   = "0"

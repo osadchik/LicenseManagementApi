@@ -2,7 +2,7 @@ module "user-management-lambda-role" {
     source          = "./modules/lambda-role"
     iam_role_name   = "${var.prefix}-role-${var.user_management_lambda_name}-${var.aws_region}"
 }
-
+ 
 module "user-management-lambda" {
     source = "./modules/lambda"
 
@@ -18,7 +18,7 @@ module "user-management-lambda" {
     publish              = var.publish
     lambda_alias_current = var.lambda_alias_current 
 
-    environment_variables = {
+    environment_variables = { 
         "SWAGGER_ENABLED"          = true
         "Serilog__MinimumLogLevel" = "Debug"
         "SNS_Topic_ARN"  = module.user-management-lambda-sns.arn
