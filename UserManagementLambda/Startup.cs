@@ -34,6 +34,7 @@ public class Startup
 
         services.AddScoped<ISnsService, SnsService>();
         services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IUserManagementService, UserManagementService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
