@@ -389,3 +389,6 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Manual testing related files
+.test_source.zip
