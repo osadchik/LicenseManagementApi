@@ -37,7 +37,7 @@ namespace Common.Services
             {
                 MessageStructure = "json",
                 TopicArn = topicArn,
-                Message = JsonConvert.SerializeObject(content, Formatting.None)
+                Message = content
             };
             _logger.LogDebug("Created a new SNS publish request: {@request}", request);
 
