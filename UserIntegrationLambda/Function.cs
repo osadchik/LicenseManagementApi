@@ -43,7 +43,7 @@ public class Function
         ArgumentNullException.ThrowIfNull(context);
 
         var logger = _serviceProvider.GetRequiredService<ILogger<Function>>();
-        logger.LogInformation("Received SQS Event: {@evnt}", input);
+        logger.LogInformation("Received SQS Event: {evnt}", input.ToString());
 
         var sqsEventProcessingService = _serviceProvider.GetRequiredService<ISqsEventProcessingService>();
 

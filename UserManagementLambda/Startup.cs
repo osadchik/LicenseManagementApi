@@ -1,4 +1,5 @@
 using Common.Extensions;
+using Common.Middleware;
 using System.Diagnostics.CodeAnalysis;
 using UserManagementLambda.Extensions;
 using UserManagementLambda.Interfaces;
@@ -44,6 +45,8 @@ public class Startup
 
         app.UseRouting();
 
+        app.UseMiddleware<UnhandledExceptionLoggingMiddleware>();
+
         app.UseEndpoints(endpoints => 
         {
             endpoints.MapControllers();
@@ -52,7 +55,7 @@ public class Startup
         app.UseSwagger(_configuration);
     }
 
-    private void AddLambdaEnvironmentVariables(IServiceCollection services)
+    private static void AddLambdaEnvironmentVariables(IServiceCollection services)
     {
         services.Configure<LambdaEnvironmentVariables>(act =>
         {

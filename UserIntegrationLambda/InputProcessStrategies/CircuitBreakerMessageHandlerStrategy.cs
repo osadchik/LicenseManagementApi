@@ -8,11 +8,13 @@ namespace UserIntegrationLambda.InputProcessStrategies
     /// </summary>
     internal class CircuitBreakerMessageHandlerStrategy : IDataHandlerStrategy
     {
+        /// <inheritdoc/>
         public bool IsSuitable(JObject input)
         {
-            throw new NotImplementedException();
+            return input.ContainsKey("IsMaintenance") && input.Value<bool>("IsMaintenance");
         }
 
+        /// <inheritdoc/>
         public Task<JObject> ProcessInputAsync(JObject input)
         {
             throw new NotImplementedException();

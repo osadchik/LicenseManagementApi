@@ -19,7 +19,7 @@ namespace Common.Extensions
         {
             var logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .MinimumLevel.Information()
+                .MinimumLevel.Debug()
                 .WriteTo.Console()
                 .CreateLogger();
 
