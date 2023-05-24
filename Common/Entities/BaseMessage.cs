@@ -1,5 +1,4 @@
 ﻿using Common.Interfaces;
-using Newtonsoft.Json;
 
 namespace Common.Entities
 {
@@ -10,9 +9,6 @@ namespace Common.Entities
             EntityId = entityId;
             Action = action;
         }
-
-        [JsonProperty("default")]
-        public string Default { get; private set; } = "SQS Message";
 
         public string EntityId { get; }
 

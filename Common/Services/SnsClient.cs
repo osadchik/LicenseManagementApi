@@ -35,13 +35,12 @@ namespace Common.Services
 
             var request = new PublishRequest
             {
-                MessageStructure = "json",
                 TopicArn = topicArn,
                 Message = content
             };
             _logger.LogDebug("Created a new SNS publish request: {@request}", request);
 
-            await _simpleNotificationService.PublishAsync(request);
+            await _simpleNotificationService.PublishAsync(topicArn, content);
             _logger.LogInformation("Successfully published message: {@content} to the SNS topic: {topicArn}", content);
         }
     }
