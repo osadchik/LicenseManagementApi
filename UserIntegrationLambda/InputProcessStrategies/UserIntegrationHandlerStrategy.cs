@@ -6,7 +6,7 @@ using UserIntegrationLambda.Interfaces;
 namespace UserIntegrationLambda.InputProcessStrategies
 {
     /// <summary>
-    /// Processes user integration requests SQS messages.
+    /// 
     /// </summary>
     public class UserIntegrationHandlerStrategy : IDataHandlerStrategy
     {
@@ -27,15 +27,13 @@ namespace UserIntegrationLambda.InputProcessStrategies
         /// <inheritdoc/>
         public bool IsSuitable(JObject input)
         {
-            return input.ContainsKey("Records");
+            return input.ContainsKey("Message");
         }
 
         /// <inheritdoc/>
         public async Task<JObject> ProcessInputAsync(JObject input)
         {
             var sqsEvent = input.ToObject<SQSEvent>();
-
-            if (sqsEvent is null) throw new ArgumentNullException(nameof(input));
             _logger.LogDebug("Deserialized input into SQS Event: {@sqsEvent}", sqsEvent);
 
             return await _sqsRecordProcessingService.ProcessSqsRecordsAsync(sqsEvent);

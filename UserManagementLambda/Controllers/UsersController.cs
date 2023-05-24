@@ -20,7 +20,7 @@ public class UsersController : ControllerBase
     /// <summary>   
     /// Initializes a new instance of <see cref="UsersController"/> class.
     /// </summary>
-    /// <param name="usersRepository"><see cref="IUsersReadRepository"/></param>
+    /// <param name="usersRepository"><see cref="IUsersRepository"/></param>
     /// <param name="logger">Logger instance.</param>
     public UsersController(IUserManagementService userManagementService, ILogger<UsersController> logger)
     {
@@ -75,8 +75,8 @@ public class UsersController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        await _userManagementService.DeleteUser(id);
+        var deletedUser = await _userManagementService.DeleteUser(id);
 
-        return Ok();
+        return Ok(deletedUser);
     }
 }

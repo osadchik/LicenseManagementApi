@@ -1,12 +1,10 @@
 ﻿using Common.Extensions;
-using Common.Interfaces;
-using Common.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
-using UserIntegrationLambda.Extensions;
 using UserIntegrationLambda.InputProcessStrategies;
 using UserIntegrationLambda.Interfaces;
+using UserIntegrationLambda.Options;
 using UserIntegrationLambda.Services;
 
 namespace UserIntegrationLambda.Builders
@@ -17,7 +15,7 @@ namespace UserIntegrationLambda.Builders
     [ExcludeFromCodeCoverage]
     public class ServiceProviderBuilder
     {
-        private readonly IConfiguration _configuration;
+        private IConfiguration _configuration;
 
         public ServiceProviderBuilder()
         {
@@ -41,10 +39,9 @@ namespace UserIntegrationLambda.Builders
                 throw new ArgumentNullException(nameof(serviceCollection));
             }
 
-            serviceCollection.ConfigureLogging();
+            var environmentConfiguration = new ConfigurationBuilder().AddEnvironmentVariables().Build();
 
-            serviceCollection.ConfigureDynamoDB(_configuration);
-            serviceCollection.ConfigureCircuitBreakerServices(_configuration);
+            serviceCollection.ConfigureLogging();
 
             AddServices(serviceCollection);
 
@@ -55,14 +52,9 @@ namespace UserIntegrationLambda.Builders
 
         private static void AddServices(IServiceCollection services)
         {
-            var lambdaContextAccessor = new LambdaContextAccessor();
-            services.AddSingleton<ILambdaContextAccessor>(lambdaContextAccessor);
-            services.AddSingleton(lambdaContextAccessor);
-
             services.AddScoped<ISqsEventProcessingService, SqsEventProcessingService>();
             services.AddScoped<IDataHandlerStrategySelector, DataHandlerStrategySelector>();
             services.AddScoped<ISqsRecordProcessingService, SqsRecordProcessingService>();
-            services.AddScoped<IUserIntegrationHandler, UserIntegrationHandler>();
 
             services
                 .AddScoped<IDataHandlerStrategy, UserIntegrationHandlerStrategy>()

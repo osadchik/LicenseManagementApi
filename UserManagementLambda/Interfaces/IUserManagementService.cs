@@ -12,6 +12,6 @@ namespace UserManagementLambda.Interfaces
 
         Task<UserDto> UpdateUser(UserDto user);
 
-        Task DeleteUser(Guid uuid);
+        Task<UserDto> DeleteUser(Guid uuid);
     }
 }

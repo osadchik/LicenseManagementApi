@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="8.1.0" />
-    <PackageReference Include="Amazon.Lambda.SQSEvents" Version="2.1.0" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.103.5" />
-    <PackageReference Include="AWSSDK.EventBridge" Version="3.7.102.23" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
-    <PackageReference Include="AWSSDK.Lambda" Version="3.7.110.2" />
     <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.101.66" />
-    <PackageReference Include="AWSSDK.SQS" Version="3.7.102.8" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

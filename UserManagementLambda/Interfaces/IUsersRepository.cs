@@ -1,11 +1,11 @@
 ﻿using Common.Entities;
 
-namespace UserIntegrationLambda.Interfaces
+namespace UserManagementLambda.Interfaces
 {
     /// <summary>
-    /// Interface of Users datastore write service.
+    /// Interface used to access Users datastore.
     /// </summary>
-    public interface IUsersWriteRepository
+    public interface IUsersRepository
     {
         /// <summary>
         /// Creates or updates a user in datastore.
@@ -13,6 +13,13 @@ namespace UserIntegrationLambda.Interfaces
         /// <param name="user"></param>
         /// <returns>Saved user dto.</returns>
         Task<UserDto> SaveAsync(UserDto user);
+
+        /// <summary>
+        /// Gets user by id.
+        /// </summary>
+        /// <param name="id">User unique indentifier.</param>
+        /// <returns>User dto.</returns>
+        Task<UserDto> GetByIdAsync(Guid id);
 
         /// <summary>
         /// Deletes user from the datastore.

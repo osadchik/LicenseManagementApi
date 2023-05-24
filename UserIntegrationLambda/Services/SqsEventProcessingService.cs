@@ -36,7 +36,7 @@ namespace UserIntegrationLambda.Services
 
         private async Task ProcessInternalAsync(JObject input)
         {
-            _logger.LogDebug("SQS message processing started. Message: {message}", input.ToString());
+            _logger.LogDebug("SQS message processing started. Message: {@message}", input);
 
             IDataHandlerStrategy dataHandler = _strategySelector.GetStrategy(input);
 

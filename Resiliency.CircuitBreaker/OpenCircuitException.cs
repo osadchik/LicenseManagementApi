@@ -6,14 +6,14 @@ namespace Resiliency.CircuitBreaker
     /// Signals the upstream code that circuit is open and execution isn't allowed.
     /// </summary>
     [Serializable]
-    public class OpenCircuitException : Exception
+    internal class OpenCircuitException : Exception
     {
         private const int DefaultBreakDurationInMinutes = 5;
 
         /// <summary>
         /// Default is 5 minutes from <see cref="DateTimeOffset.UtcNow"/>
         /// </summary>
-        public DateTimeOffset OpenUntil { get; } = DateTimeOffset.UtcNow.AddMinutes(DefaultBreakDurationInMinutes);
+        private DateTimeOffset OpenUntil { get; } = DateTimeOffset.UtcNow.AddMinutes(DefaultBreakDurationInMinutes);
 
         public OpenCircuitException(DateTimeOffset openUntil)
         {

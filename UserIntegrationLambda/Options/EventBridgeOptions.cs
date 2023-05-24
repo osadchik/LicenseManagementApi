@@ -1,16 +1,16 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Common.Options
+namespace UserIntegrationLambda.Options
 {
     /// <summary>
     /// Contains configuration parameters for Event Bridge Rule.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class EventBridgeOptions
+    internal class EventBridgeOptions
     {
         /// <summary>
         /// Gets or sets the Event Bridge Rule name.
         /// </summary>
-        public string RuleName { get; set; } = null!;
+        public string RuleName { get; set; }
     }
 }
