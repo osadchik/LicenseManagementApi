@@ -1,4 +1,5 @@
 ﻿using Common.Entities;
+using Common.Interfaces;
 using Microsoft.Extensions.Options;
 using UserManagementLambda.Interfaces;
 using UserManagementLambda.Options;
@@ -7,12 +8,12 @@ namespace UserManagementLambda.Services
 {
     public class UserManagementService : IUserManagementService
     {
-        private readonly IUsersRepository _usersRepository;
-        private readonly ISnsService _snsService;
+        private readonly IUsersReadRepository _usersRepository;
+        private readonly ISnsClient _snsService;
         private readonly LambdaEnvironmentVariables _environmentVariables;
         private readonly ILogger<UserManagementService> _logger;
 
-        public UserManagementService(IUsersRepository usersRepository, ISnsService snsService, IOptions<LambdaEnvironmentVariables> environmentVariables, ILogger<UserManagementService> logger)
+        public UserManagementService(IUsersReadRepository usersRepository, ISnsClient snsService, IOptions<LambdaEnvironmentVariables> environmentVariables, ILogger<UserManagementService> logger)
         {
             _usersRepository = usersRepository;
             _snsService = snsService;
@@ -22,8 +23,6 @@ namespace UserManagementLambda.Services
 
         public async Task<UserDto> CreateUser(UserDto user)
         {
-            await _usersRepository.SaveAsync(user);
-
             var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), ProcessAction.Create) 
             {
                 Content = user
@@ -34,18 +33,11 @@ namespace UserManagementLambda.Services
             return user;
         }
 
-        public async Task<UserDto> DeleteUser(Guid uuid)
+        public async Task DeleteUser(Guid uuid)
         {
-            var user = await _usersRepository.DeleteAsync(uuid);
-
-            var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), ProcessAction.Delete)
-            {
-                Content = user
-            };
+            var userMessage = new BaseMessage<UserDto>(uuid.ToString(), ProcessAction.Delete);
 
             await _snsService.PublishToTopicAsync(_environmentVariables.SnsTopicArn, userMessage);
-
-            return user;
         }
 
         public Task<UserDto> GetUserByUserName(string userName)
@@ -62,8 +54,6 @@ namespace UserManagementLambda.Services
 
         public async Task<UserDto> UpdateUser(UserDto user)
         {
-            await _usersRepository.SaveAsync(user);
-
             var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), ProcessAction.Update)
             {
                 Content = user

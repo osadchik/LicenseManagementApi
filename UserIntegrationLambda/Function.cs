@@ -1,4 +1,5 @@
 using Amazon.Lambda.Core;
+using Common.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -41,6 +42,9 @@ public class Function
     {
         ArgumentNullException.ThrowIfNull(input);
         ArgumentNullException.ThrowIfNull(context);
+
+        var lambdaContextAccessor = _serviceProvider.GetRequiredService<LambdaContextAccessor>();
+        lambdaContextAccessor.Context = context;
 
         var logger = _serviceProvider.GetRequiredService<ILogger<Function>>();
         logger.LogInformation("Received SQS Event: {evnt}", input.ToString());

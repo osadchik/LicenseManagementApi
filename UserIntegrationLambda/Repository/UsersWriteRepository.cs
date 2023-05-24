@@ -1,24 +1,26 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
 using Common.Entities;
-using UserManagementLambda.Exceptions;
-using UserManagementLambda.Interfaces;
+using Common.Exceptions;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace UserManagementLambda.Repositories
+namespace UserIntegrationLambda.Repository
 {
-    /// <summary>
-    /// Repository that represents user entity datastore.
-    /// </summary>
-    public class UsersRepository : IUsersRepository
+    public class UsersWriteRepository
     {
         private readonly IDynamoDBContext _dynamoDbContext;
-        private readonly ILogger<UsersRepository> _logger;
+        private readonly ILogger<UsersWriteRepository> _logger;
 
         /// <summary>
-        /// Creates a new instance of <see cref="UsersRepository"/> class.
+        /// Creates a new instance of <see cref="UsersWriteRepository"/> class.
         /// </summary>
         /// <param name="dynamoDbContext"><see cref="DynamoDBContext"/></param>
         /// <param name="logger">Logger instance.</param>
-        public UsersRepository(IDynamoDBContext dynamoDbContext, ILogger<UsersRepository> logger)
+        public UsersWriteRepository(IDynamoDBContext dynamoDbContext, ILogger<UsersWriteRepository> logger)
         {
             _dynamoDbContext = dynamoDbContext;
             _logger = logger;
@@ -33,17 +35,6 @@ namespace UserManagementLambda.Repositories
             }
 
             return SaveInternalAsync(user);
-        }
-
-        /// <inheritdoc/>
-        public Task<UserDto> GetByIdAsync(Guid id)
-        {
-            if (string.IsNullOrEmpty(id.ToString()))
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
-            return GetUserByIdInternalAsync(id);
         }
 
         /// <inheritdoc/>
@@ -66,37 +57,18 @@ namespace UserManagementLambda.Repositories
                 IgnoreNullValues = false
             };
 
-            UserDto existingUser = await GetByIdAsync(user.Uuid);
-            if (existingUser != null)
-            {
-                _logger.LogDebug("User already exists. Updating...");
-            }
-            else
-            {
-                _logger.LogDebug("User does not exist. Creating...");
-            }
-
             await _dynamoDbContext.SaveAsync(user, config);
             _logger.LogInformation("Successfully created a new user entity: {@user}", user);
 
             return user;
         }
 
-        private async Task<UserDto> GetUserByIdInternalAsync(Guid id)
-        {
-            _logger.LogDebug("Trying to get user entity with id: {id}", id);
-
-            UserDto user = await _dynamoDbContext.LoadAsync<UserDto>(id);
-            _logger.LogInformation("Successfully retrieved a new user entity: {@userDto}", user);
-
-            return user;
-        }
 
         private async Task<UserDto> DeleteUserInternalAsync(Guid id)
         {
             _logger.LogDebug("Trying to delete user entity with id: {id}", id);
 
-            UserDto user = await GetByIdAsync(id);
+            UserDto user = await _dynamoDbContext.LoadAsync<UserDto>(id);
             if (user == null)
             {
                 throw new UserNotFoundException();

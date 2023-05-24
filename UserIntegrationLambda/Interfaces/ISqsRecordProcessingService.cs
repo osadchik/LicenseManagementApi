@@ -5,7 +5,7 @@ using static Amazon.Lambda.SQSEvents.SQSEvent;
 namespace UserIntegrationLambda.Interfaces
 {
     /// <summary>
-    ///  SQS record processing service.
+    ///  Interface of SQS record processing service.
     /// </summary>
     public interface ISqsRecordProcessingService
     {
@@ -14,7 +14,7 @@ namespace UserIntegrationLambda.Interfaces
         /// </summary>
         /// <param name="sQSEvent"><see cref="SQSEvent"/></param>
         /// <returns>Processing details in JSON type.</returns>
-        Task<JObject> ProcessSqsRecordsAsync(SQSEvent sQSEvent);
+        Task<JObject> ProcessSqsRecordsAsync(SQSEvent sqsEvent);
 
         /// <summary>
         /// Processes one SQS message.
