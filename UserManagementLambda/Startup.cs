@@ -1,5 +1,7 @@
 using Common.Extensions;
+using Common.Interfaces;
 using Common.Middleware;
+using Common.Services;
 using System.Diagnostics.CodeAnalysis;
 using UserManagementLambda.Extensions;
 using UserManagementLambda.Interfaces;
@@ -33,8 +35,8 @@ public class Startup
 
         services.ConfigureSwaggerServices();
 
-        services.AddScoped<ISnsService, SnsService>();
-        services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<ISnsClient, SnsClient>();
+        services.AddScoped<IUsersReadRepository, UsersReadRepository>();
         services.AddScoped<IUserManagementService, UserManagementService>();
     }
 

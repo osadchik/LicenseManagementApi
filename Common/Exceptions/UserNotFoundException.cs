@@ -1,12 +1,12 @@
 ﻿using System.Runtime.Serialization;
 
-namespace UserManagementLambda.Exceptions
+namespace Common.Exceptions
 {
     /// <summary>
     /// Represents an error during user retrieving operation.
     /// </summary>
     [Serializable]
-    internal class UserNotFoundException : Exception
+    public class UserNotFoundException : Exception
     {
         /// <summary>
         /// Initializes a new instance of <see cref="UserNotFoundException"/> class.

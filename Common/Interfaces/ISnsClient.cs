@@ -1,11 +1,9 @@
-﻿using Common.Interfaces;
-
-namespace UserManagementLambda.Interfaces
+﻿namespace Common.Interfaces
 {
     /// <summary>
     /// Interface of SNS message publisher service.
     /// </summary>
-    public interface ISnsService
+    public interface ISnsClient
     {
         /// <summary>
         /// Publishes a message to the bus.

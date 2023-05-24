@@ -4,7 +4,7 @@ using UserIntegrationLambda.Interfaces;
 namespace UserIntegrationLambda.InputProcessStrategies
 {
     /// <summary>
-    /// 
+    /// Processes circuit breaker maintenance messages.
     /// </summary>
     internal class CircuitBreakerMessageHandlerStrategy : IDataHandlerStrategy
     {

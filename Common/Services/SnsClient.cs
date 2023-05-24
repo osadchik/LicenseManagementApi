@@ -1,25 +1,25 @@
 ﻿using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using UserManagementLambda.Interfaces;
 
-namespace UserManagementLambda.Services
+namespace Common.Services
 {
     /// <summary>
     /// Sns message publisher service.
     /// </summary>
-    public class SnsService : ISnsService
+    public class SnsClient : ISnsClient
     {
         private readonly IAmazonSimpleNotificationService _simpleNotificationService;
-        private readonly ILogger<SnsService> _logger;
+        private readonly ILogger<SnsClient> _logger;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SnsService"/> class.
+        /// Initializes a new instance of <see cref="SnsClient"/> class.
         /// </summary>
         /// <param name="simpleNotificationService"><see cref="IAmazonSimpleNotificationService"/></param>
         /// <param name="logger">Logger instance.</param>
-        public SnsService(IAmazonSimpleNotificationService simpleNotificationService, ILogger<SnsService> logger)
+        public SnsClient(IAmazonSimpleNotificationService simpleNotificationService, ILogger<SnsClient> logger)
         {
             _simpleNotificationService = simpleNotificationService;
             _logger = logger;
@@ -30,19 +30,19 @@ namespace UserManagementLambda.Services
         {
             _logger.LogDebug("Started publishing the content: {@content} to the SNS topic: {topicArn}", message, topicArn);
 
-            var content = JsonConvert.SerializeObject(message);
+            var content = JsonConvert.SerializeObject(message, Formatting.None);
             _logger.LogDebug("Serialized content: {content}", content);
 
             var request = new PublishRequest
             {
                 MessageStructure = "json",
                 TopicArn = topicArn,
-                Message = content
+                Message = JsonConvert.SerializeObject(content, Formatting.None)
             };
             _logger.LogDebug("Created a new SNS publish request: {@request}", request);
 
             await _simpleNotificationService.PublishAsync(request);
             _logger.LogInformation("Successfully published message: {@content} to the SNS topic: {topicArn}", content);
-        }   
+        }
     }
 }

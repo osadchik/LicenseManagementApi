@@ -27,7 +27,7 @@ namespace UserIntegrationLambda.InputProcessStrategies
         /// <inheritdoc/>
         public IDataHandlerStrategy GetStrategy(JObject input)
         {
-            _logger.LogDebug("Getting strategy for input: {@input}", input);
+            _logger.LogDebug("Getting strategy for input: {input}", input.ToString());
 
             var strategy = _handlers.FirstOrDefault(h => h.IsSuitable(input));
 
