@@ -1,4 +1,5 @@
-﻿using Amazon.DynamoDBv2.Model;
+﻿using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.SQSEvents;
 using Common.Interfaces;
 using FluentValidation;
@@ -136,7 +137,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
                 HttpStatusCode.GatewayTimeout
             };
 
-            return exception is ResourceNotFoundException;
+            return exception is ResourceNotFoundException or AmazonDynamoDBException;
         }
 
         private static bool IsPermanentError(Exception exception)
