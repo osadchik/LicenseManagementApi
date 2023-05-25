@@ -3,7 +3,7 @@
     /// <summary>
     /// Model used to describe Circuit Breaker maintenance message.
     /// </summary>
-    internal class CircuitBreakerMessageDto
+    internal class CircuitBreakerMessage
     {
         /// <summary>
         /// Gets or sets the flag if this the message is maintenance.
@@ -18,6 +18,6 @@
         /// <summary>
         /// Gets or sets the Circuit Breaker timeout in minutes.
         /// </summary>
-        public TimeSpan? TimeOut { get; set; }
+        public TimeSpan? Timeout { get; set; }
     }
 }
