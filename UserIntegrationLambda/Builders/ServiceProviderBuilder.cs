@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using UserIntegrationLambda.Extensions;
 using UserIntegrationLambda.InputProcessStrategies;
 using UserIntegrationLambda.Interfaces;
+using UserIntegrationLambda.Repository;
 using UserIntegrationLambda.Services;
 
 namespace UserIntegrationLambda.Builders
@@ -67,6 +68,8 @@ namespace UserIntegrationLambda.Builders
             services
                 .AddScoped<IDataHandlerStrategy, UserIntegrationHandlerStrategy>()
                 .AddScoped<IDataHandlerStrategy, CircuitBreakerMessageHandlerStrategy>();
+
+            services.AddScoped<IUsersWriteRepository, UsersWriteRepository>();
         }
     }
 }

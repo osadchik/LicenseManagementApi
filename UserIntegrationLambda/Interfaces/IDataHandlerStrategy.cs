@@ -11,8 +11,8 @@ namespace UserIntegrationLambda.Interfaces
         /// Runs input message handler.
         /// </summary>
         /// <param name="input">Incomming message.</param>
-        /// <returns>Message processing details in JSON format.</returns>
-        Task<JObject> ProcessInputAsync(JObject input);
+        /// <returns>Task.</returns>
+        Task ProcessInputAsync(JObject input);
 
         /// <summary>
         /// Checks if this particular handler fits the input.

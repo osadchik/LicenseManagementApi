@@ -19,8 +19,14 @@ module "user-integration-lambda" {
     lambda_alias_current = var.lambda_alias_current 
 
     environment_variables = { 
-        "SWAGGER_ENABLED"          = true
-        "Serilog__MinimumLogLevel" = "Debug"
+        "SWAGGER_ENABLED"                       = true
+        "Serilog__MinimumLogLevel"              = "Debug"
+        "CircuitBreaker__CircuitStateTableName" = module.dynamodb_state_table.name
+        "CircuitBreaker__ErrorThreshold"        = 4
+        "CircuitBreaker__SamplingDuration"      = "00:05:00"
+        "CircuitBreaker__Timeout"               = "00:10:00"
+        "CircuitBreaker__DeadLetterQueueUrl"    = module.user-integration-lambda-dlq.url
+        "CircuitBreaker__SourceQueueUrl"        = module.user-integration-lambda-sqs.url
     }  
 }
 

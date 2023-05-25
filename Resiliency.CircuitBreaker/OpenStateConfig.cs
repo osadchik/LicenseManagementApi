@@ -12,7 +12,7 @@
         public OpenStateConfig(TimeSpan timeout)
         {
             TimeSpan upperLimit = TimeSpan.FromMinutes(DefaultUpperLimitInMinutes);
-            if (Timeout <= TimeSpan.Zero || timeout > upperLimit)
+            if (timeout <= TimeSpan.Zero || timeout > upperLimit)
             {
                 throw new ArgumentOutOfRangeException(nameof(timeout), timeout, $"Timeout must be positive and less than {upperLimit}.");
             }

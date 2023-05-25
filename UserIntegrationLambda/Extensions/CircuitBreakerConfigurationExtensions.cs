@@ -16,7 +16,6 @@ namespace UserIntegrationLambda.Extensions
     {
         public static IServiceCollection ConfigureCircuitBreakerServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            var temp = Environment.GetEnvironmentVariable("EVENTBRIDGE_Rule_Name");
             serviceCollection.Configure<CircuitBreakerOptions>(configuration.GetSection("CircuitBreaker"));
 
             serviceCollection.AddAWSService<IAmazonEventBridge>();

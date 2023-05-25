@@ -1,4 +1,6 @@
 ﻿using Common.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Common.Entities
 {
@@ -12,6 +14,7 @@ namespace Common.Entities
 
         public string EntityId { get; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public ProcessAction Action { get; }
 
         public DateTimeOffset MessageSentOn { get; set; } = DateTimeOffset.UtcNow;

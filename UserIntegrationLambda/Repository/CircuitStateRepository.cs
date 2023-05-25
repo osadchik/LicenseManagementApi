@@ -66,9 +66,22 @@ namespace UserIntegrationLambda.Repository
         }
 
         /// <inheritdoc/>
-        public Task SaveAsync(CircuitState circuitState)
+        public async Task SaveAsync(CircuitState circuitState)
         {
-            throw new NotImplementedException();
+            circuitState.Accept(_dbMapper);
+
+            try
+            {
+                if (_dbMapper.CircuitStateDatabaseDto != null)
+                {
+                    _dbMapper.CircuitStateDatabaseDto.Id = StateId;
+                    await _dynamoDBContext.SaveAsync(_dbMapper.CircuitStateDatabaseDto);
+                }
+            }
+            catch (AmazonDynamoDBException ex)
+            {
+                _logger.LogCritical(ex, "Failed to save circuit state to database.");
+            }
         }
 
         private static CircuitStateDatabaseDto GetClosedStateDto()

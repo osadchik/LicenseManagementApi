@@ -6,6 +6,11 @@
     public class CircuitBreakerOptions
     {
         /// <summary>
+        /// Name of circuit state Dynamo DB table.
+        /// </summary>
+        public string CircuitStateTableName { get; set; } = null!;
+
+        /// <summary>
         /// Max number of errors before opening.
         /// </summary>
         public int ErrorThreshold { get; set; } = default!;

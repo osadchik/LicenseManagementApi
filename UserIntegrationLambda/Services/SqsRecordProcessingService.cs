@@ -1,6 +1,7 @@
 ﻿using Amazon.Lambda.SQSEvents;
+using Common.Entities;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using UserIntegrationLambda.Interfaces;
 using UserIntegrationLambda.Interfaces.CircuitBreaker;
 using static Amazon.Lambda.SQSEvents.SQSEvent;
@@ -30,22 +31,41 @@ namespace UserIntegrationLambda.Services
         }
 
         /// <inheritdoc/>
-        public Task ProcessMessageAsync(SQSMessage sqsMessage)
+        public async Task ProcessMessageAsync(SQSMessage sqsMessage)
         {
             if (sqsMessage is null) throw new ArgumentNullException(nameof(sqsMessage));
 
-            try
+            BaseMessage<UserDto> messageBody = JsonConvert.DeserializeObject<BaseMessage<UserDto>>(sqsMessage.Body);
+            _logger.LogDebug("Deserialized SQS message body into: {@messageBody}", messageBody);
+
+            if (messageBody is null)
             {
-                throw new NotImplementedException();
+                throw new ArgumentNullException("SQS Message body is empty", nameof(sqsMessage));
             }
-            catch (Exception ex)
+
+            if (string.IsNullOrEmpty(messageBody.Action.ToString()))
             {
-                throw new NotImplementedException();
+                throw new ArgumentException("Action is not defined", nameof(sqsMessage));
             }
+
+            _logger.LogDebug("Executing {action} for User ID: {uuid}", messageBody.Action, messageBody.EntityId);
+            Dictionary<string, Func<Task>> defaultActions = LoadDefaultActions(messageBody);
+
+            if (!defaultActions.ContainsKey(messageBody.Action.ToString()))
+            {
+                string supportedActions = string.Join(',', defaultActions.Select(a => a.Key));
+                _logger.LogWarning("Action {action} is not supported. See suported actions: [{supportedActions}]", messageBody.Action, supportedActions);
+                return;
+            }
+
+            Func<Task> function = defaultActions[messageBody.Action.ToString()];
+            await function();
+
+            _logger.LogInformation("{action} successfully executed for user: {uuid}", messageBody.Action, messageBody.EntityId);
         }
 
         /// <inheritdoc/>
-        public async Task<JObject> ProcessSqsRecordsAsync(SQSEvent sqsEvent)
+        public async Task ProcessSqsRecordsAsync(SQSEvent sqsEvent)
         {
             foreach (SQSMessage message in sqsEvent.Records)
             {
@@ -53,8 +73,18 @@ namespace UserIntegrationLambda.Services
                 await _circuitBreakingService.ExecuteAsync(message, ProcessMessageAsync);
                 _logger.LogInformation("Processed SQSMessage {MessageId}", message.MessageId);
             }
+        }
 
-            return null;
+        private Dictionary<string, Func<Task>> LoadDefaultActions(BaseMessage<UserDto> message)
+        {
+            var defaultActions = new Dictionary<string, Func<Task>>()
+            {
+                { "Create", () => _userIntegrationHandler.CreateUser(message.Content) },
+                { "Update", () => _userIntegrationHandler.UpdateUser(message.Content) },
+                { "Delete", () => _userIntegrationHandler.DeleteUser(message.Content) },
+            };
+
+            return defaultActions;
         }
     }
 }

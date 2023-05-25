@@ -15,7 +15,7 @@ namespace UserIntegrationLambda.InputProcessStrategies
         }
 
         /// <inheritdoc/>
-        public Task<JObject> ProcessInputAsync(JObject input)
+        public Task ProcessInputAsync(JObject input)
         {
             throw new NotImplementedException();
         }

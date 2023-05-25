@@ -2,15 +2,14 @@
 using Common.Entities;
 using Common.Exceptions;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UserIntegrationLambda.Interfaces;
 
 namespace UserIntegrationLambda.Repository
 {
-    public class UsersWriteRepository
+    /// <summary>
+    /// Users datastore write service.
+    /// </summary>
+    public class UsersWriteRepository : IUsersWriteRepository
     {
         private readonly IDynamoDBContext _dynamoDbContext;
         private readonly ILogger<UsersWriteRepository> _logger;
@@ -62,7 +61,6 @@ namespace UserIntegrationLambda.Repository
 
             return user;
         }
-
 
         private async Task<UserDto> DeleteUserInternalAsync(Guid id)
         {

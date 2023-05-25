@@ -31,14 +31,14 @@ namespace UserIntegrationLambda.InputProcessStrategies
         }
 
         /// <inheritdoc/>
-        public async Task<JObject> ProcessInputAsync(JObject input)
+        public async Task ProcessInputAsync(JObject input)
         {
             var sqsEvent = input.ToObject<SQSEvent>();
 
             if (sqsEvent is null) throw new ArgumentNullException(nameof(input));
             _logger.LogDebug("Deserialized input into SQS Event: {@sqsEvent}", sqsEvent);
 
-            return await _sqsRecordProcessingService.ProcessSqsRecordsAsync(sqsEvent);
+            await _sqsRecordProcessingService.ProcessSqsRecordsAsync(sqsEvent);
         }
     }
 }
