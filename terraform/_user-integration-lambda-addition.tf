@@ -13,7 +13,7 @@ resource "aws_iam_policy" "user_integration_dynamoDB_policy" {
           "dynamodb:PutItem",
           "dynamodb:GetItem"
         ]
-        Resource = [ "${module.dynamodb_state_table.arn}" ]
+        Resources = [ "${module.dynamodb_state_table.arn}", "${module.dynamodb_users_table.arn}" ]
       }
     ]
   })
