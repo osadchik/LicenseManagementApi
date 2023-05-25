@@ -13,7 +13,7 @@ namespace Common.Utils
         /// <inheritdoc/>
         public ILambdaContext Context
         {
-            get => AsyncStore.Value = null!;
+            get => AsyncStore.Value;
             set => AsyncStore.Value = value;
         }
     }

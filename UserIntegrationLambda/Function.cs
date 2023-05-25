@@ -43,14 +43,24 @@ public class Function
         ArgumentNullException.ThrowIfNull(input);
         ArgumentNullException.ThrowIfNull(context);
 
-        var lambdaContextAccessor = _serviceProvider.GetRequiredService<LambdaContextAccessor>();
-        lambdaContextAccessor.Context = context;
-
         var logger = _serviceProvider.GetRequiredService<ILogger<Function>>();
-        logger.LogInformation("Received SQS Event: {evnt}", input.ToString());
 
-        var sqsEventProcessingService = _serviceProvider.GetRequiredService<ISqsEventProcessingService>();
+        try
+        { 
+            var lambdaContextAccessor = _serviceProvider.GetRequiredService<LambdaContextAccessor>();
+            lambdaContextAccessor.Context = context;
 
-        await sqsEventProcessingService.ProcessAsync(input);
+            logger.LogInformation("Received SQS Event: {evnt}", input.ToString());
+
+            var sqsEventProcessingService = _serviceProvider.GetRequiredService<ISqsEventProcessingService>();
+
+            await sqsEventProcessingService.ProcessAsync(input);
+        }
+        catch (Exception ex)
+        {
+            logger.LogCritical(ex, "An unhandled error has occured. Check the exception details for further details.");
+            throw;
+        }
+
     }
 }
