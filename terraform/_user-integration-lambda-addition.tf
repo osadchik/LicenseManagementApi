@@ -38,6 +38,31 @@ resource "aws_iam_policy" "user_integration_sqs_policy" {
   })
 }
 
+resource "aws_iam_policy" "user_integration_event_mapping_policy" {
+  name = "${var.prefix}-${var.user_integration_lambda_name}-event-mapping-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "lambda:ListEventSourceMappings",
+          "lambda:UpdateEventSourceMapping"
+        ]
+        Resource = [ "*" ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "events:PutRule"
+        ]
+        Resource = [ aws_cloudwatch_event_rule.lambda_schedule.arn ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "user_integration_dynamodb_access" {
     role       = module.user-integration-lambda-role.name
     policy_arn = aws_iam_policy.user_integration_dynamoDB_policy.arn
@@ -51,4 +76,9 @@ resource "aws_iam_role_policy_attachment" "user_integration_sqs_access" {
 resource "aws_iam_role_policy_attachment" "user_integration_lambda_logs" {
   role         = module.user-integration-lambda-role.name
   policy_arn   = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "user_integration_event_mapping" {
+  role         = module.user-integration-lambda-role.name
+  policy_arn   = aws_iam_policy.user_integration_event_mapping_policy.arn
 }
