@@ -12,12 +12,12 @@ namespace UserIntegrationLambda.Models
         /// Entity ID value.
         /// </summary>
         [DynamoDBHashKey]
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 
         /// <summary>
         /// Circuit Breaker state.
         /// </summary>
-        public string StateId { get; set; }
+        public string StateId { get; set; } = null!;
 
         /// <summary>
         /// Opening date.

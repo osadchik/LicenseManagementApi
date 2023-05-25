@@ -1,6 +1,7 @@
 ﻿using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.SQSEvents;
 using Common.Interfaces;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Resiliency.CircuitBreaker;
@@ -135,17 +136,22 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
                 HttpStatusCode.GatewayTimeout
             };
 
-            return IsDownstreamServiceError(transientErrorCodes, exception);
+            return exception is ResourceNotFoundException;
         }
 
         private static bool IsPermanentError(Exception exception)
         {
-            return exception is ResourceNotFoundException;
-        }
+            var permanentErrorCodes = new HashSet<HttpStatusCode>
+            {
+                HttpStatusCode.BadRequest,
+                HttpStatusCode.Forbidden,
+                HttpStatusCode.Unauthorized,
+                HttpStatusCode.MethodNotAllowed,
+                HttpStatusCode.Conflict,
+                HttpStatusCode.RequestEntityTooLarge
+            };
 
-        private static bool IsDownstreamServiceError(HashSet<HttpStatusCode> statusCodes, Exception exception)
-        {
-            return exception is HttpRequestException && statusCodes.Contains((exception as HttpRequestException).StatusCode.Value);
+            return exception is ValidationException;
         }
     }
 }

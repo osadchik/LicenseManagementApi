@@ -1,4 +1,5 @@
 ﻿using Common.Entities;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using UserIntegrationLambda.Interfaces;
 using UserIntegrationLambda.Validation;
@@ -24,9 +25,7 @@ namespace UserIntegrationLambda.Services
         /// <inheritdoc/>
         public async Task CreateUser(UserDto user)
         {
-            var result = _userValidator.Validate(user);
-            _logger.LogDebug("Validation results: {@validation}", result);
-
+            _userValidator.ValidateAndThrow(user);
             await _usersWriteRepository.SaveAsync(user);
         }
 
@@ -41,9 +40,7 @@ namespace UserIntegrationLambda.Services
         /// <inheritdoc/>
         public async Task UpdateUser(UserDto user)
         {
-            var result = _userValidator.Validate(user);
-            _logger.LogDebug("Validation results: {@validation}", result);
-
+            _userValidator.ValidateAndThrow(user);
             await _usersWriteRepository.SaveAsync(user);
         }
     }

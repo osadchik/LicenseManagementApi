@@ -21,8 +21,10 @@ module "user-integration-lambda" {
     environment_variables = { 
         "SWAGGER_ENABLED"                       = true
         "Serilog__MinimumLogLevel"              = "Debug"
+        "Parameters__UsersTableName"            = module.dynamodb_users_table.name
+        "EventBridge__RuleName"                 = aws_cloudwatch_event_rule.lambda_schedule.id
         "CircuitBreaker__CircuitStateTableName" = module.dynamodb_state_table.name
-        "CircuitBreaker__ErrorThreshold"        = 4
+        "CircuitBreaker__ErrorThreshold"        = 1
         "CircuitBreaker__SamplingDuration"      = "00:05:00"
         "CircuitBreaker__Timeout"               = "00:10:00"
         "CircuitBreaker__DeadLetterQueueUrl"    = module.user-integration-lambda-dlq.url

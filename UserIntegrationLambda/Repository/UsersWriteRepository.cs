@@ -2,7 +2,9 @@
 using Common.Entities;
 using Common.Exceptions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using UserIntegrationLambda.Interfaces;
+using UserIntegrationLambda.Options;
 
 namespace UserIntegrationLambda.Repository
 {
@@ -13,16 +15,18 @@ namespace UserIntegrationLambda.Repository
     {
         private readonly IDynamoDBContext _dynamoDbContext;
         private readonly ILogger<UsersWriteRepository> _logger;
+        private readonly LambdaParameters _lambdaParameters;
 
         /// <summary>
         /// Creates a new instance of <see cref="UsersWriteRepository"/> class.
         /// </summary>
         /// <param name="dynamoDbContext"><see cref="DynamoDBContext"/></param>
         /// <param name="logger">Logger instance.</param>
-        public UsersWriteRepository(IDynamoDBContext dynamoDbContext, ILogger<UsersWriteRepository> logger)
+        public UsersWriteRepository(IDynamoDBContext dynamoDbContext,  ILogger<UsersWriteRepository> logger, IOptions<LambdaParameters> lambdaParameters)
         {
             _dynamoDbContext = dynamoDbContext;
             _logger = logger;
+            _lambdaParameters = lambdaParameters.Value;
         }
 
         /// <inheritdoc/>
@@ -53,6 +57,7 @@ namespace UserIntegrationLambda.Repository
 
             var config = new DynamoDBOperationConfig
             {
+                OverrideTableName = _lambdaParameters.UsersTableName,
                 IgnoreNullValues = false
             };
 
@@ -66,13 +71,19 @@ namespace UserIntegrationLambda.Repository
         {
             _logger.LogDebug("Trying to delete user entity with id: {id}", id);
 
-            UserDto user = await _dynamoDbContext.LoadAsync<UserDto>(id);
+            var config = new DynamoDBOperationConfig
+            {
+                OverrideTableName = _lambdaParameters.UsersTableName,
+                IgnoreNullValues = false
+            };
+
+            UserDto user = await _dynamoDbContext.LoadAsync<UserDto>(id, config);
             if (user == null)
             {
                 throw new UserNotFoundException();
             }
 
-            await _dynamoDbContext.DeleteAsync(id);
+            await _dynamoDbContext.DeleteAsync(id, config);
             _logger.LogInformation("Successfully deleted user entity: {@userDto}", user);
             return user;
         }

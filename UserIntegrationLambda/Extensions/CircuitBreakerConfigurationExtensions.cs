@@ -2,6 +2,7 @@
 using Amazon.Lambda;
 using Amazon.SQS;
 using Common.Interfaces;
+using Common.Options;
 using Common.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace UserIntegrationLambda.Extensions
         public static IServiceCollection ConfigureCircuitBreakerServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
             serviceCollection.Configure<CircuitBreakerOptions>(configuration.GetSection("CircuitBreaker"));
+            serviceCollection.Configure<EventBridgeOptions>(configuration.GetSection("EventBridge"));
 
             serviceCollection.AddAWSService<IAmazonEventBridge>();
             serviceCollection.AddAWSService<IAmazonSQS>();

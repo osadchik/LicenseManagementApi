@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using UserIntegrationLambda.Extensions;
 using UserIntegrationLambda.InputProcessStrategies;
 using UserIntegrationLambda.Interfaces;
+using UserIntegrationLambda.Options;
 using UserIntegrationLambda.Repository;
 using UserIntegrationLambda.Services;
 
@@ -44,6 +45,7 @@ namespace UserIntegrationLambda.Builders
 
             serviceCollection.ConfigureLogging();
 
+            serviceCollection.ConfigureLambdaVariables<LambdaParameters>(_configuration);
             serviceCollection.ConfigureDynamoDB(_configuration);
             serviceCollection.ConfigureCircuitBreakerServices(_configuration);
 
