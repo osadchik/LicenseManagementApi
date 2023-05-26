@@ -9,7 +9,7 @@ namespace UserManagementLambda.Controllers;
 /// <summary>
 /// Comtroller used to manipulate user entities in License Management Service.
 /// </summary>
-[Route("users-api/users")]
+[Route("users")]
 [ApiController]
 [SwaggerTag("Controller for users management")]
 public class UsersController : ControllerBase
@@ -20,7 +20,7 @@ public class UsersController : ControllerBase
     /// <summary>   
     /// Initializes a new instance of <see cref="UsersController"/> class.
     /// </summary>
-    /// <param name="usersRepository"><see cref="IUsersReadRepository"/></param>
+    /// <param name="userManagementService"><see cref="IUserManagementService"/></param>
     /// <param name="logger">Logger instance.</param>
     public UsersController(IUserManagementService userManagementService, ILogger<UsersController> logger)
     {
@@ -44,7 +44,7 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Creates a new user.
     /// </summary>
-    /// <param name="id"><see cref="UserDto"/></param>
+    /// <param name="user"><see cref="UserDto"/></param>
     /// <returns><see cref="IActionResult"/></returns>
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody, Required] UserDto user)
@@ -57,7 +57,7 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Updates a specific user.
     /// </summary>
-    /// <param name="id"><see cref="UserDto"/></param>
+    /// <param name="user"><see cref="UserDto"/></param>
     /// <returns><see cref="IActionResult"/></returns>
     [HttpPut]
     public async Task<IActionResult> UpdateUser([FromBody, Required] UserDto user)
