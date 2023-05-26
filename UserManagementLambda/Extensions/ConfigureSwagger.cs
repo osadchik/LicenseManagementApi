@@ -24,10 +24,14 @@ namespace UserManagementLambda.Extensions
 
         public static IApplicationBuilder UseSwagger(this IApplicationBuilder app, IConfiguration configuration)
         {
-            app.UseSwagger()
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "swagger/{documentName}/swagger.json";
+            })
                 .UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/dev/users-api/swagger/v1/swagger.json", "Users API implementation for License Management Service.");
+                    c.SwaggerEndpoint("v1/swagger.json", "Users API implementation for License Management Service.");
+                    c.RoutePrefix = "swagger";
                 });
 
             return app;
