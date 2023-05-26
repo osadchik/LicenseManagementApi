@@ -27,7 +27,7 @@ namespace UserManagementLambda.Extensions
             app.UseSwagger()
                 .UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("dev/users-api/swagger/v1/swagger.json", "Users API implementation for License Management Service.");
+                    c.SwaggerEndpoint("/dev/users-api/swagger/v1/swagger.json", "Users API implementation for License Management Service.");
                     c.RoutePrefix = "users-api";
                 });
 
