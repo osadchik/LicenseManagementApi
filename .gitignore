@@ -391,4 +391,4 @@ override.tf.json
 terraform.rc
 
 # Manual testing related files
-.test_source.zip
+test_source.zip
