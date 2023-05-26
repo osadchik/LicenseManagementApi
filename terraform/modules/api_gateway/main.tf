@@ -30,7 +30,7 @@ resource "aws_api_gateway_integration" "users-api-integration" {
 
     integration_http_method = "POST"
     type                    = "AWS_PROXY"
-    uri                     = var.uri
+    uri                     = var.users_uri
 }
 
 # Products API endpoint
@@ -60,7 +60,7 @@ resource "aws_api_gateway_integration" "products-api-integration" {
 
     integration_http_method = "POST"
     type                    = "AWS_PROXY"
-    uri                     = var.uri
+    uri                     = var.products_uri
 }
 
 #License API endpoint
@@ -90,7 +90,7 @@ resource "aws_api_gateway_integration" "license-api-integration" {
 
     integration_http_method = "POST"
     type                    = "AWS_PROXY"
-    uri                     = var.uri
+    uri                     = var.license_uri
 }
 
 /*resource "aws_api_gateway_deployment" "api_deploy" {
