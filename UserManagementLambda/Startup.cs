@@ -24,7 +24,7 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
-        AddLambdaEnvironmentVariables(services);
+        services.ConfigureLambdaVariables<LambdaParameters>(_configuration);
 
         services.ConfigureLogging();
 
@@ -51,21 +51,12 @@ public class Startup
 
         app.UseEndpoints(endpoints => 
         {
+            //endpoints.MapDefaultControllerRoute();
             endpoints.MapControllerRoute(
                 name: "default",
-                pattern: "users-api/{controller=Home}/{action=Index}/{id?}");
+                pattern: "users-api/{controller}/{id?}");
         });
 
         app.UseSwagger(_configuration);
-    }
-
-    private static void AddLambdaEnvironmentVariables(IServiceCollection services)
-    {
-        services.Configure<LambdaEnvironmentVariables>(act =>
-        {
-            var snsTopicArn = Environment.GetEnvironmentVariable("SNS_Topic_ARN");
-            act.SnsTopicArn = snsTopicArn
-                              ?? throw new ArgumentNullException("SNS Topic ARN is null. Please, check the lambda environment variables configuration.");
-        });
     }
 }

@@ -10,10 +10,10 @@ namespace UserManagementLambda.Services
     {
         private readonly IUsersReadRepository _usersRepository;
         private readonly ISnsClient _snsService;
-        private readonly LambdaEnvironmentVariables _environmentVariables;
+        private readonly LambdaParameters _environmentVariables;
         private readonly ILogger<UserManagementService> _logger;
 
-        public UserManagementService(IUsersReadRepository usersRepository, ISnsClient snsService, IOptions<LambdaEnvironmentVariables> environmentVariables, ILogger<UserManagementService> logger)
+        public UserManagementService(IUsersReadRepository usersRepository, ISnsClient snsService, IOptions<LambdaParameters> environmentVariables, ILogger<UserManagementService> logger)
         {
             _usersRepository = usersRepository;
             _snsService = snsService;

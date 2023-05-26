@@ -1,9 +1,9 @@
 ﻿namespace UserManagementLambda.Options
 {
     /// <summary>
-    /// Encapsulates Lambda environment variables.
+    /// Contains lambda parameters.
     /// </summary>
-    public class LambdaEnvironmentVariables
+    public class LambdaParameters
     {
         /// <summary>
         /// Amazon Resource Number for Simple Notification Service.
