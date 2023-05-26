@@ -51,7 +51,9 @@ public class Startup
 
         app.UseEndpoints(endpoints => 
         {
-            endpoints.MapControllers();
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "users-api/{controller=Home}/{action=Index}/{id?}");
         });
 
         app.UseSwagger(_configuration);

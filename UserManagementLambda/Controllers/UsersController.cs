@@ -9,7 +9,7 @@ namespace UserManagementLambda.Controllers;
 /// <summary>
 /// Comtroller used to manipulate user entities in License Management Service.
 /// </summary>
-[Route("users")]
+[Route("users-api/users")]
 [ApiController]
 [SwaggerTag("Controller for users management")]
 public class UsersController : ControllerBase
