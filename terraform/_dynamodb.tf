@@ -34,9 +34,14 @@ module "dynamodb_license_table" {
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity
-    hash_key = var.hash_key
+    hash_key = "LicenseId"
 
-    attributes = var.attributes
+    attributes = [
+        {
+            name = "LicenseId"
+            type = "S"
+        }
+    ]
 }
 
 module "dynamodb_state_table" {

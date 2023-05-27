@@ -14,7 +14,7 @@ namespace Common.Entities
         /// License's unique indentifier.
         /// </summary>
         [DynamoDBHashKey]
-        public Guid Id { get; } = Guid.NewGuid();
+        public Guid LicenseId { get; } = Guid.NewGuid();
 
         /// <summary>
         /// Id of a product this license is assigned to.
