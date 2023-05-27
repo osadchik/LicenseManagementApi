@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace LicenseManagementApi.Controllers;
+namespace LicenseManagementLambda.Controllers;
 
 [Route("license-api/entitlements")]
 public class ProductEntitlementController : ControllerBase

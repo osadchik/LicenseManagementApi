@@ -3,7 +3,7 @@ using LicenseManagementLambda.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace LicenseManagementApi.Controllers;
+namespace LicenseManagementLambda.Controllers;
 
 /// <summary>
 /// Comtroller used to manipulate license entities in License Management Service.

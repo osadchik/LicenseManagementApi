@@ -6,7 +6,7 @@ using LicenseManagementLambda.Services;
 using Microsoft.OpenApi.Models;
 using UserManagementLambda.Extensions;
 
-namespace LicenseManagementApi;
+namespace LicenseManagementLambda;
 
 public class Startup
 {
