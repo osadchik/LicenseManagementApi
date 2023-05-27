@@ -1,20 +1,18 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace UserManagementLambda.Extensions
 {
-    public static class ConfigureSwagger
+    public static class SwaggerConfigrationExtensions
     {
-        public static IServiceCollection ConfigureSwaggerServices(this IServiceCollection services)
+        public static IServiceCollection ConfigureSwaggerServices(this IServiceCollection services, OpenApiInfo swaggerInfo)
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "User Management Lambda",
-                    Description = "Users API Lambda implementation for License Management Service."
-                });
+                options.SwaggerDoc("v1", swaggerInfo);
 
                 AddSwaggerXmlComments(options);
             });

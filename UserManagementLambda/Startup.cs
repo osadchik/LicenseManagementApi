@@ -2,6 +2,7 @@ using Common.Extensions;
 using Common.Interfaces;
 using Common.Middleware;
 using Common.Services;
+using Microsoft.OpenApi.Models;
 using System.Diagnostics.CodeAnalysis;
 using UserManagementLambda.Extensions;
 using UserManagementLambda.Interfaces;
@@ -11,17 +12,28 @@ using UserManagementLambda.Services;
 
 namespace UserManagementLambda;
 
+/// <summary>
+/// Startup class.
+/// </summary>
 [ExcludeFromCodeCoverage]
 public class Startup
 {
     private readonly IConfiguration _configuration;
 
+    /// <summary>
+    /// Intializes a new instance of <see cref="Startup"/> class.
+    /// </summary>
+    /// <param name="configuration"><see cref="IConfiguration"/></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public Startup(IConfiguration configuration)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    // This method gets called by the runtime. Use this method to add services to the container
+    /// <summary>
+    /// Adds services to the DI container. This method gets called by the runtime.
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
     public void ConfigureServices(IServiceCollection services)
     {
         services.ConfigureLambdaVariables<LambdaParameters>(_configuration);
@@ -33,14 +45,22 @@ public class Startup
 
         services.AddControllers();
 
-        services.ConfigureSwaggerServices();
+        services.ConfigureSwaggerServices(new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "User Management Lambda",
+            Description = "Users API Lambda implementation for License Management Service."
+        });
 
         services.AddScoped<ISnsClient, SnsClient>();
         services.AddScoped<IUsersReadRepository, UsersReadRepository>();
         services.AddScoped<IUserManagementService, UserManagementService>();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
+    /// <summary>
+    /// Configures the HTTP request pipeline. This method gets called by the runtime.
+    /// </summary>
+    /// <param name="app"><see cref="IApplicationBuilder"/></param>
     public void Configure(IApplicationBuilder app)
     {
         app.UseHttpsRedirection();
@@ -51,7 +71,6 @@ public class Startup
 
         app.UseEndpoints(endpoints => 
         {
-            //endpoints.MapDefaultControllerRoute();
             endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "users-api/{controller}/{id?}");

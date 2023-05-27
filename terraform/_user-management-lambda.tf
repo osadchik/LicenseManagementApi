@@ -21,6 +21,6 @@ module "user-management-lambda" {
     environment_variables = { 
         "SWAGGER_ENABLED"          = true
         "Serilog__MinimumLogLevel" = "Debug"
-        "SNS_Topic_ARN"  = module.user-management-lambda-sns.arn
+        "Parameters__SNS_Topic_ARN"  = module.user-management-lambda-sns.arn
     }  
 }
