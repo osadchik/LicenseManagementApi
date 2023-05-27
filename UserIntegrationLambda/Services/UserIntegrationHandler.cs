@@ -16,6 +16,11 @@ namespace UserIntegrationLambda.Services
         private readonly IUsersWriteRepository _usersWriteRepository;
         private readonly ILogger<UserIntegrationHandler> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="UserIntegrationHandler"/> class.
+        /// </summary>
+        /// <param name="usersWriteRepository">Performs write operations with the datastore.</param>
+        /// <param name="logger">Logger instance.</param>
         public UserIntegrationHandler(IUsersWriteRepository usersWriteRepository, ILogger<UserIntegrationHandler> logger)
         {
             _usersWriteRepository = usersWriteRepository;
@@ -30,10 +35,9 @@ namespace UserIntegrationLambda.Services
         }
 
         /// <inheritdoc/>
-        public async Task DeleteUser(UserDto user)
+        public async Task DeleteUser(string uuid)
         {
-            // TODO: Delete by uuid, won't work for now
-            await _usersWriteRepository.DeleteAsync(user.Uuid);
+            await _usersWriteRepository.DeleteAsync(uuid);
         }
 
 

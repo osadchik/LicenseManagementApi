@@ -6,6 +6,9 @@ using UserManagementLambda.Options;
 
 namespace UserManagementLambda.Services
 {
+    /// <summary>
+    /// User synchronization adapter between service and SNS.
+    /// </summary>
     public class UserManagementService : IUserManagementService
     {
         private readonly IUsersReadRepository _usersRepository;
@@ -13,6 +16,13 @@ namespace UserManagementLambda.Services
         private readonly LambdaParameters _environmentVariables;
         private readonly ILogger<UserManagementService> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="UserManagementService"/> class.
+        /// </summary>
+        /// <param name="usersRepository"><see cref="IUsersReadRepository"/></param>
+        /// <param name="snsService"><see cref="ISnsClient"/></param>
+        /// <param name="environmentVariables">Lambda environment variables.</param>
+        /// <param name="logger">Logger instance.</param>
         public UserManagementService(IUsersReadRepository usersRepository, ISnsClient snsService, IOptions<LambdaParameters> environmentVariables, ILogger<UserManagementService> logger)
         {
             _usersRepository = usersRepository;
@@ -21,6 +31,7 @@ namespace UserManagementLambda.Services
             _logger = logger;
         }
 
+        /// <inheritdoc/>
         public async Task<UserDto> CreateUser(UserDto user)
         {
             var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), ProcessAction.Create) 
@@ -33,6 +44,7 @@ namespace UserManagementLambda.Services
             return user;
         }
 
+        /// <inheritdoc/>
         public async Task DeleteUser(Guid uuid)
         {
             var userMessage = new BaseMessage<UserDto>(uuid.ToString(), ProcessAction.Delete);
@@ -40,11 +52,13 @@ namespace UserManagementLambda.Services
             await _snsService.PublishToTopicAsync(_environmentVariables.SnsTopicArn, userMessage);
         }
 
+        /// <inheritdoc/>
         public Task<UserDto> GetUserByUserName(string userName)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public async Task<UserDto> GetUserByUuid(Guid uuid)
         {
             var user = await _usersRepository.GetByIdAsync(uuid);
@@ -52,6 +66,7 @@ namespace UserManagementLambda.Services
             return user;
         }
 
+        /// <inheritdoc/>
         public async Task<UserDto> UpdateUser(UserDto user)
         {
             var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), ProcessAction.Update)

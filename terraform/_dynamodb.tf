@@ -22,14 +22,9 @@ module "dynamodb_product_table" {
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity
-    hash_key = "ProductId"
+    hash_key = var.hash_key
 
-    attributes = [
-        {
-            name = "ProductId"
-            type = "S"
-        }
-    ]
+    attributes = var.attributes
 }
 
 module "dynamodb_license_table" {
@@ -39,20 +34,27 @@ module "dynamodb_license_table" {
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity
-    hash_key = "LicenseId"
+    hash_key = var.hash_key
 
-    attributes = [
-        {
-            name = "LicenseId"
-            type = "S"
-        }
-    ]
+    attributes = var.attributes
 }
 
 module "dynamodb_state_table" {
     source = "./modules/dynamodb"
     
     name = "${var.prefix}-CircuitBreakerState"
+    billing_mode = var.billing_mode
+    read_capacity = var.read_capacity
+    write_capacity = var.write_capacity
+    hash_key = var.hash_key
+
+    attributes = var.attributes
+}
+
+module "dynamodb_entitlements_table" {
+    source = "./modules/dynamodb"
+    
+    name = "${var.prefix}-Entitlements"
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity

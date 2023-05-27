@@ -34,7 +34,7 @@ public class UsersController : ControllerBase
     /// <param name="id">User's unique identifier.</param>
     /// <returns><see cref="IActionResult"/></returns>
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> GetUser(Guid id)
     {
         UserDto user = await _userManagementService.GetUserByUuid(id);
 
@@ -51,7 +51,7 @@ public class UsersController : ControllerBase
     {
         var createdUser = await _userManagementService.CreateUser(user);
 
-        return Ok(createdUser);
+        return Accepted(createdUser);
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public class UsersController : ControllerBase
     {
         var updatedUser = await _userManagementService.UpdateUser(user);
 
-        return Ok(updatedUser);
+        return Accepted(updatedUser);
     }
 
     /// <summary>
@@ -73,10 +73,10 @@ public class UsersController : ControllerBase
     /// <param name="id">User's unique indentifier.</param>
     /// <returns><see cref="IActionResult"/></returns>
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
         await _userManagementService.DeleteUser(id);
 
-        return Ok();
+        return Accepted();
     }
 }

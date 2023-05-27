@@ -36,6 +36,34 @@ variable "user_integration_lambda_filename" {
   type = string
 }
 
+#License Management Lambda
+variable "license_management_lambda_name" {
+  type = string
+}
+variable "license_management_lambda_description" {
+  type = string
+}
+variable "license_management_lambda_handler" {
+  type = string
+}
+variable "license_management_lambda_filename" {
+  type = string
+}
+
+#Product Management Lambda
+variable "product_management_lambda_name" {
+  type = string
+}
+variable "product_management_lambda_description" {
+  type = string
+}
+variable "product_management_lambda_handler" {
+  type = string
+}
+variable "product_management_lambda_filename" {
+  type = string
+}
+
 # Lambda Common
 variable "runtime" {
   type = string

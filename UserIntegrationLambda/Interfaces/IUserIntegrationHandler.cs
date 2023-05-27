@@ -10,22 +10,22 @@ namespace UserIntegrationLambda.Interfaces
         /// <summary>
         /// Creates a new user.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">User to be created.</param>
         /// <returns></returns>
         Task CreateUser(UserDto user);
 
         /// <summary>
         /// Updates existing user.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">User to be updated.</param>
         /// <returns></returns>
         Task UpdateUser(UserDto user);
 
         /// <summary>
         /// Deletes existing user.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="uuid">User's ID.</param>
         /// <returns></returns>
-        Task DeleteUser(UserDto user);
+        Task DeleteUser(string uuid);
     }
 }

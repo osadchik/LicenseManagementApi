@@ -35,7 +35,7 @@ namespace UserIntegrationLambda.Services
         {
             if (sqsMessage is null) throw new ArgumentNullException(nameof(sqsMessage));
 
-            BaseMessage<UserDto> messageBody = JsonConvert.DeserializeObject<BaseMessage<UserDto>>(sqsMessage.Body);
+            BaseMessage<UserDto>? messageBody = JsonConvert.DeserializeObject<BaseMessage<UserDto>>(sqsMessage.Body);
             _logger.LogDebug("Deserialized SQS message body into: {@messageBody}", messageBody);
 
             if (messageBody is null)
@@ -81,7 +81,7 @@ namespace UserIntegrationLambda.Services
             {
                 { "Create", () => _userIntegrationHandler.CreateUser(message.Content) },
                 { "Update", () => _userIntegrationHandler.UpdateUser(message.Content) },
-                { "Delete", () => _userIntegrationHandler.DeleteUser(message.Content) },
+                { "Delete", () => _userIntegrationHandler.DeleteUser(message.EntityId) },
             };
 
             return defaultActions;

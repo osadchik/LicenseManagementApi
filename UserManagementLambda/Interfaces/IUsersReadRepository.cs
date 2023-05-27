@@ -1,17 +1,18 @@
 ﻿using Common.Entities;
+using Common.Interfaces;
 
 namespace UserManagementLambda.Interfaces
 {
     /// <summary>
     /// Interface of Users datastore read service.
     /// </summary>
-    public interface IUsersReadRepository
+    public interface IUsersReadRepository : IReadRepository<UserDto>
     {
         /// <summary>
-        /// Gets user by id.
+        /// Gets user by username.
         /// </summary>
-        /// <param name="id">User unique indentifier.</param>
+        /// <param name="username">Username.</param>
         /// <returns>User dto.</returns>
-        Task<UserDto> GetByIdAsync(Guid id);
+        Task<UserDto> GetByUsernameAsync(string username);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using Common.Entities;
 using UserManagementLambda.Interfaces;
 
@@ -34,6 +35,17 @@ namespace UserManagementLambda.Repositories
             return GetUserByIdInternalAsync(id);
         }
 
+        /// <inheritdoc/>
+        public Task<UserDto> GetByUsernameAsync(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                throw new ArgumentNullException(nameof(username));
+            }
+
+            return GetUserByUsernameInternalAsync(username);
+        }
+
         private async Task<UserDto> GetUserByIdInternalAsync(Guid id)
         {
             _logger.LogDebug("Trying to get user entity with id: {id}", id);
@@ -42,6 +54,19 @@ namespace UserManagementLambda.Repositories
             _logger.LogInformation("Successfully retrieved a new user entity: {@userDto}", user);
 
             return user;
+        }
+
+        private async Task<UserDto> GetUserByUsernameInternalAsync(string username)
+        {
+            _logger.LogDebug("Trying to get user entity with username: {username}", username);
+
+            var scanCondition = new ScanCondition("Username", ScanOperator.Equal, username);
+            var searchResult = await _dynamoDbContext.ScanAsync<UserDto>(new[] { scanCondition })
+                .GetRemainingAsync();
+
+            _logger.LogInformation("Successfully retrieved a new user entity: {@userDto}", searchResult);
+
+            return searchResult?.FirstOrDefault();
         }
     }
 }

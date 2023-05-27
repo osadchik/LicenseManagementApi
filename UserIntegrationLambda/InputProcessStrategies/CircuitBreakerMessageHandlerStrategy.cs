@@ -38,7 +38,11 @@ namespace UserIntegrationLambda.InputProcessStrategies
         public async Task ProcessInputAsync(JObject input)
         {
             _logger.LogDebug("Received maintenance message.");
-            CircuitBreakerMessage message = input.ToObject<CircuitBreakerMessage>();
+
+            if (input == null) throw new ArgumentNullException(nameof(input));
+
+            CircuitBreakerMessage? message = input.ToObject<CircuitBreakerMessage>();
+            _logger.LogDebug("Deserialized circuit breaker message into: {@message}", message);
 
             if (message == null) throw new ArgumentNullException(nameof(input));
 

@@ -21,6 +21,16 @@ user_integration_lambda_name        = "users-integration-lambda"
 user_integration_lambda_description = "Automated deployment of Users Integration Lambda"
 user_integration_lambda_handler     = "UserIntegrationLambda::UserIntegrationLambda.Function::FunctionHandler"
 
+# License Management Lambda
+license_management_lambda_name        = "license-management-lambda"
+license_management_lambda_description = "Automated deployment of License Management Lambda"
+license_management_lambda_handler     = "LicenseManagementApi::LicenseManagementApi.LambdaEntryPoint::FunctionHandlerAsync"
+
+# Product Management Lambda
+product_management_lambda_name        = "product-management-lambda"
+product_management_lambda_description = "Automated deployment of Product Management Lambda"
+product_management_lambda_handler     = "ProductManagementLambda::ProductManagementLambda.LambdaEntryPoint::FunctionHandlerAsync"
+
 # Dynamo DB
 billing_mode    = "PAY_PER_REQUEST"
 read_capacity   = "0"

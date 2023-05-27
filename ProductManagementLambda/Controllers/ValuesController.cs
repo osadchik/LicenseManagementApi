@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace LicenseManagementApi.Controllers;
+namespace ProductManagementLambda.Controllers;
 
 [Route("api/[controller]")]
 public class ValuesController : ControllerBase

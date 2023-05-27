@@ -36,12 +36,12 @@ resource "aws_iam_policy" "user_management_snsPublish_policy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "dynamodb-access" {
+resource "aws_iam_role_policy_attachment" "user-management-dynamodb-access" {
     role       = module.user-management-lambda-role.name
     policy_arn = aws_iam_policy.user_management_dynamoDB_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "sns-access" {
+resource "aws_iam_role_policy_attachment" "user-management-sns-access" {
     role       = module.user-management-lambda-role.name
     policy_arn = aws_iam_policy.user_management_snsPublish_policy.arn
 }

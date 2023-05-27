@@ -76,6 +76,6 @@ public class Startup
                 pattern: "users-api/{controller}/{id?}");
         });
 
-        app.UseSwagger(_configuration);
+        app.UseSwagger("users-api", _configuration);
     }
 }
