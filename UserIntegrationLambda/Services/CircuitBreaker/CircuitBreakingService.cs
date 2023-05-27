@@ -1,6 +1,6 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
-using Amazon.Lambda.SQSEvents;
+using Amazon.SQS.Model;
 using Common.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -9,6 +9,7 @@ using Resiliency.CircuitBreaker;
 using System.Net;
 using UserIntegrationLambda.Interfaces.CircuitBreaker;
 using UserIntegrationLambda.Options;
+using static Amazon.Lambda.SQSEvents.SQSEvent;
 
 namespace UserIntegrationLambda.Services.CircuitBreaker
 {
@@ -49,7 +50,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
         }
 
         /// <inheritdoc/>
-        public async Task ExecuteAsync(SQSEvent.SQSMessage sqsMessage, Func<SQSEvent.SQSMessage, Task> action)
+        public async Task ExecuteAsync(SQSMessage sqsMessage, Func<SQSMessage, Task> action)
         {
             CircuitState currentState = await _circuitStateRepository.GetAsync();
             CircuitBreakerPolicy circuitBreakerPolicy = new(currentState);
@@ -64,6 +65,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
             {
                 await _eventSourceMappingClient.DisableEventSourceMappingAsync();
                 await _circuitBreakerClosureScheduler.ScheduleCircuitClosureTrialAsync(openCircuitException.OpenUntil);
+                await _sqsClient.EnqueueAsync(sqsMessage, _circuitBreakerOptions.SourceQueueUrl);
             }
             catch (Exception ex) when (IsPermanentError(ex))
             {
@@ -79,6 +81,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
         /// <inheritdoc/>
         public async Task Close()
         {
+            _logger.LogDebug("Switching the CB state to closed.");
             await _eventSourceMappingClient.EnableEventSourceMappingAsync();
             await _circuitBreakerClosureScheduler.CancelCircuitClosureTrialAsync();
             OpenStateConfig openStateConfig = new(_circuitBreakerOptions.Timeout);
@@ -90,6 +93,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
         /// <inheritdoc/>
         public async Task HalfOpen()
         {
+            _logger.LogDebug("Switching the CB state to half-open.");
             await _eventSourceMappingClient.EnableEventSourceMappingAsync();
             await _circuitBreakerClosureScheduler.CancelCircuitClosureTrialAsync();
             OpenStateConfig openStateConfig = new(_circuitBreakerOptions.Timeout);
@@ -101,6 +105,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
         /// <inheritdoc/>
         public async Task Open(TimeSpan? customTimeout)
         {
+            _logger.LogDebug("Switching the CB state to open.");
             await _eventSourceMappingClient.EnableEventSourceMappingAsync();
             TimeSpan timeout = customTimeout ?? _circuitBreakerOptions.Timeout;
             await _circuitBreakerClosureScheduler.ScheduleCircuitClosureTrialAsync(DateTimeOffset.UtcNow + timeout);
@@ -113,6 +118,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
         /// <inheritdoc/>
         public async Task PermanentlyClose()
         {
+            _logger.LogDebug("Switching the CB state to permanently closed.");
             await _eventSourceMappingClient.EnableEventSourceMappingAsync();
             await _circuitBreakerClosureScheduler.CancelCircuitClosureTrialAsync();
             var circuitState = new PermanentlyClosedState();
@@ -120,9 +126,42 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
         }
 
         /// <inheritdoc/>
-        public Task Trial(Func<SQSEvent.SQSMessage, Task> action)
+        public async Task Trial(Func<SQSMessage, Task> action)
         {
-            throw new NotImplementedException();
+            _logger.LogDebug("Starting Circuit Breaker trial.");
+
+            Message? message = await _sqsClient.DequeueAsync(_circuitBreakerOptions.SourceQueueUrl);
+            _logger.LogDebug("Retrieved the message: {@message} from the source queue", message);
+            
+            if (message is not null)
+            {
+                var sqsMessage = new SQSMessage
+                {
+                    Attributes = message.Attributes,
+                    Body = message.Body,
+                    MessageId = message.MessageId,
+                    ReceiptHandle = message.ReceiptHandle
+                };
+
+                try
+                {
+                    await ExecuteAsync(sqsMessage, action);
+                    await _sqsClient.DeleteMessageAsync(message.ReceiptHandle, _circuitBreakerOptions.SourceQueueUrl);
+
+                    await _eventSourceMappingClient.EnableEventSourceMappingAsync();
+                    await _circuitBreakerClosureScheduler.CancelCircuitClosureTrialAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Circuit Breaker Trial has failed.");
+                    await _circuitBreakerClosureScheduler.ScheduleCircuitClosureTrialAsync(DateTimeOffset.UtcNow + _circuitBreakerOptions.Timeout);
+                }
+            }
+            else
+            {
+                _logger.LogInformation("No messages found in the source queue. Switching the state to half-open.");
+                await HalfOpen();
+            }
         }
 
         private static bool IsTransientError(Exception exception)

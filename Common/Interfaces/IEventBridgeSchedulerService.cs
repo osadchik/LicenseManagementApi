@@ -12,7 +12,7 @@
         Task CancelCircuitClosureTrialAsync();
 
         /// <summary>
-        /// Sets Event Brdige rule state to ENABLED.
+        /// Sets Event Bridge rule state to ENABLED.
         /// </summary>
         /// <returns></returns>
         Task ScheduleCircuitClosureTrialAsync(DateTimeOffset trialDate);
