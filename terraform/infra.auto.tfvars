@@ -24,7 +24,7 @@ user_integration_lambda_handler     = "UserIntegrationLambda::UserIntegrationLam
 # License Management Lambda
 license_management_lambda_name        = "license-management-lambda"
 license_management_lambda_description = "Automated deployment of License Management Lambda"
-license_management_lambda_handler     = "LicenseManagementApi::LicenseManagementApi.LambdaEntryPoint::FunctionHandlerAsync"
+license_management_lambda_handler     = "LicenseManagementLambda::LicenseManagementLambda.LambdaEntryPoint::FunctionHandlerAsync"
 
 # Product Management Lambda
 product_management_lambda_name        = "product-management-lambda"
