@@ -19,8 +19,8 @@ module "user-management-lambda" {
     lambda_alias_current = var.lambda_alias_current 
 
     environment_variables = { 
-        "SWAGGER_ENABLED"          = true
-        "Serilog__MinimumLogLevel" = "Debug"
-        "Parameters__SNS_Topic_ARN"  = module.user-management-lambda-sns.arn
+        "SWAGGER_ENABLED"            = true
+        "Serilog__MinimumLogLevel"   = "Debug"
+        "Parameters__SnsTopicArn"    = module.user-management-lambda-sns.arn
     }  
 }
