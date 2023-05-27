@@ -5,5 +5,5 @@ module "api_gateway" {
     lambda_names = [ module.user-management-lambda.lambda_name ]
     users_uri    = module.user-management-lambda.lambda_invoke_arn
     license_uri  = module.license-management-lambda.lambda_invoke_arn
-    products_uri = module.products-management-lambda.lambda_invoke_arn
+    products_uri = module.product-management-lambda.lambda_invoke_arn
 }
