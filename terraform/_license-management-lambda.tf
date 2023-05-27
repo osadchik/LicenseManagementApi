@@ -3,7 +3,7 @@ module "license-management-lambda-role" {
     iam_role_name   = "${var.prefix}-role-${var.license_management_lambda_name}-${var.aws_region}"
 }
  
-module "user-management-lambda" {
+module "license-management-lambda" {
     source = "./modules/lambda"
 
     prefix               = var.prefix
