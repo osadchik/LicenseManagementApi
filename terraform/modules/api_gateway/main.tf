@@ -54,7 +54,7 @@ resource "aws_api_gateway_integration" "users-api-integration" {
 resource "aws_api_gateway_resource" "products-api" {
     rest_api_id = aws_api_gateway_rest_api.lambda_api.id
     parent_id   = aws_api_gateway_rest_api.lambda_api.root_resource_id
-    path_part   = "product-api" 
+    path_part   = "products-api" 
 }
 
 resource "aws_api_gateway_method" "products-api-get-method" {

@@ -10,7 +10,7 @@ variable "prefix" {
 
 variable "products-prefix" {
   type = string
-  default = "product-api"
+  default = "products-api"
 }
 
 variable "users-prefix" {

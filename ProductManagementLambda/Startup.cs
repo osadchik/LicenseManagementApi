@@ -42,9 +42,9 @@ public class Startup
         {
             endpoints.MapControllerRoute(
                 name: "default",
-                pattern: "product-api/{controller}/{id?}");
+                pattern: "products-api/{controller}/{id?}");
         });
 
-        app.UseSwagger("product-api", _configuration);
+        app.UseSwagger("products-api", _configuration);
     }
 }
