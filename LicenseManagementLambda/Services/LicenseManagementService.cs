@@ -3,6 +3,7 @@ using Common.Mappers;
 using LicenseManagementLambda.Interfaces;
 using LicenseManagementLambda.Options;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace LicenseManagementLambda.Services
 {
@@ -47,8 +48,8 @@ namespace LicenseManagementLambda.Services
                 throw new ArgumentException("Unable to create license: product doesn't exist", nameof(productId));
             }
 
-            ProductDto product = await response.Content.ReadFromJsonAsync<ProductDto>(); ;
-            _logger.LogInformation("Successfully retrieved product: {productId}", productId);
+            ProductDto product = JsonConvert.DeserializeObject<ProductDto>(await response.Content.ReadAsStringAsync());
+            _logger.LogInformation("Successfully retrieved product: {product}", product);
 
             var licenseDto = licenseModel.MapToDto(productId);
             return await _licenseRepository.SaveAsync(licenseDto);
