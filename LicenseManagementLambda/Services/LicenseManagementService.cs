@@ -37,7 +37,7 @@ namespace LicenseManagementLambda.Services
             _logger.LogDebug("Trying to create a new license entity from: {@model}", licenseModel);
 
             _httpClient.BaseAddress = new Uri(_lambdaParameters.ProductsApiUrl);
-            _logger.LogDebug("Target URL is {url}", _httpClient.BaseAddress);
+            _logger.LogDebug("Saved parameter url: {parameterUrl}. Target URL is {httpClientUrl}", _lambdaParameters.ProductsApiUrl, _httpClient.BaseAddress);
 
             var response = await _httpClient.GetAsync($"/products/{productId}");
             _logger.LogDebug("Received http response fromr products API: {@response}", response);
