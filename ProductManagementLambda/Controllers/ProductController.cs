@@ -32,7 +32,7 @@ public class ProductController : ControllerBase
     /// Gets product by ID.
     /// </summary>
     /// <param name="id">Product's unique identifier.</param>
-    /// <returns>Product definition.</returns>
+    /// <returns>Product entity.</returns>
     /// <remarks>
     /// Example url call:
     /// 
@@ -43,7 +43,7 @@ public class ProductController : ControllerBase
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
     [SwaggerResponse(StatusCodes.Status404NotFound, "Item does not present in the system")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
-    public async Task<IActionResult> GetProduct([Required, FromQuery]Guid id)
+    public async Task<IActionResult> GetProduct([Required, FromQuery] Guid id)
     {
         var product = await _productManagementService.GetProductByIdAsync(id);
 
@@ -64,7 +64,7 @@ public class ProductController : ControllerBase
     [SwaggerResponse(StatusCodes.Status201Created, "Returned successfully created item", typeof(ProductDto))]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
-    public async Task<IActionResult> CreateProduct([Required, FromBody]ProductDto productDto)
+    public async Task<IActionResult> CreateProduct([Required, FromBody] ProductDto productDto)
     {
         var product = await _productManagementService.CreateProductAsync(productDto);
 
@@ -74,7 +74,7 @@ public class ProductController : ControllerBase
     /// <summary>
     /// Updates an exisiting product.
     /// </summary>
-    /// <param name="productDto"></param>
+    /// <param name="productDto"><see cref="ProductDto"/></param>
     /// <returns>Updated product definition.</returns>
     /// <remarks>
     /// Example url call:
@@ -108,7 +108,7 @@ public class ProductController : ControllerBase
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
     [SwaggerResponse(StatusCodes.Status404NotFound, "Item does not present in the system")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
-    public async Task<IActionResult> DeleteProduct([Required, FromQuery]Guid id)
+    public async Task<IActionResult> DeleteProduct([Required, FromQuery] Guid id)
     {
         var product = await _productManagementService.DeleteProductAsync(id);
 
