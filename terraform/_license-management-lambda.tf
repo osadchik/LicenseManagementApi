@@ -20,7 +20,7 @@ module "license-management-lambda" {
 
     environment_variables = {
         "SWAGGER_ENABLED" = true
-        "Parameters__ProductsApiUrl" = "${module.api_gateway.invoke_url}/${var.products-prefix}"
-        "Parameters__UsersApiUrl"    = "${module.api_gateway.invoke_url}/${var.users-prefix}"
+        "Parameters__ProductsApiUrl" = "${module.api_gateway.invoke_url}${var.products-prefix}"
+        "Parameters__UsersApiUrl"    = "${module.api_gateway.invoke_url}${var.users-prefix}"
     }  
 }

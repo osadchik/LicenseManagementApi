@@ -7,7 +7,7 @@ using UserManagementLambda.Interfaces;
 namespace UserManagementLambda.Controllers;
 
 /// <summary>
-/// Comtroller used to manipulate user entities in License Management Service.
+/// API controller for users management in License Management Service.
 /// </summary>
 [ApiController]
 [Route("users-api/users")]

@@ -6,9 +6,11 @@ using System.ComponentModel.DataAnnotations;
 namespace LicenseManagementLambda.Controllers;
 
 /// <summary>
-/// Comtroller used to manipulate license entities in License Management Service.
+/// API controller for licenses management in License Management Service.
 /// </summary>
+[ApiController]
 [Route("license-api/licenses")]
+[Produces("application/json")]
 public class LicenseController : ControllerBase
 {
     private readonly ILicenseManagementService _licenseManagementService;
