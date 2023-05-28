@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ProductManagementLambda.Controllers;
 
 [Route("api/[controller]")]
-public class ValuesController : ControllerBase
+public class ProductsController : ControllerBase
 {
     // GET api/values
     [HttpGet]

@@ -18,7 +18,9 @@ module "license-management-lambda" {
     publish              = var.publish
     lambda_alias_current = var.lambda_alias_current 
 
-    environment_variables = { 
+    environment_variables = {
         "SWAGGER_ENABLED" = true
+        "Parameters__ProductsApiUrl" = "${module.api_gateway.invoke_url}/${var.products-prefix}"
+        "Parameters__UsersApiUrl"    = "${module.api_gateway.invoke_url}/${var.users-prefix}"
     }  
 }

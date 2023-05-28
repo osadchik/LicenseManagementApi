@@ -30,6 +30,7 @@ public class Startup
             Description = "License API Lambda implementation for License Management Service."
         });
 
+        services.AddHttpClient();
         services.AddScoped<ILicenseManagementService, LicenseManagementService>();
         services.AddScoped<ILicenseRepository, LicenseRepository>();
     }

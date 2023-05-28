@@ -2,6 +2,7 @@ module "api_gateway" {
     source      = "./modules/api_gateway"
 
     name         = "${var.prefix}-api-gateway"
+    stage_name   = "dev" 
     lambda_names = [
         module.user-management-lambda.lambda_name,
         module.license-management-lambda.lambda_name,

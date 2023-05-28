@@ -22,3 +22,8 @@ variable "license_uri" {
     description = "The license management lambda input URI"
     type        = string
 }
+
+variable "stage_name" {
+    description = "API Gateway Deployment stage name."
+    type        = string 
+}

@@ -8,6 +8,21 @@ variable "prefix" {
   type = string
 }
 
+variable "products-prefix" {
+  type = string
+  default = "products-api"
+}
+
+variable "users-prefix" {
+  type = string
+  default = "users-api"
+}
+
+variable "licenses-prefix" {
+  type = string
+  default = "license-api"
+}
+
 # User Management Lambda
 variable "user_management_lambda_name" {
   type = string
