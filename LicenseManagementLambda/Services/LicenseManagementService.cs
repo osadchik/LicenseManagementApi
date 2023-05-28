@@ -36,7 +36,7 @@ namespace LicenseManagementLambda.Services
         {
             _logger.LogDebug("Trying to create a new license entity from: {@model}", licenseModel);
 
-            _httpClient.BaseAddress = new Uri(_lambdaParameters.ProductsApiUrl, UriKind.Absolute);
+            _httpClient.BaseAddress = new Uri(_lambdaParameters.ProductsApiUrl);
             _logger.LogDebug("Target URL is {url}", _httpClient.BaseAddress);
 
             var response = await _httpClient.GetAsync($"/products/{productId}");
@@ -44,7 +44,7 @@ namespace LicenseManagementLambda.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new ArgumentException("Unable to create license. Product doesn't exist", nameof(productId));
+                throw new ArgumentException("Unable to create license: product doesn't exist", nameof(productId));
             }
 
             ProductDto product = null;
