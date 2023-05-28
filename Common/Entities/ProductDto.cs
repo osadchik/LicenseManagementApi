@@ -1,7 +1,11 @@
-﻿namespace Common.Entities
+﻿using Amazon.DynamoDBv2.DataModel;
+
+namespace Common.Entities
 {
+    [DynamoDBTable("LicenseManagement-Products")]
     public class ProductDto
     {
+        [DynamoDBHashKey]
         public Guid Id { get; private set; } = Guid.NewGuid();
 
         public string Name { get; set; } = null!;
