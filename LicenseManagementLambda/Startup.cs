@@ -22,7 +22,6 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.ConfigureLambdaVariables<LambdaParameters>(_configuration);
-        LambdaParameters lambdaParameters = _configuration.Get<LambdaParameters>();
 
         services.ConfigureLogging();
         services.ConfigureDynamoDB(_configuration);
@@ -36,7 +35,7 @@ public class Startup
 
         services.AddHttpClient("ProductsAPI", httpClient =>
         {
-            httpClient.BaseAddress = new Uri(lambdaParameters.ProductsApiUrl);
+            httpClient.BaseAddress = new Uri(_configuration.GetSection("Parameters:ProductsApiUrl").Value);
             httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         });
 
