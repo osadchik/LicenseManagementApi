@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Common.Extensions;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace UserManagementLambda.Extensions
+namespace Common.Extensions
 {
     public static class SwaggerConfigrationExtensions
     {

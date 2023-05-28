@@ -5,7 +5,6 @@ using LicenseManagementLambda.Options;
 using LicenseManagementLambda.Repositories;
 using LicenseManagementLambda.Services;
 using Microsoft.OpenApi.Models;
-using UserManagementLambda.Extensions;
 
 namespace LicenseManagementLambda;
 

@@ -4,7 +4,6 @@ using Common.Middleware;
 using Common.Services;
 using Microsoft.OpenApi.Models;
 using System.Diagnostics.CodeAnalysis;
-using UserManagementLambda.Extensions;
 using UserManagementLambda.Interfaces;
 using UserManagementLambda.Options;
 using UserManagementLambda.Repositories;
