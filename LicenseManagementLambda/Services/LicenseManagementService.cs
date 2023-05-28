@@ -24,10 +24,10 @@ namespace LicenseManagementLambda.Services
         /// <param name="httpCLient"><see cref="HttpClient"/></param>
         /// <param name="lambdaParameters"><see cref="LambdaParameters"/></param>
         /// <param name="logger">Logger instance.</param>
-        public LicenseManagementService(ILicenseRepository licenseRepository, HttpClient httpCLient, IOptions<LambdaParameters> lambdaParameters, ILogger<LicenseManagementService> logger)
+        public LicenseManagementService(ILicenseRepository licenseRepository, IHttpClientFactory httpCLientFactory, IOptions<LambdaParameters> lambdaParameters, ILogger<LicenseManagementService> logger)
         {
             _licenseRepository = licenseRepository;
-            _httpClient = httpCLient;
+            _httpClient = httpCLientFactory.CreateClient("ProductsAPI");
             _lambdaParameters = lambdaParameters.Value;
             _logger = logger;
         }
@@ -41,7 +41,7 @@ namespace LicenseManagementLambda.Services
             _logger.LogDebug("Saved parameter url: {parameterUrl}. Target URL is {httpClientUrl}", _lambdaParameters.ProductsApiUrl, _httpClient.BaseAddress);
 
             var response = await _httpClient.GetAsync($"products?id={productId}");
-            _logger.LogDebug("Received http response fromr products API: {@response}", response);
+            _logger.LogDebug("Received http response from products API: {@response}", response);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -49,7 +49,7 @@ namespace LicenseManagementLambda.Services
             }
 
             ProductDto product = JsonConvert.DeserializeObject<ProductDto>(await response.Content.ReadAsStringAsync());
-            _logger.LogInformation("Successfully retrieved product: {product}", product);
+            _logger.LogInformation("Successfully retrieved product: {@product}", product);
 
             var licenseDto = licenseModel.MapToDto(productId);
             return await _licenseRepository.SaveAsync(licenseDto);

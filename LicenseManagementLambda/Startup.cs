@@ -4,6 +4,7 @@ using LicenseManagementLambda.Interfaces;
 using LicenseManagementLambda.Options;
 using LicenseManagementLambda.Repositories;
 using LicenseManagementLambda.Services;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace LicenseManagementLambda;
@@ -21,6 +22,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.ConfigureLambdaVariables<LambdaParameters>(_configuration);
+        LambdaParameters lambdaParameters = _configuration.Get<LambdaParameters>();
 
         services.ConfigureLogging();
         services.ConfigureDynamoDB(_configuration);
@@ -32,7 +34,12 @@ public class Startup
             Description = "License API Lambda implementation for License Management Service."
         });
 
-        services.AddHttpClient();
+        services.AddHttpClient("ProductsAPI", httpClient =>
+        {
+            httpClient.BaseAddress = new Uri(lambdaParameters.ProductsApiUrl);
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
+
         services.AddScoped<ILicenseManagementService, LicenseManagementService>();
         services.AddScoped<ILicenseRepository, LicenseRepository>();
     }
