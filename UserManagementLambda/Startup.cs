@@ -57,9 +57,9 @@ public class Startup
     }
 
     /// <summary>
-    /// Configures the HTTP request pipeline. This method gets called by the runtime.
+    /// Adds services to the DI container. This method gets called by the runtime.
     /// </summary>
-    /// <param name="app"><see cref="IApplicationBuilder"/></param>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
     public void Configure(IApplicationBuilder app)
     {
         app.UseHttpsRedirection();

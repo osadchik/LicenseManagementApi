@@ -1,18 +1,33 @@
 using Common.Extensions;
 using Microsoft.OpenApi.Models;
+using ProductManagementLambda.Interfaces;
+using ProductManagementLambda.Repositories;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ProductManagementLambda;
 
+/// <summary>
+/// Startup class.
+/// </summary>
+[ExcludeFromCodeCoverage]
 public class Startup
 {
     private IConfiguration _configuration;
 
+    /// <summary>
+    /// Intializes a new instance of <see cref="Startup"/> class.
+    /// </summary>
+    /// <param name="configuration"><see cref="IConfiguration"/></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public Startup(IConfiguration configuration)
     {
-        _configuration = configuration;
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    // This method gets called by the runtime. Use this method to add services to the container
+    /// <summary>
+    /// Adds services to the DI container. This method gets called by the runtime.
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
     public void ConfigureServices(IServiceCollection services)
     {
         services.ConfigureLogging();
@@ -24,10 +39,16 @@ public class Startup
             Title = "Product Management Lambda",
             Description = "Products API Lambda implementation for License Management Service."
         });
+
+        services.AddScoped<IProductManagementService, ProductManagementService>();
+        services.AddScoped<IProductRepository, ProductRepository>();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    /// <summary>
+    /// Adds services to the DI container. This method gets called by the runtime.
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
+    public void Configure(IApplicationBuilder app)
     {
         app.UseHttpsRedirection();
 

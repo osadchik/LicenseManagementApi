@@ -33,6 +33,7 @@ public class ProductController : ControllerBase
     /// </summary>
     /// <param name="id">Product's unique identifier.</param>
     /// <returns>Product definition.</returns>
+    /// <remarks>
     /// Example url call:
     /// 
     /// GET <code>license-management/products-api/products?id=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
@@ -54,6 +55,7 @@ public class ProductController : ControllerBase
     /// </summary>
     /// <param name="productDto"></param>
     /// <returns>Created product definition.</returns>
+    /// <remarks>
     /// Example url call:
     /// 
     /// POST <code>license-management/products-api/products</code>
