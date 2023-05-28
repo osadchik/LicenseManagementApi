@@ -10,7 +10,7 @@ namespace ProductManagementLambda.Interfaces
         /// <summary>
         /// Gets product from the datastore.
         /// </summary>
-        /// <param name="licenseId">Product's unqiue indentifier.</param>
+        /// <param name="productId">Product's unqiue indentifier.</param>
         /// <returns>Entity.</returns>
         Task<ProductDto> GetProductByIdAsync(Guid productId);
 

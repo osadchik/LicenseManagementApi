@@ -152,7 +152,7 @@ resource "aws_api_gateway_deployment" "api_deploy" {
         aws_api_gateway_method.license-api-get-method,
         aws_api_gateway_method.license-api-proxy-method,
         aws_api_gateway_method.products-api-get-method,
-        aws_api_gateway_method.license-api-proxy-method
+        aws_api_gateway_method.products-api-proxy-method
     ]
 
     rest_api_id = aws_api_gateway_rest_api.lambda_api.id
