@@ -39,7 +39,7 @@ namespace LicenseManagementLambda.Services
             _httpClient.BaseAddress = new Uri(_lambdaParameters.ProductsApiUrl);
             _logger.LogDebug("Saved parameter url: {parameterUrl}. Target URL is {httpClientUrl}", _lambdaParameters.ProductsApiUrl, _httpClient.BaseAddress);
 
-            var response = await _httpClient.GetAsync($"products/{productId}");
+            var response = await _httpClient.GetAsync($"products?id={productId}");
             _logger.LogDebug("Received http response fromr products API: {@response}", response);
 
             if (!response.IsSuccessStatusCode)
