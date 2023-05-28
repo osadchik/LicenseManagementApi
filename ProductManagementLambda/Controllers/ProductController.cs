@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProductManagementLambda.Controllers;
 
-[Route("product-api/products")]
+[Route("products-api/products")]
 public class ProductController : ControllerBase
 {
     private readonly IProductManagementService _productManagementService;
