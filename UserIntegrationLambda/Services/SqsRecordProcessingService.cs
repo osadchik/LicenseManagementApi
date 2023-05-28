@@ -81,7 +81,7 @@ namespace UserIntegrationLambda.Services
             {
                 { "Create", () => _userIntegrationHandler.CreateUser(message.Content) },
                 { "Update", () => _userIntegrationHandler.UpdateUser(message.Content) },
-                { "Delete", () => _userIntegrationHandler.DeleteUser(message.EntityId) },
+                { "Delete", () => _userIntegrationHandler.DeleteUser(Guid.Parse(message.EntityId)) },
             };
 
             return defaultActions;

@@ -26,6 +26,6 @@ namespace UserIntegrationLambda.Interfaces
         /// </summary>
         /// <param name="uuid">User's ID.</param>
         /// <returns></returns>
-        Task DeleteUser(string uuid);
+        Task DeleteUser(Guid uuid);
     }
 }

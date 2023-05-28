@@ -35,7 +35,7 @@ namespace UserIntegrationLambda.Services
         }
 
         /// <inheritdoc/>
-        public async Task DeleteUser(string uuid)
+        public async Task DeleteUser(Guid uuid)
         {
             await _usersWriteRepository.DeleteAsync(uuid);
         }
