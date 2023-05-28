@@ -18,6 +18,6 @@
         /// </summary>
         /// <param name="id">Entity unique identifier.</param>
         /// <returns>Deleted entity dto.</returns>
-        Task<TEntity> DeleteAsync(string id);
+        Task<TEntity> DeleteAsync(Guid id);
     }
 }

@@ -1,6 +1,7 @@
 using Common.Extensions;
 using Common.Middleware;
 using LicenseManagementLambda.Interfaces;
+using LicenseManagementLambda.Options;
 using LicenseManagementLambda.Repositories;
 using LicenseManagementLambda.Services;
 using Microsoft.OpenApi.Models;
@@ -20,6 +21,8 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
+        services.ConfigureLambdaVariables<LambdaParameters>(_configuration);
+
         services.ConfigureLogging();
         services.ConfigureDynamoDB(_configuration);
         services.AddControllers();

@@ -41,7 +41,7 @@ namespace UserIntegrationLambda.Repository
         }
 
         /// <inheritdoc/>
-        public Task<UserDto> DeleteAsync(string id)
+        public Task<UserDto> DeleteAsync(Guid id)
         {
             if (string.IsNullOrEmpty(id.ToString()))
             {
@@ -67,7 +67,7 @@ namespace UserIntegrationLambda.Repository
             return user;
         }
 
-        private async Task<UserDto> DeleteUserInternalAsync(string id)
+        private async Task<UserDto> DeleteUserInternalAsync(Guid id)
         {
             _logger.LogDebug("Trying to delete user entity with id: {id}", id);
 

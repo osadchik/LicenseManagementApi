@@ -5,17 +5,26 @@ using LicenseManagementLambda.Interfaces;
 
 namespace LicenseManagementLambda.Repositories
 {
+    /// <summary>
+    /// Licenses datastore service.
+    /// </summary>
     public class LicenseRepository : ILicenseRepository
     {
         private readonly IDynamoDBContext _dynamoDbContext;
         private readonly ILogger<LicenseRepository> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="LicenseRepository"/> class.
+        /// </summary>
+        /// <param name="dynamoDbContext"><see cref="IDynamoDBContext"/></param>
+        /// <param name="logger">Logger instance.</param>
         public LicenseRepository(IDynamoDBContext dynamoDbContext, ILogger<LicenseRepository> logger)
         {
             _dynamoDbContext = dynamoDbContext;
             _logger = logger;
         }
 
+        /// <inheritdoc/>
         public async Task<LicenseDto> GetByIdAsync(Guid id)
         {
             _logger.LogDebug("Trying to get license entity with id: {id}", id);
@@ -26,7 +35,8 @@ namespace LicenseManagementLambda.Repositories
             return license;
         }
 
-        public async Task<LicenseDto> DeleteAsync(string id)
+        /// <inheritdoc/>
+        public async Task<LicenseDto> DeleteAsync(Guid id)
         {
             _logger.LogDebug("Trying to delete license entity with id: {id}", id);
 
@@ -47,6 +57,7 @@ namespace LicenseManagementLambda.Repositories
             return license;
         }
 
+        /// <inheritdoc/>
         public async Task<LicenseDto> SaveAsync(LicenseDto license)
         {
             _logger.LogDebug("Trying to save license entity: {@entity}", license);

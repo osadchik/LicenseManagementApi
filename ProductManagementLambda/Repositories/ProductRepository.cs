@@ -13,12 +13,18 @@ namespace ProductManagementLambda.Repositories
         private readonly IDynamoDBContext _dynamoDbContext;
         private readonly ILogger<ProductRepository> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ProductRepository"/> class.
+        /// </summary>
+        /// <param name="dynamoDbContext"><see cref="IDynamoDBContext"/></param>
+        /// <param name="logger">Logger instance.</param>
         public ProductRepository(IDynamoDBContext dynamoDbContext, ILogger<ProductRepository> logger)
         {
             _dynamoDbContext = dynamoDbContext;
             _logger = logger;
         }
 
+        /// <inheritdoc/>
         public async Task<ProductDto> GetByIdAsync(Guid id)
         {
             _logger.LogDebug("Trying to get product entity with id: {id}", id);
@@ -29,7 +35,8 @@ namespace ProductManagementLambda.Repositories
             return product;
         }
 
-        public async Task<ProductDto> DeleteAsync(string id)
+        /// <inheritdoc/>
+        public async Task<ProductDto> DeleteAsync(Guid id)
         {
             _logger.LogDebug("Trying to delete product entity with id: {id}", id);
 
@@ -50,6 +57,7 @@ namespace ProductManagementLambda.Repositories
             return product;
         }
 
+        /// <inheritdoc/>
         public async Task<ProductDto> SaveAsync(ProductDto product)
         {
             _logger.LogDebug("Trying to save product entity: {@entity}", product);
