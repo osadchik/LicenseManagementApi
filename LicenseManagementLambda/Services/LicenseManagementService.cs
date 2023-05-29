@@ -14,7 +14,6 @@ namespace LicenseManagementLambda.Services
     {
         private readonly ILicenseRepository _licenseRepository;
         private readonly HttpClient _httpClient;
-        private readonly LambdaParameters _lambdaParameters;
         private ILogger<LicenseManagementService> _logger;
 
         /// <summary>
@@ -28,7 +27,6 @@ namespace LicenseManagementLambda.Services
         {
             _licenseRepository = licenseRepository;
             _httpClient = httpCLientFactory.CreateClient("ProductsAPI");
-            _lambdaParameters = lambdaParameters.Value;
             _logger = logger;
         }
 
@@ -39,7 +37,7 @@ namespace LicenseManagementLambda.Services
 
             _logger.LogDebug("Checking the product. Target URL is {httpClientUrl}", _httpClient.BaseAddress);
             var response = await _httpClient.GetAsync($"products?id={productId}");
-            _logger.LogDebug("Received http response from products API: {@response}", response);
+            _logger.LogInformation("Received http response from products API: {@response}", response.StatusCode);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -59,7 +57,14 @@ namespace LicenseManagementLambda.Services
         /// <inheritdoc/>
         public async Task<LicenseDto> GetLicenseByIdAsync(Guid licenseId)
         {
-            return await _licenseRepository.GetByIdAsync(licenseId);
+            var license = await _licenseRepository.GetByIdAsync(licenseId);
+
+            if (license is null)
+            {
+                throw new LicenseNotFoundException();
+            }
+
+            return license;
         }
 
         /// <inheritdoc/>

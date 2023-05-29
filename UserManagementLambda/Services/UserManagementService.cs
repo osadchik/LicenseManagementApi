@@ -66,6 +66,11 @@ namespace UserManagementLambda.Services
         {
             var user = await _usersRepository.GetByIdAsync(uuid);
 
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+
             return user;
         }
 

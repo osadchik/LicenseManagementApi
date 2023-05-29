@@ -38,7 +38,14 @@ namespace ProductManagementLambda.Repositories
         /// <inheritdoc/>
         public async Task<ProductDto> GetProductByIdAsync(Guid productId)
         {
-            return await _productRepository.GetByIdAsync(productId);
+            var product = await _productRepository.GetByIdAsync(productId);
+
+            if (product is null)
+            {
+                throw new ProductNotFoundException();
+            }
+
+            return product;
         }
 
         /// <inheritdoc/>

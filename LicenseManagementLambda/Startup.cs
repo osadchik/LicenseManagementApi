@@ -4,21 +4,31 @@ using LicenseManagementLambda.Interfaces;
 using LicenseManagementLambda.Options;
 using LicenseManagementLambda.Repositories;
 using LicenseManagementLambda.Services;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace LicenseManagementLambda;
 
+/// <summary>
+/// Startup class.
+/// </summary>
 public class Startup
 {
     private readonly IConfiguration _configuration;
 
+    /// <summary>
+    /// Intializes a new instance of <see cref="Startup"/> class.
+    /// </summary>
+    /// <param name="configuration"><see cref="IConfiguration"/></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public Startup(IConfiguration configuration)
     {
-        _configuration = configuration;
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    // This method gets called by the runtime. Use this method to add services to the container
+    /// <summary>
+    /// Adds services to the DI container. This method gets called by the runtime.
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/></param>
     public void ConfigureServices(IServiceCollection services)
     {
         services.ConfigureLambdaVariables<LambdaParameters>(_configuration);
@@ -38,13 +48,23 @@ public class Startup
             httpClient.BaseAddress = new Uri(_configuration.GetSection("Parameters:ProductsApiUrl").Value);
             httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         });
+        services.AddHttpClient("UsersAPI", httpClient =>
+        {
+            httpClient.BaseAddress = new Uri(_configuration.GetSection("Parameters:UsersApiUrl").Value);
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
 
         services.AddScoped<ILicenseManagementService, LicenseManagementService>();
         services.AddScoped<ILicenseRepository, LicenseRepository>();
+        services.AddScoped<IProductEntitlementManagementService, ProductEntitlementManagementService>();
+        services.AddScoped<IProductEntitlementRepository, ProductEntitlementRepository>();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    /// <summary>
+    /// Adds services to the DI container. This method gets called by the runtime.
+    /// </summary>
+    /// <param name="app"><see cref="IApplicationBuilder"/></param>
+    public void Configure(IApplicationBuilder app)
     {
         app.UseHttpsRedirection();
 

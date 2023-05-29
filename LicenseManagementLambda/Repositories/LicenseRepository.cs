@@ -30,10 +30,6 @@ namespace LicenseManagementLambda.Repositories
             _logger.LogDebug("Trying to get license entity with id: {id}", id);
 
             LicenseDto license = await _dynamoDbContext.LoadAsync<LicenseDto>(id);
-            if (license is null)
-            {
-                throw new LicenseNotFoundException();
-            }
 
             _logger.LogInformation("Successfully retrieved license entity: {@entity}", license);
 

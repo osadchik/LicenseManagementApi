@@ -52,10 +52,6 @@ namespace UserManagementLambda.Repositories
             _logger.LogDebug("Trying to get user entity with id: {id}", id);
 
             UserDto user = await _dynamoDbContext.LoadAsync<UserDto>(id);
-            if (user is null)
-            {
-                throw new UserNotFoundException();
-            }
 
             _logger.LogInformation("Successfully retrieved a new user entity: {@userDto}", user);
 
