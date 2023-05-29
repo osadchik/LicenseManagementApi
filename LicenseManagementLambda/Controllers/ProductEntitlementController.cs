@@ -1,39 +1,60 @@
+using LicenseManagementLambda.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace LicenseManagementLambda.Controllers;
 
+/// <summary>
+/// API controller for product entitlement management in License Management Service.
+/// </summary>
+[ApiController]
 [Route("license-api/entitlements")]
+[Produces("application/json")]
 public class ProductEntitlementController : ControllerBase
 {
-    // GET api/values
-    [HttpGet]
-    public IEnumerable<string> Get()
+    private readonly IProductEntitlementManagementService _productEntitlementManagementService;
+    private readonly ILogger<ProductEntitlementController> _logger;
+
+    public ProductEntitlementController(IProductEntitlementManagementService productEntitlementManagementService, ILogger<ProductEntitlementController> logger)
     {
-        return new string[] { "value1", "value2" };
+        _productEntitlementManagementService = productEntitlementManagementService;
+        _logger = logger;
     }
 
-    // GET api/values/5
+    /// <summary>
+    /// Gets product entitlement by ID.
+    /// </summary>
+    /// <param name="entitlementId">Product's entitlement unique identifier.</param>
+    /// <returns>Product entitlement entity.</returns>
+    /// <remarks>
+    /// Example url call:
+    /// 
+    /// GET <code>license-management/license-api/entitlements?entitlementId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
+    /// </remarks>
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<IActionResult> GetEntitlement([Required, FromQuery] Guid entitlementId)
     {
-        return "value";
+        var entitlement = await _productEntitlementManagementService.GetEntitlementByIdAsync(entitlementId);
+
+        return Ok(entitlement);
     }
 
-    // POST api/values
+    /// <summary>
+    /// Creates new product entitlement.
+    /// </summary>
+    /// <param name="licenseId">License unique identifier.</param>
+    /// <param name="userId">User's unique identifier.</param>
+    /// <returns>Created product entitlement definition.</returns>
+    /// <remarks>
+    /// Example url call:
+    /// 
+    /// POST <code>license-management/license-api/entitlements?licenseId={id}&amp;userId={id}</code>
+    /// </remarks>
     [HttpPost]
-    public void Post([FromBody]string value)
+    public async Task<IActionResult> CreateEntitlement([FromQuery, Required] Guid licenseId, [FromQuery, Required] Guid userId)
     {
-    }
+        var license = await _productEntitlementManagementService.CreateEntitlementAsync(licenseId, userId);
 
-    // PUT api/values/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody]string value)
-    {
-    }
-
-    // DELETE api/values/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
+        return CreatedAtAction(nameof(CreateEntitlement), license);
     }
 }

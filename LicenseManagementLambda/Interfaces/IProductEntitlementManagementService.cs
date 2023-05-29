@@ -9,7 +9,7 @@ namespace LicenseManagementLambda.Interfaces
         /// </summary>
         /// <param name="entitlementId">Entitlement's unqiue indentifier.</param>
         /// <returns>Product entitlement entity.</returns>
-        Task<ProductEntitlementDto> GetLicenseByIdAsync(Guid entitlementId);
+        Task<ProductEntitlementDto> GetEntitlementByIdAsync(Guid entitlementId);
 
         /// <summary>
         /// Manages entitlement creation operation.

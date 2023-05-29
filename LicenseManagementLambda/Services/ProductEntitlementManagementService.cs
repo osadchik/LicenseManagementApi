@@ -87,7 +87,7 @@ namespace LicenseManagementLambda.Services
         }
 
         /// <inheritdoc/>
-        public Task<ProductEntitlementDto> GetLicenseByIdAsync(Guid entitlementId)
+        public Task<ProductEntitlementDto> GetEntitlementByIdAsync(Guid entitlementId)
         {
             throw new NotImplementedException();
         }
