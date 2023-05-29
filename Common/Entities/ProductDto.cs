@@ -6,7 +6,7 @@ namespace Common.Entities
     public class ProductDto
     {
         [DynamoDBHashKey]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public string Name { get; set; } = null!;
 

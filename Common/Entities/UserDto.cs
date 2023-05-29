@@ -12,7 +12,7 @@ namespace Common.Entities
         /// Unique-id created by the api processor.
         /// </summary>
         [DynamoDBHashKey]
-        public Guid Uuid { get; private set; } = Guid.NewGuid();
+        public Guid Uuid { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Unique Id that a user logs in to their system with, often an email address.

@@ -40,12 +40,12 @@ namespace UserIntegrationLambda.Services
 
             if (messageBody is null)
             {
-                throw new ArgumentNullException("SQS Message body is empty", nameof(sqsMessage));
+                throw new ArgumentNullException(nameof(sqsMessage), "SQS Message body is empty");
             }
 
             if (string.IsNullOrEmpty(messageBody.Action.ToString()))
             {
-                throw new ArgumentException("Action is not defined", nameof(sqsMessage));
+                throw new ArgumentException(nameof(sqsMessage), "Action is not defined");
             }
 
             _logger.LogDebug("Executing {action} for User ID: {uuid}", messageBody.Action, messageBody.EntityId);

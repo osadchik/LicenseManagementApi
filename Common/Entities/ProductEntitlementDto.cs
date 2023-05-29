@@ -6,7 +6,7 @@ namespace Common.Entities
     public class ProductEntitlementDto
     {
         [DynamoDBHashKey]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public Guid LicenseId { get; set; }
 
