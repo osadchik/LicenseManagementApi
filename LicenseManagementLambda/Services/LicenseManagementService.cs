@@ -1,9 +1,9 @@
 ﻿using Common.Entities;
+using Common.Exceptions;
 using Common.Mappers;
 using LicenseManagementLambda.Interfaces;
 using LicenseManagementLambda.Options;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace LicenseManagementLambda.Services
 {
@@ -21,7 +21,7 @@ namespace LicenseManagementLambda.Services
         /// Initializes a new instance of <see cref="LicenseManagementService"/> class.
         /// </summary>
         /// <param name="licenseRepository"><see cref="ILicenseRepository"/></param>
-        /// <param name="httpCLient"><see cref="HttpClient"/></param>
+        /// <param name="httpCLientFactory"><see cref="IHttpClientFactory"/></param>
         /// <param name="lambdaParameters"><see cref="LambdaParameters"/></param>
         /// <param name="logger">Logger instance.</param>
         public LicenseManagementService(ILicenseRepository licenseRepository, IHttpClientFactory httpCLientFactory, IOptions<LambdaParameters> lambdaParameters, ILogger<LicenseManagementService> logger)
@@ -33,7 +33,7 @@ namespace LicenseManagementLambda.Services
         }
 
         /// <inheritdoc/>
-        public async Task<LicenseDto> CreateLicenseAsync(Guid productId, LicenseModel licenseModel)
+        public async Task<LicenseDto> CreateLicenseAsync(Guid productId, LicenseCreateModel licenseModel)
         {
             _logger.LogDebug("Trying to create a new license entity from: {@model}", licenseModel);
 
@@ -45,9 +45,6 @@ namespace LicenseManagementLambda.Services
             {
                 throw new ArgumentException("Unable to create license: product doesn't exist", nameof(productId));
             }
-
-            ProductDto product = JsonConvert.DeserializeObject<ProductDto>(await response.Content.ReadAsStringAsync());
-            _logger.LogInformation("Successfully retrieved product: {@product}", product);
 
             var licenseDto = licenseModel.MapToDto(productId);
             return await _licenseRepository.SaveAsync(licenseDto);
@@ -68,6 +65,23 @@ namespace LicenseManagementLambda.Services
         /// <inheritdoc/>
         public async Task<LicenseDto> UpdateLicenseAsync(LicenseDto licenseDto)
         {
+            var currentLicense = await _licenseRepository.GetByIdAsync(licenseDto.LicenseId);
+
+            if (currentLicense is null) throw new LicenseNotFoundException();
+
+            if (licenseDto.ProductId != currentLicense.ProductId)
+            {
+                _logger.LogDebug("Product update requested. Checking the product with ID: {id}", currentLicense.ProductId);
+
+                var response = await _httpClient.GetAsync($"products?id={currentLicense.ProductId}");
+                _logger.LogDebug("Received http response from products API: {@response}", response);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ArgumentException("Unable to update license: product doesn't exist", nameof(licenseDto));
+                }
+            }
+
             return await _licenseRepository.SaveAsync(licenseDto);
         }
     }

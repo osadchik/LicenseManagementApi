@@ -30,6 +30,11 @@ namespace ProductManagementLambda.Repositories
             _logger.LogDebug("Trying to get product entity with id: {id}", id);
 
             ProductDto product = await _dynamoDbContext.LoadAsync<ProductDto>(id);
+            if (product is null)
+            {
+                throw new ProductNotFoundException();
+            }
+
             _logger.LogInformation("Successfully retrieved product entity: {@entity}", product);
 
             return product;

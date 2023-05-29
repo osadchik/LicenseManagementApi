@@ -4,7 +4,7 @@ namespace Common.Mappers
 {
     public static class LicenseMapper
     {
-        public static LicenseDto MapToDto(this LicenseModel licenseModel, Guid productId)
+        public static LicenseDto MapToDto(this LicenseCreateModel licenseModel, Guid productId)
         {
             var licenseDto = new LicenseDto
             {

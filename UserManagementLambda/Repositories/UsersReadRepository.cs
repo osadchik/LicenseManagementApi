@@ -1,6 +1,7 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
 using Common.Entities;
+using Common.Exceptions;
 using UserManagementLambda.Interfaces;
 
 namespace UserManagementLambda.Repositories
@@ -51,6 +52,11 @@ namespace UserManagementLambda.Repositories
             _logger.LogDebug("Trying to get user entity with id: {id}", id);
 
             UserDto user = await _dynamoDbContext.LoadAsync<UserDto>(id);
+            if (user is null)
+            {
+                throw new UserNotFoundException();
+            }
+
             _logger.LogInformation("Successfully retrieved a new user entity: {@userDto}", user);
 
             return user;
@@ -64,9 +70,14 @@ namespace UserManagementLambda.Repositories
             var searchResult = await _dynamoDbContext.ScanAsync<UserDto>(new[] { scanCondition })
                 .GetRemainingAsync();
 
+            if (searchResult is null || searchResult.FirstOrDefault() is null)
+            {
+                throw new UserNotFoundException();
+            }
+
             _logger.LogInformation("Successfully retrieved a new user entity: {@userDto}", searchResult);
 
-            return searchResult?.FirstOrDefault();
+            return searchResult.First();
         }
     }
 }

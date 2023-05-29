@@ -1,13 +1,22 @@
 ﻿using Common.Entities;
+using Common.Exceptions;
 using ProductManagementLambda.Interfaces;
 
 namespace ProductManagementLambda.Repositories
 {
+    /// <summary>
+    /// Manages product operations.
+    /// </summary>
     public class ProductManagementService : IProductManagementService
     {
         private readonly IProductRepository _productRepository;
         private readonly ILogger<ProductManagementService> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ProductManagementService"/> class.
+        /// </summary>
+        /// <param name="productRepository"><see cref="IProductRepository"/></param>
+        /// <param name="logger">Logger instance.</param>
         public ProductManagementService(IProductRepository productRepository, ILogger<ProductManagementService> logger)
         {
             _productRepository = productRepository;
@@ -35,6 +44,10 @@ namespace ProductManagementLambda.Repositories
         /// <inheritdoc/>
         public async Task<ProductDto> UpdateProductAsync(ProductDto productDto)
         {
+            var product = await _productRepository.GetByIdAsync(productDto.Id);
+
+            if (product is null) throw new ProductNotFoundException();
+
             return await _productRepository.SaveAsync(productDto);
         }
     }

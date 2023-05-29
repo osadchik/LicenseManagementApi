@@ -49,7 +49,7 @@ public class LicenseController : ControllerBase
     /// Creates new license.
     /// </summary>
     /// <param name="productId">Product unique identifier.</param>
-    /// <param name="licenseModel"><see cref="LicenseModel"/></param>
+    /// <param name="licenseModel"><see cref="LicenseCreateModel"/></param>
     /// <returns>Created license definition.</returns>
     /// <remarks>
     /// Example url call:
@@ -57,7 +57,7 @@ public class LicenseController : ControllerBase
     /// POST <code>license-management/license-api/licences?id=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> CreateLicense([FromQuery, Required] Guid productId, [FromBody, Required]LicenseModel licenseModel)
+    public async Task<IActionResult> CreateLicense([FromQuery, Required] Guid productId, [FromBody, Required]LicenseCreateModel licenseModel)
     {
         var license = await _licenseManagementService.CreateLicenseAsync(productId, licenseModel);
 

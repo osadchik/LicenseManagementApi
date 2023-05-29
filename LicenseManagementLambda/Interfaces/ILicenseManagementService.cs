@@ -18,9 +18,9 @@ namespace LicenseManagementLambda.Interfaces
         /// Manages license creation operation.
         /// </summary>
         /// <param name="productId">Product's unqiue indentifier.</param>
-        /// <param name="licenseModel"><see cref="LicenseModel"/></param>
+        /// <param name="licenseModel"><see cref="LicenseCreateModel"/></param>
         /// <returns>Created entity.</returns>
-        Task<LicenseDto> CreateLicenseAsync(Guid productId, LicenseModel licenseModel);
+        Task<LicenseDto> CreateLicenseAsync(Guid productId, LicenseCreateModel licenseModel);
 
         /// <summary>
         /// Manages license deletion operation.

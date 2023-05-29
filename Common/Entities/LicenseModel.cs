@@ -3,7 +3,7 @@
     /// <summary>
     /// License model for create request.
     /// </summary>
-    public class LicenseModel
+    public class LicenseCreateModel
     {
         /// <summary>
         /// License cost value.

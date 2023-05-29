@@ -1,4 +1,5 @@
 ﻿using Common.Entities;
+using Common.Exceptions;
 using Common.Interfaces;
 using Microsoft.Extensions.Options;
 using UserManagementLambda.Interfaces;
@@ -53,9 +54,11 @@ namespace UserManagementLambda.Services
         }
 
         /// <inheritdoc/>
-        public Task<UserDto> GetUserByUserName(string userName)
+        public async Task<UserDto> GetUserByUserName(string userName)
         {
-            throw new NotImplementedException();
+            var user = await _usersRepository.GetByUsernameAsync(userName);
+
+            return user;
         }
 
         /// <inheritdoc/>
@@ -69,6 +72,10 @@ namespace UserManagementLambda.Services
         /// <inheritdoc/>
         public async Task<UserDto> UpdateUser(UserDto user)
         {
+            var existingUser = await _usersRepository.GetByIdAsync(user.Uuid);
+
+            if (existingUser is null) throw new UserNotFoundException();
+
             var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), ProcessAction.Update)
             {
                 Content = user
