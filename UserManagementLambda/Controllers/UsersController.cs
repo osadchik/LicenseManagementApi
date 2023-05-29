@@ -34,7 +34,7 @@ public class UsersController : ControllerBase
     /// <param name="id">User's unique identifier.</param>
     /// <returns><see cref="IActionResult"/></returns>
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetUser(Guid id)
+    public async Task<IActionResult> GetUser([Required, FromQuery] Guid id)
     {
         UserDto user = await _userManagementService.GetUserByUuid(id);
 
