@@ -51,7 +51,7 @@ namespace ProductManagementLambda.Repositories
         /// <inheritdoc/>
         public async Task<ProductDto> UpdateProductAsync(ProductDto productDto)
         {
-            var product = await _productRepository.GetByIdAsync(productDto.Id);
+            var product = await _productRepository.GetByIdAsync(productDto.ProductId);
 
             if (product is null) throw new ProductNotFoundException();
 

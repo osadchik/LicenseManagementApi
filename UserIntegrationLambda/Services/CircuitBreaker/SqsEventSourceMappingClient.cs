@@ -38,7 +38,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
 
             if (currentState.State == AwsEventSourceMappingState.Enabling)
             {
-                throw new EventSourceMappingStateTransitionException($"EventSourceMapping can't be disabled as it's in {currentState.State} state.");
+                throw new MappingStateTransitionException($"EventSourceMapping can't be disabled as it's in {currentState.State} state.");
             }
 
             if (currentState.State is not (AwsEventSourceMappingState.Disabling or AwsEventSourceMappingState.Disabled))
@@ -55,7 +55,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
 
             if (currentState.State == AwsEventSourceMappingState.Disabling)
             {
-                throw new EventSourceMappingStateTransitionException($"EventSourceMapping can't be enabled as it's in {currentState.State} state.");
+                throw new MappingStateTransitionException($"EventSourceMapping can't be enabled as it's in {currentState.State} state.");
             }
 
             if (currentState.State is not (AwsEventSourceMappingState.Enabling or AwsEventSourceMappingState.Enabled))
@@ -82,7 +82,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
             }
             else
             {
-                throw new EventSourceMappingStateTransitionException($"Request to {targetState} {currentState.EventSourceArn} EventSourceMapping responded with {updateResponse.HttpStatusCode}");
+                throw new MappingStateTransitionException($"Request to {targetState} {currentState.EventSourceArn} EventSourceMapping responded with {updateResponse.HttpStatusCode}");
             }
         }
 
@@ -92,7 +92,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
                 await _amazonLambdaClient.ListEventSourceMappingsAsync(new ListEventSourceMappingsRequest { FunctionName = functionName });
             EventSourceMappingConfiguration? mappingConfiguration =
                 listEventSourceMappings.EventSourceMappings.FirstOrDefault(m => SqsEventSourceArn.IsMatch(m.EventSourceArn));
-            return mappingConfiguration ?? throw new EventSourceMappingStateTransitionException($"Failed to find SQS EventSourceMapping for {functionName}");
+            return mappingConfiguration ?? throw new MappingStateTransitionException($"Failed to find SQS EventSourceMapping for {functionName}");
         }
     }
 }

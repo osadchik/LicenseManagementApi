@@ -56,11 +56,6 @@ namespace Common.Entities
         public string Type { get; set; } = "Human";
 
         /// <summary>
-        /// Uuid of the user who last updated the record.
-        /// </summary>
-        public string? UpdatedBy { get; set; }
-
-        /// <summary>
         /// Last update date.
         /// </summary>
         public DateTimeOffset UpdatedOn { get; } = DateTimeOffset.UtcNow;

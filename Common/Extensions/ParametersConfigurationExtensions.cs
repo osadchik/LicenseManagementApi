@@ -6,7 +6,7 @@ namespace Common.Extensions
     /// <summary>
     /// Extension class to work with lambda environment variables.
     /// </summary>
-    public static class LambdaEnvironmentVariablesConfigurationExtensions
+    public static class ParametersConfigurationExtensions
     {
         /// <summary>
         /// Injects lambda parameters in the DI container.
