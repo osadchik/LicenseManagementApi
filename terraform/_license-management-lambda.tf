@@ -24,3 +24,10 @@ module "license-management-lambda" {
         "Parameters__UsersApiUrl"    = "${module.api_gateway.invoke_url}${var.users-prefix}/"
     }  
 }
+
+# SQS Lambda Event Source
+resource "aws_lambda_event_source_mapping" "license-management-sqs-event-source" {
+    event_source_arn = module.license-management-lambda-sqs.arn
+    function_name    = module.license-management-lambda.lambda_arn 
+    batch_size       = 1
+}

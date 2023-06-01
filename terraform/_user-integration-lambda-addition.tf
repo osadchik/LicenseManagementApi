@@ -20,7 +20,7 @@ resource "aws_iam_policy" "user_integration_dynamoDB_policy" {
 }
 
 resource "aws_iam_policy" "user_integration_sqs_policy" {
-  name = "${var.prefix}-${var.user_integration_lambda_name}-sns-policy"
+  name = "${var.prefix}-${var.user_integration_lambda_name}-sqs-policy"
 
   policy = jsonencode({
     Version = "2012-10-17"

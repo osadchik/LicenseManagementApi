@@ -41,7 +41,7 @@ namespace LicenseManagementLambda.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new ArgumentException("Unable to create license: product doesn't exist", nameof(productId));
+                throw new ProductNotFoundException("Unable to create license: product doesn't exist");
             }
 
             var licenseDto = licenseModel.MapToDto(productId);
@@ -83,7 +83,7 @@ namespace LicenseManagementLambda.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new ArgumentException("Unable to update license: product doesn't exist", nameof(licenseDto));
+                    throw new ProductNotFoundException("Unable to update license: product doesn't exist");
                 }
             }
 

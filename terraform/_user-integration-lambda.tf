@@ -33,7 +33,7 @@ module "user-integration-lambda" {
 }
 
 # SQS Lambda Event Source
-resource "aws_lambda_event_source_mapping" "event_source_mapping" {
+resource "aws_lambda_event_source_mapping" "users-integration-sqs-event-source" {
     event_source_arn = module.user-integration-lambda-sqs.arn
     function_name    = module.user-integration-lambda.lambda_arn 
     batch_size       = 1

@@ -17,3 +17,16 @@ resource "aws_sns_topic_subscription" "user_integration_sqs_target" {
     endpoint             = module.user-integration-lambda-sqs.arn
     raw_message_delivery = true
 }
+
+module "license-management-lambda-sqs" {
+    source         = "./modules/sqs"
+
+    sqs_name       = "${var.prefix}-${var.license_management_lambda_name}-sqs"
+}
+
+resource "aws_sns_topic_subscription" "license-management_sqs_target" {
+    topic_arn            = module.user-management-lambda-sns.arn
+    protocol             = "sqs"
+    endpoint             = module.license-management-lambda-sqs.arn
+    raw_message_delivery = true
+}
