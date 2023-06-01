@@ -1,6 +1,8 @@
 ﻿using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
-using Amazon.Lambda.Serialization.SystemTextJson;
+using Amazon.Lambda.Serialization.Json;
+using Amazon.Lambda.SQSEvents;
+using Newtonsoft.Json.Linq;
 
 namespace LicenseManagementLambda
 {
@@ -20,12 +22,24 @@ namespace LicenseManagementLambda
         /// <param name="evnt"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        [LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
-        public async Task<APIGatewayProxyResponse> FunctionHandlerAsync(APIGatewayProxyRequest request, ILambdaContext lambdaContext)
+        [LambdaSerializer(typeof(JsonSerializer))]
+        public async Task<APIGatewayProxyResponse> FunctionHandlerAsync(JObject input, ILambdaContext lambdaContext)
         {
-            LambdaEntryPoint lambdaEntryPoint = new();
+            var sqsEvent = input.ToObject<SQSEvent>();
+            var request = input.ToObject<APIGatewayProxyRequest>();
 
-            return await lambdaEntryPoint.FunctionHandlerAsync(request, lambdaContext);
+            if (sqsEvent is not null)
+            {
+                // Process
+            }
+
+            if (request is not null)
+            {
+                LambdaEntryPoint lambdaEntryPoint = new();
+                return await lambdaEntryPoint.FunctionHandlerAsync(request, lambdaContext);
+            }
+
+            throw new ArgumentException("Input type is unknown and can't be processed.");
         }
     }
 }
