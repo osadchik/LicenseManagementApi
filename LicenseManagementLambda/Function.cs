@@ -1,5 +1,6 @@
 ﻿using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
+using Amazon.Lambda.Serialization.SystemTextJson;
 
 namespace LicenseManagementLambda
 {
@@ -19,6 +20,7 @@ namespace LicenseManagementLambda
         /// <param name="evnt"></param>
         /// <param name="context"></param>
         /// <returns></returns>
+        [LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
         public async Task<APIGatewayProxyResponse> FunctionHandlerAsync(APIGatewayProxyRequest request, ILambdaContext lambdaContext)
         {
             LambdaEntryPoint lambdaEntryPoint = new();
