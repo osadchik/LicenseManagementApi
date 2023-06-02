@@ -46,7 +46,7 @@ namespace Common.Services
             };
             _logger.LogDebug("Created a new SNS publish request: {@request}", request);
 
-            await _simpleNotificationService.PublishAsync(topicArn, content);
+            await _simpleNotificationService.PublishAsync(request);
             _logger.LogInformation("Successfully published message: {@content} to the SNS topic: {topicArn}", content);
         }
     }
