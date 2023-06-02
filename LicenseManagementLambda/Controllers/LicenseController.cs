@@ -11,7 +11,7 @@ namespace LicenseManagementLambda.Controllers;
 [ApiController]
 [Route("license-api/licenses")]
 [Produces("application/json")]
-internal class LicenseController : ControllerBase
+public class LicenseController : ControllerBase
 {
     private readonly ILicenseManagementService _licenseManagementService;
     private readonly ILogger<LicenseController> _logger;
@@ -90,7 +90,7 @@ internal class LicenseController : ControllerBase
     /// <remarks>
     /// Example url call:
     /// 
-    /// DELETE <code>license-management/products-api/products?licenseId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
+    /// DELETE <code>license-management/license-api/licenses?licenseId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
     [HttpDelete]
     public async Task<IActionResult> DeleteLicense([Required, FromQuery] Guid licenseId)

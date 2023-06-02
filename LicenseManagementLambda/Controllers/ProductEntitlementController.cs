@@ -10,7 +10,7 @@ namespace LicenseManagementLambda.Controllers;
 [ApiController]
 [Route("license-api/entitlements")]
 [Produces("application/json")]
-internal class ProductEntitlementController : ControllerBase
+public class ProductEntitlementController : ControllerBase
 {
     private readonly IProductEntitlementManagementService _productEntitlementManagementService;
     private readonly ILogger<ProductEntitlementController> _logger;
@@ -31,7 +31,7 @@ internal class ProductEntitlementController : ControllerBase
     /// 
     /// GET <code>license-management/license-api/entitlements?entitlementId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
-    [HttpGet("{id}")]
+    [HttpGet]
     public async Task<IActionResult> GetEntitlement([Required, FromQuery] Guid entitlementId)
     {
         var entitlement = await _productEntitlementManagementService.GetEntitlementByIdAsync(entitlementId);

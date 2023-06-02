@@ -2,7 +2,7 @@
 
 namespace LicenseManagementLambda.Interfaces
 {
-    internal interface IProductEntitlementManagementService
+    public interface IProductEntitlementManagementService
     {
         /// <summary>
         /// Gets entitlement from the datastore.

@@ -84,7 +84,7 @@ namespace LicenseManagementLambda.Repositories
             var scanResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(scanConditions)
                 .GetRemainingAsync();
 
-            _logger.LogInformation("Retrieved product entitlements: {searchResult}", scanResult);
+            _logger.LogInformation("Retrieved product entitlements: {@searchResult}", scanResult);
 
             if (scanResult is null || !scanResult.Any())
             {
@@ -103,7 +103,7 @@ namespace LicenseManagementLambda.Repositories
             var scanResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(scanConditions)
                 .GetRemainingAsync();
 
-            _logger.LogInformation("Retrieved product entitlements: {searchResult}", scanResult);
+            _logger.LogInformation("Retrieved product entitlements: {@searchResult}", scanResult);
 
             if (scanResult is null || !scanResult.Any())
             {
