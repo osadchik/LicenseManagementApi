@@ -20,7 +20,7 @@ namespace LicenseManagementLambda
         public Function() 
         {
             var services = new ServiceCollection();
-            _serviceProvider = new ServiceProviderBuilder().Build(services);
+            //_serviceProvider = new ServiceProviderBuilder().Build(services);
         }
 
         /// <summary>
