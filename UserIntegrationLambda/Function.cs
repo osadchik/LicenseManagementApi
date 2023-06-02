@@ -1,12 +1,12 @@
 using Amazon.Lambda.Core;
 using Amazon.Lambda.Serialization.Json;
+using Common.Interfaces;
 using Common.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics.CodeAnalysis;
 using UserIntegrationLambda.Builders;
-using UserIntegrationLambda.Interfaces;
 
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
