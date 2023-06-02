@@ -44,6 +44,8 @@ namespace LicenseManagementLambda
                 var service = _serviceProvider.GetRequiredService<ISqsEventProcessingService>();
 
                 await service.ProcessAsync(input);
+
+                return null;
             }
             if (request.Resource is not null)
             {

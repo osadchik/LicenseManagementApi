@@ -22,6 +22,13 @@ module "license-management-lambda-sqs" {
     source         = "./modules/sqs"
 
     sqs_name       = "${var.prefix}-${var.license_management_lambda_name}-sqs"
+    redrive_policy = "{\"deadLetterTargetArn\" : \"${module.license-management-lambda-dlq.arn}\", \"maxReceiveCount\": 4}"
+}
+
+module "license-management-lambda-dlq" {
+    source = "./modules/sqs"
+
+    sqs_name = "${var.prefix}-${var.license_management_lambda_name}-deadletterqueue"
 }
 
 resource "aws_sns_topic_subscription" "license-management_sqs_target" {
