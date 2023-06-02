@@ -2,7 +2,7 @@
 
 namespace LicenseManagementLambda.Interfaces
 {
-    public interface IProductEntitlementManagementService
+    internal interface IProductEntitlementManagementService
     {
         /// <summary>
         /// Gets entitlement from the datastore.
@@ -33,8 +33,18 @@ namespace LicenseManagementLambda.Interfaces
         /// <returns>Updated entity.</returns>
         Task<ProductEntitlementDto> UpdateEntitlementAsync(ProductEntitlementDto entitlementDto);
 
+        /// <summary>
+        /// Updates entitlement user information.
+        /// </summary>
+        /// <param name="details"><see cref="BaseMessage{UserDto}"/></param>
+        /// <returns>Task.</returns>
         Task UpdateUserDetails(BaseMessage<UserDto> details);
 
+        /// <summary>
+        /// Updates entitlement product information.
+        /// </summary>
+        /// <param name="details"><see cref="BaseMessage{ProductDto}"/></param>
+        /// <returns>Task.</returns>
         Task UpdateProductDetails(BaseMessage<ProductDto> details);
     }
 }

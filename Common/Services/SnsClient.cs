@@ -33,10 +33,16 @@ namespace Common.Services
             var content = JsonConvert.SerializeObject(message, Formatting.None);
             _logger.LogDebug("Serialized content: {content}", content);
 
+            Dictionary<string, MessageAttributeValue> messageAttributes = new()
+            {
+                { "Action", new MessageAttributeValue() { StringValue = message.Action.ToString() } }
+            };
+
             var request = new PublishRequest
             {
                 TopicArn = topicArn,
-                Message = content
+                Message = content,
+                MessageAttributes = messageAttributes
             };
             _logger.LogDebug("Created a new SNS publish request: {@request}", request);
 

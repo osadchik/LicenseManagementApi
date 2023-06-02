@@ -81,19 +81,17 @@ namespace LicenseManagementLambda.Repositories
             _logger.LogDebug("Trying to get product entitlement entity by user ID: {user}", userId);
 
             List<ScanCondition> scanConditions = new() { new ScanCondition("UserId", ScanOperator.Equal, userId) };
-            var scanResult = _dynamoDbContext.ScanAsync<ProductEntitlementDto>(scanConditions);
-            _logger.LogDebug("Scan Result: {result}", scanResult);
+            var scanResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(scanConditions)
+                .GetRemainingAsync();
 
-            var searchResult = await scanResult.GetRemainingAsync();
+            _logger.LogInformation("Retrieved product entitlements: {searchResult}", scanResult);
 
-            _logger.LogInformation("Retrieved product entitlements: {searchResult}", searchResult);
-
-            if (searchResult is null || !searchResult.Any())
+            if (scanResult is null || !scanResult.Any())
             {
                 throw new EntitlementNotFoundException();
             }
 
-            return searchResult;
+            return scanResult;
         }
 
         /// <inheritdoc/>
@@ -102,19 +100,17 @@ namespace LicenseManagementLambda.Repositories
             _logger.LogDebug("Trying to get product entitlement entity by product ID: {product}", productId);
 
             List<ScanCondition> scanConditions = new() { new ScanCondition("ProductId", ScanOperator.Equal, productId) };
-            var scanResult = _dynamoDbContext.ScanAsync<ProductEntitlementDto>(scanConditions);
-            _logger.LogDebug("Scan Result: {result}", scanResult);
+            var scanResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(scanConditions)
+                .GetRemainingAsync();
 
-            var searchResult = await scanResult.GetRemainingAsync();
+            _logger.LogInformation("Retrieved product entitlements: {searchResult}", scanResult);
 
-            _logger.LogInformation("Retrieved product entitlements: {searchResult}", searchResult);
-
-            if (searchResult is null || !searchResult.Any())
+            if (scanResult is null || !scanResult.Any())
             {
                 throw new EntitlementNotFoundException();
             }
 
-            return searchResult;
+            return scanResult;
         }
     }
 }

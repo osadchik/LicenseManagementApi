@@ -30,7 +30,7 @@ namespace LicenseManagementLambda
             var sqsEvent = input.ToObject<SQSEvent>();
             var request = input.ToObject<APIGatewayProxyRequest>();
 
-            if (sqsEvent.Records is not null)
+            if (sqsEvent?.Records is not null)
             {
                 var services = new ServiceCollection();
                 IServiceProvider _serviceProvider = new ServiceProviderBuilder().Build(services);
@@ -44,7 +44,7 @@ namespace LicenseManagementLambda
                     StatusCode = 200,
                 };
             }
-            if (request.Resource is not null)
+            if (request?.Resource is not null)
             {
                 LambdaEntryPoint lambdaEntryPoint = new();
                 return await lambdaEntryPoint.FunctionHandlerAsync(request, lambdaContext);

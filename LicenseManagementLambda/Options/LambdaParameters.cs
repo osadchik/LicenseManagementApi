@@ -8,11 +8,11 @@
         /// <summary>
         /// Products API url.
         /// </summary>
-        public string ProductsApiUrl { get; set; }
+        public string? ProductsApiUrl { get; set; }
 
         /// <summary>
         /// Users API url.
         /// </summary>
-        public string UsersApiUrl { get; set; }
+        public string? UsersApiUrl { get; set; }
     }
 }

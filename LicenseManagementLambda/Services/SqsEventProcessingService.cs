@@ -20,7 +20,7 @@ namespace LicenseManagementLambda.Services
         /// <summary>
         /// Initializes a new instance of <see cref="SqsEventProcessingService"/> class.
         /// </summary>
-        /// <param name="strategySelector"><see cref="IDataHandlerStrategySelector"/></param>
+        /// <param name="entitlementService"><see cref="IProductEntitlementManagementService"/></param>
         /// <param name="logger">Logger instance.</param>
         public SqsEventProcessingService(IProductEntitlementManagementService entitlementService, ILogger<SqsEventProcessingService> logger)
         {
@@ -44,22 +44,27 @@ namespace LicenseManagementLambda.Services
             _logger.LogDebug("SQS message processing started. Message: {message}", input.ToString());
             var sqsEvent = input.ToObject<SQSEvent>();
 
+            if (sqsEvent is null) throw new ArgumentException(nameof(sqsEvent));
+
             foreach (SQSMessage message in sqsEvent.Records)
             {
                 _logger.LogDebug("Started processing SQSMessage {MessageId}", message.MessageId);
                 var body = JObject.Parse(message.Body);
-                var entityType = body["EntityType"].ToString();
-                _logger.LogDebug("Entity type is {type}", entityType);
+                var entityType = body["EntityType"]?.ToString();
 
                 switch (entityType)
                 {
                     case EntityTypes.User:
                         BaseMessage<UserDto> userMessage = JsonConvert.DeserializeObject<BaseMessage<UserDto>>(message.Body);
-                        _entitlementService.UpdateUserDetails(userMessage);
+                        await _entitlementService.UpdateUserDetails(userMessage);
                         break;
+
                     case EntityTypes.Product:
                         BaseMessage<ProductDto> productMessage = JsonConvert.DeserializeObject<BaseMessage<ProductDto>>(message.Body);
-                        _entitlementService.UpdateProductDetails(productMessage);
+                        await _entitlementService.UpdateProductDetails(productMessage);
+                        break;
+
+                    default:
                         break;
                 }
 

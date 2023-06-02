@@ -8,9 +8,9 @@ namespace Common.Entities
         [DynamoDBHashKey]
         public Guid EntitlementId { get; set; } = Guid.NewGuid();
 
-        public string LicenseId { get; set; }
+        public string LicenseId { get; set; } = null!;
 
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null!;
 
         public string ProductName { get; set; } = null!;
 
