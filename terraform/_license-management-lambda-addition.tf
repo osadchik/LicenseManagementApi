@@ -11,7 +11,8 @@ resource "aws_iam_policy" "license_management_dynamoDB_policy" {
           "dynamodb:DeleteItem",
           "dynamodb:UpdateItem",
           "dynamodb:PutItem",
-          "dynamodb:GetItem"
+          "dynamodb:GetItem",
+          "dynamodb:Scan"
         ]
         Resource = [ "${module.dynamodb_license_table.arn}", "${module.dynamodb_entitlements_table.arn}" ]
       }

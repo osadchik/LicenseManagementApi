@@ -11,7 +11,8 @@ resource "aws_iam_policy" "user_integration_dynamoDB_policy" {
           "dynamodb:DeleteItem",
           "dynamodb:UpdateItem",
           "dynamodb:PutItem",
-          "dynamodb:GetItem"
+          "dynamodb:GetItem",
+          "dynamodb:Scan"
         ]
         Resource = [ "${module.dynamodb_state_table.arn}", "${module.dynamodb_users_table.arn}" ]
       }
