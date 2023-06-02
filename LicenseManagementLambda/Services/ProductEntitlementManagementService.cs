@@ -129,7 +129,7 @@ namespace LicenseManagementLambda.Services
         {
             _logger.LogDebug("Received product details: {@details}", details);
             ProductDto content = details.Content;
-            IList<ProductEntitlementDto> entitlements = await _productEntitlementRepository.GetByProductIdAsync(new Guid(details.EntityId));
+            IList<ProductEntitlementDto> entitlements = await _productEntitlementRepository.GetByProductIdAsync(details.EntityId);
 
             switch (details.Action)
             {
