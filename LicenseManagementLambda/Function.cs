@@ -4,10 +4,7 @@ using Amazon.Lambda.Serialization.Json;
 using Amazon.Lambda.SQSEvents;
 using Common.Interfaces;
 using LicenseManagementLambda.Builders;
-using LicenseManagementLambda.Interfaces;
-using LicenseManagementLambda.Services;
 using Newtonsoft.Json.Linq;
-using static Amazon.Lambda.SQSEvents.SQSEvent;
 
 namespace LicenseManagementLambda
 {
@@ -45,7 +42,10 @@ namespace LicenseManagementLambda
 
                 await service.ProcessAsync(input);
 
-                return null;
+                return new APIGatewayProxyResponse
+                {
+                    StatusCode = 200,
+                };
             }
             if (request.Resource is not null)
             {
