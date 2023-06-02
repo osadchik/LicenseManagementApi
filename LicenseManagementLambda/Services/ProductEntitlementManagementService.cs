@@ -96,7 +96,7 @@ namespace LicenseManagementLambda.Services
 
         public async Task UpdateUserDetails(BaseMessage<UserDto> details)
         {
-            _logger.LogDebug("Received user update details: {@details}", details);
+            _logger.LogDebug("Received user details: {@details}", details);
             UserDto content = details.Content;
             IList<ProductEntitlementDto> entitlements = await _productEntitlementRepository.GetByUserIdAsync(new Guid(details.EntityId));
 

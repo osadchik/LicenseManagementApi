@@ -84,12 +84,12 @@ namespace LicenseManagementLambda.Repositories
             var searchResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(new[] { scanCondition })
                 .GetRemainingAsync();
 
+            _logger.LogInformation("Retrieved product entitlements: {searchResult}", searchResult);
+
             if (searchResult is null || !searchResult.Any())
             {
                 throw new EntitlementNotFoundException();
             }
-
-            _logger.LogInformation("Successfully retrieved product entitlements: {searchResult}", searchResult);
 
             return searchResult;
         }
@@ -103,12 +103,12 @@ namespace LicenseManagementLambda.Repositories
             var searchResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(new[] { scanCondition })
                 .GetRemainingAsync();
 
+            _logger.LogInformation("Retrieved product entitlements: {searchResult}", searchResult);
+
             if (searchResult is null || !searchResult.Any())
             {
                 throw new EntitlementNotFoundException();
             }
-
-            _logger.LogInformation("Successfully retrieved product entitlements: {searchResult}", searchResult);
 
             return searchResult;
         }

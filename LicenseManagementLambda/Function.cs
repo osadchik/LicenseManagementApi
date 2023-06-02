@@ -45,14 +45,15 @@ namespace LicenseManagementLambda
 
                 await service.ProcessAsync(input);
             }
-
             if (request.Resource is not null)
             {
                 LambdaEntryPoint lambdaEntryPoint = new();
                 return await lambdaEntryPoint.FunctionHandlerAsync(request, lambdaContext);
             }
-
-            throw new ArgumentException("Input type is unknown and can't be processed.");
+            else
+            {
+                throw new ArgumentException("Input type is unknown and can't be processed.");
+            }
         }
     }
 }
