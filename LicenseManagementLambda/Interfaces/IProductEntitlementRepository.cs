@@ -14,13 +14,13 @@ namespace LicenseManagementLambda.Interfaces
         /// <param name="userId">User's unique identifier.</param>
         /// <returns><see cref="ProductEntitlementDto"/></returns>
 
-        Task<IList<ProductEntitlementDto>> GetByUserIdAsync(Guid userId);
+        Task<IList<ProductEntitlementDto>> GetByUserIdAsync(string userId);
 
         /// <summary>
         /// Return entitlements corresponding to product.
         /// </summary>
         /// <param name="productId">Product's unique identifier.</param>
         /// <returns><see cref="ProductEntitlementDto"/></returns>
-        Task<IList<ProductEntitlementDto>> GetByProductIdAsync(Guid productId);
+        Task<IList<ProductEntitlementDto>> GetByProductIdAsync(string productId);
     }
 }

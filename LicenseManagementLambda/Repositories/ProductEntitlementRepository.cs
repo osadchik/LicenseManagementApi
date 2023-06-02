@@ -76,7 +76,7 @@ namespace LicenseManagementLambda.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<IList<ProductEntitlementDto>> GetByUserIdAsync(Guid userId)
+        public async Task<IList<ProductEntitlementDto>> GetByUserIdAsync(string userId)
         {
             _logger.LogDebug("Trying to get product entitlement entity by user ID: {user}", userId);
 
@@ -95,7 +95,7 @@ namespace LicenseManagementLambda.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<IList<ProductEntitlementDto>> GetByProductIdAsync(Guid productId)
+        public async Task<IList<ProductEntitlementDto>> GetByProductIdAsync(string productId)
         {
             _logger.LogDebug("Trying to get product entitlement entity by product ID: {product}", productId);
 

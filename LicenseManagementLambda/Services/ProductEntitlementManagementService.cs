@@ -98,7 +98,7 @@ namespace LicenseManagementLambda.Services
         {
             _logger.LogDebug("Received user details: {@details}", details);
             UserDto content = details.Content;
-            IList<ProductEntitlementDto> entitlements = await _productEntitlementRepository.GetByUserIdAsync(new Guid(details.EntityId));
+            IList<ProductEntitlementDto> entitlements = await _productEntitlementRepository.GetByUserIdAsync(details.EntityId);
 
             switch (details.Action)
             {
