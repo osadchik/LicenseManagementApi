@@ -10,18 +10,12 @@ namespace LicenseManagementLambda
 {
     public class Function
     {
-        private readonly IServiceProvider _serviceProvider;
-
         /// <summary>
         /// Default constructor. This constructor is used by Lambda to construct the instance. When invoked in a Lambda environment
         /// the AWS credentials will come from the IAM role associated with the function and the AWS region will be set to the
         /// region the Lambda function is executed in.
         /// </summary>
-        public Function() 
-        {
-            //var services = new ServiceCollection();
-            //_serviceProvider = new ServiceProviderBuilder().Build(services);
-        }
+        public Function() { }
 
         /// <summary>
         /// This method is called for every Lambda invocation. This method takes in an SQS event object and can be used 
@@ -38,6 +32,9 @@ namespace LicenseManagementLambda
 
             if (sqsEvent.Records is not null)
             {
+                var services = new ServiceCollection();
+                IServiceProvider _serviceProvider = new ServiceProviderBuilder().Build(services);
+
                 var service = _serviceProvider.GetRequiredService<ISqsEventProcessingService>();
 
                 await service.ProcessAsync(input);

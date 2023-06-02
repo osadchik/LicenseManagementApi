@@ -49,6 +49,7 @@ namespace LicenseManagementLambda.Services
                 _logger.LogDebug("Started processing SQSMessage {MessageId}", message.MessageId);
                 var body = JObject.Parse(message.Body);
                 var entityType = body["EntityType"].ToString();
+                _logger.LogDebug("Entity type is {type}", entityType);
 
                 switch (entityType)
                 {
