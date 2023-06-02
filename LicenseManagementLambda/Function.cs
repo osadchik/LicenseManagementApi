@@ -5,6 +5,7 @@ using Amazon.Lambda.SQSEvents;
 using Common.Interfaces;
 using LicenseManagementLambda.Builders;
 using LicenseManagementLambda.Interfaces;
+using LicenseManagementLambda.Services;
 using Newtonsoft.Json.Linq;
 using static Amazon.Lambda.SQSEvents.SQSEvent;
 
@@ -38,14 +39,14 @@ namespace LicenseManagementLambda
             var sqsEvent = input.ToObject<SQSEvent>();
             var request = input.ToObject<APIGatewayProxyRequest>();
 
-            if (sqsEvent is not null)
+            if (sqsEvent.Records is not null)
             {
                 var service = _serviceProvider.GetRequiredService<ISqsEventProcessingService>();
 
                 await service.ProcessAsync(input);
             }
 
-            if (request is not null)
+            if (request.Resource is not null)
             {
                 LambdaEntryPoint lambdaEntryPoint = new();
                 return await lambdaEntryPoint.FunctionHandlerAsync(request, lambdaContext);

@@ -35,9 +35,9 @@ public class LicenseController : ControllerBase
     /// <remarks>
     /// Example url call:
     /// 
-    /// GET <code>license-management/license-api/licenses?id=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
+    /// GET <code>license-management/license-api/licenses?licenseId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
-    [HttpGet("{id}")]
+    [HttpGet]
     public async Task<IActionResult> GetLicense([Required, FromQuery] Guid licenseId)
     {
         var license = await _licenseManagementService.GetLicenseByIdAsync(licenseId);
@@ -54,7 +54,7 @@ public class LicenseController : ControllerBase
     /// <remarks>
     /// Example url call:
     /// 
-    /// POST <code>license-management/license-api/licences?id=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
+    /// POST <code>license-management/license-api/licences?productId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
     [HttpPost]
     public async Task<IActionResult> CreateLicense([FromQuery, Required] Guid productId, [FromBody, Required]LicenseCreateModel licenseModel)
@@ -90,9 +90,9 @@ public class LicenseController : ControllerBase
     /// <remarks>
     /// Example url call:
     /// 
-    /// DELETE <code>license-management/products-api/products?id=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
+    /// DELETE <code>license-management/products-api/products?licenseId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public async Task<IActionResult> DeleteLicense([Required, FromQuery] Guid licenseId)
     {
         var license = await _licenseManagementService.DeleteLicenseAsync(licenseId);
