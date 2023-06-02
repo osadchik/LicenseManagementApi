@@ -2,7 +2,7 @@
 aws_region = "eu-central-1"
 
 # Shared
-prefix = "LicenseManagement"
+prefix = "LicenseService"
 
 # Lambda Common
 runtime                      = "dotnet6"

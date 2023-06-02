@@ -1,12 +1,11 @@
-﻿using Amazon.Lambda.SQSEvents;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
-namespace UserIntegrationLambda.Interfaces
+namespace Common.Interfaces
 {
     /// <summary>
     /// Interface of SQS Event processor service.
     /// </summary>
-    internal interface ISqsEventProcessingService
+    public interface ISqsEventProcessingService
     {
         /// <summary>
         /// Processes the SQS Event and logs incomming message.

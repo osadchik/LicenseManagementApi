@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using UserIntegrationLambda.Interfaces;
 

@@ -6,13 +6,16 @@ namespace Common.Entities
 {
     public class BaseMessage<T> : IMessage<T>
     {
-        public BaseMessage(string entityId, ProcessAction action)
+        public BaseMessage(string entityId, string entityType, ProcessAction action)
         {
             EntityId = entityId;
+            EntityType = entityType;
             Action = action;
         }
 
         public string EntityId { get; }
+
+        public string EntityType { get; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public ProcessAction Action { get; }

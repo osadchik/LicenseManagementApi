@@ -1,4 +1,5 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using Common.Entities;
 using Common.Exceptions;
 using LicenseManagementLambda.Interfaces;
@@ -61,7 +62,7 @@ namespace LicenseManagementLambda.Repositories
         /// <inheritdoc/>
         public async Task<ProductEntitlementDto> SaveAsync(ProductEntitlementDto entitlement)
         {
-            _logger.LogDebug("Trying to save license entity: {@entity}", entitlement);
+            _logger.LogDebug("Trying to save product entitlement entity: {@entity}", entitlement);
 
             var config = new DynamoDBOperationConfig
             {
@@ -72,6 +73,44 @@ namespace LicenseManagementLambda.Repositories
             _logger.LogInformation("Successfully saved a new product entitlement entity: {@entity}", entitlement);
 
             return entitlement;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IList<ProductEntitlementDto>> GetByUserIdAsync(Guid userId)
+        {
+            _logger.LogDebug("Trying to get product entitlement entity by user ID: {user}", userId);
+
+            var scanCondition = new ScanCondition("UserId", ScanOperator.Equal, userId);
+            var searchResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(new[] { scanCondition })
+                .GetRemainingAsync();
+
+            if (searchResult is null || !searchResult.Any())
+            {
+                throw new EntitlementNotFoundException();
+            }
+
+            _logger.LogInformation("Successfully retrieved product entitlements: {searchResult}", searchResult);
+
+            return searchResult;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IList<ProductEntitlementDto>> GetByProductIdAsync(Guid productId)
+        {
+            _logger.LogDebug("Trying to get product entitlement entity by product ID: {product}", productId);
+
+            var scanCondition = new ScanCondition("ProductId", ScanOperator.Equal, productId);
+            var searchResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(new[] { scanCondition })
+                .GetRemainingAsync();
+
+            if (searchResult is null || !searchResult.Any())
+            {
+                throw new EntitlementNotFoundException();
+            }
+
+            _logger.LogInformation("Successfully retrieved product entitlements: {searchResult}", searchResult);
+
+            return searchResult;
         }
     }
 }

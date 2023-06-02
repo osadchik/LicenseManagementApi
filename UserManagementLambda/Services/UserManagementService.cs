@@ -1,4 +1,5 @@
-﻿using Common.Entities;
+﻿using Common.Constants;
+using Common.Entities;
 using Common.Exceptions;
 using Common.Interfaces;
 using Microsoft.Extensions.Options;
@@ -35,7 +36,7 @@ namespace UserManagementLambda.Services
         /// <inheritdoc/>
         public async Task<UserDto> CreateUser(UserDto user)
         {
-            var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), ProcessAction.Create) 
+            var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), EntityTypes.User, ProcessAction.Create) 
             {
                 Content = user
             };
@@ -48,7 +49,7 @@ namespace UserManagementLambda.Services
         /// <inheritdoc/>
         public async Task DeleteUser(Guid uuid)
         {
-            var userMessage = new BaseMessage<UserDto>(uuid.ToString(), ProcessAction.Delete);
+            var userMessage = new BaseMessage<UserDto>(uuid.ToString(), EntityTypes.User, ProcessAction.Delete);
 
             await _snsService.PublishToTopicAsync(_environmentVariables.SnsTopicArn, userMessage);
         }
@@ -81,7 +82,7 @@ namespace UserManagementLambda.Services
 
             if (existingUser is null) throw new UserNotFoundException();
 
-            var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), ProcessAction.Update)
+            var userMessage = new BaseMessage<UserDto>(user.Uuid.ToString(), EntityTypes.User, ProcessAction.Update)
             {
                 Content = user
             };

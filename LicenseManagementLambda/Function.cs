@@ -2,25 +2,35 @@
 using Amazon.Lambda.Core;
 using Amazon.Lambda.Serialization.Json;
 using Amazon.Lambda.SQSEvents;
+using Common.Interfaces;
+using LicenseManagementLambda.Builders;
+using LicenseManagementLambda.Interfaces;
 using Newtonsoft.Json.Linq;
+using static Amazon.Lambda.SQSEvents.SQSEvent;
 
 namespace LicenseManagementLambda
 {
     public class Function
     {
+        private readonly IServiceProvider _serviceProvider;
+
         /// <summary>
         /// Default constructor. This constructor is used by Lambda to construct the instance. When invoked in a Lambda environment
         /// the AWS credentials will come from the IAM role associated with the function and the AWS region will be set to the
         /// region the Lambda function is executed in.
         /// </summary>
-        public Function() { }
+        public Function() 
+        {
+            var services = new ServiceCollection();
+            _serviceProvider = new ServiceProviderBuilder().Build(services);
+        }
 
         /// <summary>
         /// This method is called for every Lambda invocation. This method takes in an SQS event object and can be used 
         /// to respond to SQS messages.
         /// </summary>
-        /// <param name="evnt"></param>
-        /// <param name="context"></param>
+        /// <param name="input"></param>
+        /// <param name="lambdaContext"></param>
         /// <returns></returns>
         [LambdaSerializer(typeof(JsonSerializer))]
         public async Task<APIGatewayProxyResponse> FunctionHandlerAsync(JObject input, ILambdaContext lambdaContext)
@@ -30,7 +40,9 @@ namespace LicenseManagementLambda
 
             if (sqsEvent is not null)
             {
-                // Process
+                var service = _serviceProvider.GetRequiredService<ISqsEventProcessingService>();
+
+                await service.ProcessAsync(input);
             }
 
             if (request is not null)
