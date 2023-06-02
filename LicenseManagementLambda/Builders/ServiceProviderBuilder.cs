@@ -12,7 +12,7 @@ namespace LicenseManagementLambda.Builders
     /// Provides a creation service of <see cref="IServiceProvider"/> instance.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class ServiceProviderBuilder
+    internal class ServiceProviderBuilder
     {
         private readonly IConfiguration _configuration;
 

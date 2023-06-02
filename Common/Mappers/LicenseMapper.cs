@@ -10,7 +10,7 @@ namespace Common.Mappers
             {
                 ProductId = productId,
                 PriceAmount = licenseModel.PriceAmount,
-                Currency = licenseModel.Currency
+                Currency = licenseModel.Currency ?? "$"
             };
 
             return licenseDto;

@@ -59,7 +59,7 @@ public class Startup
     /// <summary>
     /// Adds services to the DI container. This method gets called by the runtime.
     /// </summary>
-    /// <param name="services"><see cref="IServiceCollection"/></param>
+    /// <param name="app"><see cref="IApplicationBuilder"/></param>
     public void Configure(IApplicationBuilder app)
     {
         app.UseHttpsRedirection();

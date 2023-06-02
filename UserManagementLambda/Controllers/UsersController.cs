@@ -33,7 +33,7 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <param name="id">User's unique identifier.</param>
     /// <returns><see cref="IActionResult"/></returns>
-    [HttpGet]
+    [HttpGet("getById")]
     public async Task<IActionResult> GetUserById([Required, FromQuery] Guid id)
     {
         UserDto user = await _userManagementService.GetUserByUuid(id);
@@ -44,9 +44,9 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Get user with a specific username.
     /// </summary>
-    /// <param name="id">User's unique identifier.</param>
+    /// <param name="username">User's unique identifier.</param>
     /// <returns><see cref="IActionResult"/></returns>
-    [HttpGet]
+    [HttpGet("getByUsername")]
     public async Task<IActionResult> GetUserByUsername([Required, FromQuery] string username)
     {
         IList<UserDto> user = await _userManagementService.GetUserByUserName(username);

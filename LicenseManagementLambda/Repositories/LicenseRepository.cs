@@ -8,7 +8,7 @@ namespace LicenseManagementLambda.Repositories
     /// <summary>
     /// Licenses datastore service.
     /// </summary>
-    public class LicenseRepository : ILicenseRepository
+    internal class LicenseRepository : ILicenseRepository
     {
         private readonly IDynamoDBContext _dynamoDbContext;
         private readonly ILogger<LicenseRepository> _logger;

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace LicenseManagementLambda.Services
 {
-    public class ProductEntitlementManagementService : IProductEntitlementManagementService
+    internal class ProductEntitlementManagementService : IProductEntitlementManagementService
     {
         private readonly IProductEntitlementRepository _productEntitlementRepository;
         private readonly ILicenseRepository _licenseRepository;
@@ -52,7 +52,7 @@ namespace LicenseManagementLambda.Services
             }
             _logger.LogInformation("Received entity: {@response}", productDetails);
 
-            var usersResponse = await _usersHttpClient.GetAsync($"users?id={userId}");
+            var usersResponse = await _usersHttpClient.GetAsync($"users/getById?id={userId}");
             usersResponse.EnsureSuccessStatusCode();
             _logger.LogInformation("Received http response from Users API: {response}", usersResponse.StatusCode);
 

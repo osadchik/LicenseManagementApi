@@ -10,7 +10,7 @@ namespace LicenseManagementLambda.Controllers;
 [ApiController]
 [Route("license-api/entitlements")]
 [Produces("application/json")]
-public class ProductEntitlementController : ControllerBase
+internal class ProductEntitlementController : ControllerBase
 {
     private readonly IProductEntitlementManagementService _productEntitlementManagementService;
     private readonly ILogger<ProductEntitlementController> _logger;

@@ -9,7 +9,7 @@ namespace LicenseManagementLambda.Repositories
     /// <summary>
     /// Product entitlement datastore service.
     /// </summary>
-    public class ProductEntitlementRepository : IProductEntitlementRepository
+    internal class ProductEntitlementRepository : IProductEntitlementRepository
     {
         private readonly IDynamoDBContext _dynamoDbContext;
         private readonly ILogger<ProductEntitlementRepository> _logger;

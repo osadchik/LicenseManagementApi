@@ -11,7 +11,7 @@ namespace LicenseManagementLambda.Controllers;
 [ApiController]
 [Route("license-api/licenses")]
 [Produces("application/json")]
-public class LicenseController : ControllerBase
+internal class LicenseController : ControllerBase
 {
     private readonly ILicenseManagementService _licenseManagementService;
     private readonly ILogger<LicenseController> _logger;
