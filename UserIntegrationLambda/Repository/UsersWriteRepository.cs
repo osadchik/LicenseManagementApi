@@ -74,7 +74,6 @@ namespace UserIntegrationLambda.Repository
             var config = new DynamoDBOperationConfig
             {
                 OverrideTableName = _lambdaParameters.UsersTableName,
-                IgnoreNullValues = false
             };
 
             UserDto user = await _dynamoDbContext.LoadAsync<UserDto>(id, config);
@@ -83,7 +82,7 @@ namespace UserIntegrationLambda.Repository
                 throw new UserNotFoundException();
             }
 
-            await _dynamoDbContext.DeleteAsync(id, config);
+            await _dynamoDbContext.DeleteAsync<UserDto>(id, config);
             _logger.LogInformation("Successfully deleted user entity: {@userDto}", user);
             return user;
         }
