@@ -31,6 +31,10 @@ public class Startup
     /// <param name="services"><see cref="IServiceCollection"/></param>
     public void ConfigureServices(IServiceCollection services)
     {
+        services.ConfigureLambdaVariables<LambdaParameters>(_configuration);
+
+        services.ConfigureLogging();
+        services.ConfigureDynamoDB(_configuration);
         services.AddControllers();
         services.ConfigureSwaggerServices(new OpenApiInfo
         {
@@ -38,6 +42,22 @@ public class Startup
             Title = "License Management Lambda",
             Description = "License API Lambda implementation for License Management Service."
         });
+
+        services.AddHttpClient("ProductsAPI", httpClient =>
+        {
+            httpClient.BaseAddress = new Uri(_configuration.GetSection("Parameters:ProductsApiUrl").Value);
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
+        services.AddHttpClient("UsersAPI", httpClient =>
+        {
+            httpClient.BaseAddress = new Uri(_configuration.GetSection("Parameters:UsersApiUrl").Value);
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
+
+        services.AddScoped<ILicenseManagementService, LicenseManagementService>();
+        services.AddScoped<ILicenseRepository, LicenseRepository>();
+        services.AddScoped<IProductEntitlementManagementService, ProductEntitlementManagementService>();
+        services.AddScoped<IProductEntitlementRepository, ProductEntitlementRepository>();
     }
 
     /// <summary>
