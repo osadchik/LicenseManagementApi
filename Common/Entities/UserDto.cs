@@ -17,7 +17,6 @@ namespace Common.Entities
         /// <summary>
         /// Unique Id that a user logs in to their system with, often an email address.
         /// </summary>
-        [DynamoDBRangeKey]
         public string Username { get; set; } = null!;
 
         /// <summary>
