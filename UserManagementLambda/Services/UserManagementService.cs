@@ -55,7 +55,7 @@ namespace UserManagementLambda.Services
         }
 
         /// <inheritdoc/>
-        public async Task<UserDto> GetUserByUserName(string userName)
+        public async Task<IList<UserDto>> GetUserByUserName(string userName)
         {
             var user = await _usersRepository.GetByUsernameAsync(userName);
 

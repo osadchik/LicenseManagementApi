@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Common.Entities
+﻿namespace Common.Entities
 {
     /// <summary>
     /// Action being performed on an entity.

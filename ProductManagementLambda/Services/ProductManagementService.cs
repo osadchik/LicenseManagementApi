@@ -2,7 +2,7 @@
 using Common.Exceptions;
 using ProductManagementLambda.Interfaces;
 
-namespace ProductManagementLambda.Repositories
+namespace ProductManagementLambda.Services
 {
     /// <summary>
     /// Manages product operations.

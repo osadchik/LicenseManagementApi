@@ -19,7 +19,7 @@ namespace UserManagementLambda.Interfaces
         /// </summary>
         /// <param name="userName">User's name.</param>
         /// <returns></returns>
-        Task<UserDto> GetUserByUserName(string userName);
+        Task<IList<UserDto>> GetUserByUserName(string userName);
 
         /// <summary>
         /// Sends user creation request to the SNS topic.

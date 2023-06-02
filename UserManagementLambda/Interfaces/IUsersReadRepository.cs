@@ -13,6 +13,6 @@ namespace UserManagementLambda.Interfaces
         /// </summary>
         /// <param name="username">Username.</param>
         /// <returns>User dto.</returns>
-        Task<UserDto> GetByUsernameAsync(string username);
+        Task<IList<UserDto>> GetByUsernameAsync(string username);
     }
 }

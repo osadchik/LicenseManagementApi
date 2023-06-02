@@ -2,6 +2,7 @@ using Common.Extensions;
 using Microsoft.OpenApi.Models;
 using ProductManagementLambda.Interfaces;
 using ProductManagementLambda.Repositories;
+using ProductManagementLambda.Services;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ProductManagementLambda;

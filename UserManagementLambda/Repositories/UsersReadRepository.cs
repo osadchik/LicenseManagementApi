@@ -37,7 +37,7 @@ namespace UserManagementLambda.Repositories
         }
 
         /// <inheritdoc/>
-        public Task<UserDto> GetByUsernameAsync(string username)
+        public Task<IList<UserDto>> GetByUsernameAsync(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -58,12 +58,12 @@ namespace UserManagementLambda.Repositories
             return user;
         }
 
-        private async Task<UserDto> GetUserByUsernameInternalAsync(string username)
+        private async Task<IList<UserDto>> GetUserByUsernameInternalAsync(string username)
         {
             _logger.LogDebug("Trying to get user entity with username: {username}", username);
 
-            var scanCondition = new ScanCondition("Username", ScanOperator.Equal, username);
-            var searchResult = await _dynamoDbContext.ScanAsync<UserDto>(new[] { scanCondition })
+            List<ScanCondition> scanConditions = new() { new ScanCondition("Username", ScanOperator.Equal, username) };
+            var searchResult = await _dynamoDbContext.ScanAsync<UserDto>(scanConditions)
                 .GetRemainingAsync();
 
             if (searchResult is null || searchResult.FirstOrDefault() is null)
@@ -73,7 +73,7 @@ namespace UserManagementLambda.Repositories
 
             _logger.LogInformation("Successfully retrieved a new user entity: {@userDto}", searchResult);
 
-            return searchResult.First();
+            return searchResult;
         }
     }
 }
