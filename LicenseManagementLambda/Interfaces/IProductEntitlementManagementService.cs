@@ -31,7 +31,7 @@ namespace LicenseManagementLambda.Interfaces
         /// </summary>
         /// <param name="entitlementDto"><see cref="ProductEntitlementDto"/></param>
         /// <returns>Updated entity.</returns>
-        Task<ProductEntitlementDto> UpdateEntitlementAsync(LicenseDto entitlementDto);
+        Task<ProductEntitlementDto> UpdateEntitlementAsync(ProductEntitlementDto entitlementDto);
 
         Task UpdateUserDetails(BaseMessage<UserDto> details);
 

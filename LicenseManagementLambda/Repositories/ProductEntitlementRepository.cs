@@ -80,9 +80,11 @@ namespace LicenseManagementLambda.Repositories
         {
             _logger.LogDebug("Trying to get product entitlement entity by user ID: {user}", userId);
 
-            var scanCondition = new ScanCondition("UserId", ScanOperator.Equal, userId);
-            var searchResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(new[] { scanCondition })
-                .GetRemainingAsync();
+            List<ScanCondition> scanConditions = new() { new ScanCondition("UserId", ScanOperator.Equal, userId) };
+            var scanResult = _dynamoDbContext.ScanAsync<ProductEntitlementDto>(scanConditions);
+            _logger.LogDebug("Scan Result: {result}", scanResult);
+
+            var searchResult = await scanResult.GetRemainingAsync();
 
             _logger.LogInformation("Retrieved product entitlements: {searchResult}", searchResult);
 
@@ -99,9 +101,11 @@ namespace LicenseManagementLambda.Repositories
         {
             _logger.LogDebug("Trying to get product entitlement entity by product ID: {product}", productId);
 
-            var scanCondition = new ScanCondition("ProductId", ScanOperator.Equal, productId);
-            var searchResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(new[] { scanCondition })
-                .GetRemainingAsync();
+            List<ScanCondition> scanConditions = new() { new ScanCondition("ProductId", ScanOperator.Equal, productId) };
+            var scanResult = _dynamoDbContext.ScanAsync<ProductEntitlementDto>(scanConditions);
+            _logger.LogDebug("Scan Result: {result}", scanResult);
+
+            var searchResult = await scanResult.GetRemainingAsync();
 
             _logger.LogInformation("Retrieved product entitlements: {searchResult}", searchResult);
 

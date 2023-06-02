@@ -77,21 +77,21 @@ namespace LicenseManagementLambda.Services
         }
 
         /// <inheritdoc/>
-        public Task<ProductEntitlementDto> DeleteEntitlementAsync(Guid entitlementId)
+        public async Task<ProductEntitlementDto> DeleteEntitlementAsync(Guid entitlementId)
         {
-            throw new NotImplementedException();
+            return await _productEntitlementRepository.DeleteAsync(entitlementId);
         }
 
         /// <inheritdoc/>
-        public Task<ProductEntitlementDto> GetEntitlementByIdAsync(Guid entitlementId)
+        public async Task<ProductEntitlementDto> GetEntitlementByIdAsync(Guid entitlementId)
         {
-            throw new NotImplementedException();
+            return await _productEntitlementRepository.GetByIdAsync(entitlementId);
         }
 
         /// <inheritdoc/>
-        public Task<ProductEntitlementDto> UpdateEntitlementAsync(LicenseDto entitlementDto)
+        public async Task<ProductEntitlementDto> UpdateEntitlementAsync(ProductEntitlementDto entitlementDto)
         {
-            throw new NotImplementedException();
+            return await _productEntitlementRepository.SaveAsync(entitlementDto);
         }
 
         public async Task UpdateUserDetails(BaseMessage<UserDto> details)
@@ -125,9 +125,35 @@ namespace LicenseManagementLambda.Services
             }
         }
 
-        public Task UpdateProductDetails(BaseMessage<ProductDto> details)
+        public async Task UpdateProductDetails(BaseMessage<ProductDto> details)
         {
-            throw new NotImplementedException();
+            _logger.LogDebug("Received product details: {@details}", details);
+            ProductDto content = details.Content;
+            IList<ProductEntitlementDto> entitlements = await _productEntitlementRepository.GetByProductIdAsync(new Guid(details.EntityId));
+
+            switch (details.Action)
+            {
+                case ProcessAction.Delete:
+                    foreach (ProductEntitlementDto entry in entitlements)
+                    {
+                        entry.ProductDescription = EntityTypes.Deleted;
+                        entry.ProductName = EntityTypes.Deleted;
+                        await _productEntitlementRepository.SaveAsync(entry);
+                    }
+                    break;
+
+                case ProcessAction.Update:
+                    foreach (ProductEntitlementDto entry in entitlements)
+                    {
+                        entry.ProductDescription = content.Description;
+                        entry.ProductName = content.Name;
+                        await _productEntitlementRepository.SaveAsync(entry);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }
