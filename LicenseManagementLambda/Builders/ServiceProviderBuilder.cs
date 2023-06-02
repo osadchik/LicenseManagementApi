@@ -44,14 +44,20 @@ namespace LicenseManagementLambda.Builders
 
             AddServices(serviceCollection);
 
+            var usersUrl = _configuration?.GetSection("Parameters:UsersApiUrl").Value 
+                ?? throw new ArgumentException(nameof(_configuration));
+
+            var productsUrl = _configuration?.GetSection("Parameters:ProductsApiUrl").Value
+                ?? throw new ArgumentException(nameof(_configuration));
+
             serviceCollection.AddHttpClient("ProductsAPI", httpClient =>
             {
-                httpClient.BaseAddress = new Uri(_configuration.GetSection("Parameters:ProductsApiUrl").Value);
+                httpClient.BaseAddress = new Uri(productsUrl);
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             });
             serviceCollection.AddHttpClient("UsersAPI", httpClient =>
             {
-                httpClient.BaseAddress = new Uri(_configuration.GetSection("Parameters:UsersApiUrl").Value);
+                httpClient.BaseAddress = new Uri(usersUrl);
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             });
 

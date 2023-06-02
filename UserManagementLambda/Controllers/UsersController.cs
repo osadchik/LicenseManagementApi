@@ -85,8 +85,8 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <param name="id">User's unique indentifier.</param>
     /// <returns><see cref="IActionResult"/></returns>
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUser(Guid id)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteUser([FromQuery, Required] Guid id)
     {
         await _userManagementService.DeleteUser(id);
 
