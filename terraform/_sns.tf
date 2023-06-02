@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "put_to_sqs" {
     }
 
     actions   = ["sqs:SendMessage"]
-    resources = [ module.user-integration-lambda-sqs.arn ]
+    resources = [ module.user-integration-lambda-sqs.arn, module.license-management-lambda-sqs.arn ]
 
     condition {
       test     = "ArnEquals"
@@ -27,5 +27,10 @@ data "aws_iam_policy_document" "put_to_sqs" {
 
 resource "aws_sqs_queue_policy" "users_subscription" {
   queue_url = module.user-integration-lambda-sqs.url
+  policy = data.aws_iam_policy_document.put_to_sqs.json
+}
+
+resource "aws_sqs_queue_policy" "license_subscription" {
+  queue_url = module.license-management-lambda-sqs.url
   policy = data.aws_iam_policy_document.put_to_sqs.json
 }

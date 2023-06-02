@@ -103,15 +103,14 @@ namespace LicenseManagementLambda.Services
             switch (details.Action)
             {
                 case ProcessAction.Delete:
-
                     foreach (ProductEntitlementDto entry in entitlements)
                     {
                         entry.UserId = EntityTypes.Deleted;
                         entry.UserName = EntityTypes.Deleted;
                         await _productEntitlementRepository.SaveAsync(entry);
                     }
-
                     break;
+
                 case ProcessAction.Update:
                     foreach (ProductEntitlementDto entry in entitlements)
                     {
@@ -119,7 +118,9 @@ namespace LicenseManagementLambda.Services
                         entry.UserName = content.Username;
                         await _productEntitlementRepository.SaveAsync(entry);
                     }
+                    break;
 
+                default:
                     break;
             }
         }
