@@ -36,5 +36,5 @@ resource "aws_sns_topic_subscription" "license-management_sqs_target" {
     protocol             = "sqs"
     endpoint             = module.license-management-lambda-sqs.arn
     raw_message_delivery = true
-    filter_policy   	 = "${jsonencode(map("Action", tolist(["Delete", "Update"])))}"
+    filter_policy   	 = "${jsonencode(tomap({"Action" = tolist(["Delete", "Update"])}))}"
 }
