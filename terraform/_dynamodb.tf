@@ -56,14 +56,9 @@ module "dynamodb_state_table" {
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity
-    hash_key = "EntitlementId"
+    hash_key = var.hash_key
 
-    attributes = [
-        {
-            name = "EntitlementId"
-            type = "S"
-        }
-    ]
+    attributes = var.attributes
 }
 
 module "dynamodb_entitlements_table" {
@@ -73,7 +68,12 @@ module "dynamodb_entitlements_table" {
     billing_mode = var.billing_mode
     read_capacity = var.read_capacity
     write_capacity = var.write_capacity
-    hash_key = var.hash_key
+    hash_key = "EntitlementId"
 
-    attributes = var.attributes
+    attributes = [
+        {
+            name = "EntitlementId"
+            type = "S"
+        }
+    ]
 }
