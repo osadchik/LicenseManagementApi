@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "license_management_put_to_sqs" {
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [ module.user-management-lambda-sns.arn, product-management-lambda-sns.arn]
+      values   = [ module.user-management-lambda-sns.arn, module.product-management-lambda-sns.arn]
     }
   }
 }
