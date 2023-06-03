@@ -51,9 +51,9 @@ public class ProductEntitlementController : ControllerBase
     /// POST <code>license-management/license-api/entitlements?licenseId={id}&amp;userId={id}</code>
     /// </remarks>
     [HttpPost]
-    public async Task<IActionResult> CreateEntitlement([FromQuery, Required] Guid licenseId, [FromQuery, Required] Guid userId)
+    public async Task<IActionResult> CreateEntitlement([FromQuery, Required] Guid licenseId, [FromQuery, Required] Guid productId, [FromQuery, Required] Guid userId)
     {
-        var license = await _productEntitlementManagementService.CreateEntitlementAsync(licenseId, userId);
+        var license = await _productEntitlementManagementService.CreateEntitlementAsync(licenseId, productId, userId);
 
         return CreatedAtAction(nameof(CreateEntitlement), license);
     }
