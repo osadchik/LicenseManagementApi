@@ -26,7 +26,7 @@ module "user-integration-lambda" {
         "CircuitBreaker__CircuitStateTableName" = module.dynamodb_state_table.name
         "CircuitBreaker__ErrorThreshold"        = 1
         "CircuitBreaker__SamplingDuration"      = "00:05:00"
-        "CircuitBreaker__Timeout"               = "00:05:00"
+        "CircuitBreaker__Timeout"               = "00:01:00"
         "CircuitBreaker__DeadLetterQueueUrl"    = module.user-integration-lambda-dlq.url
         "CircuitBreaker__SourceQueueUrl"        = module.user-integration-lambda-sqs.url
     }  

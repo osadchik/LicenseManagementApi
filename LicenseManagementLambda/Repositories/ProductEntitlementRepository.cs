@@ -31,6 +31,10 @@ namespace LicenseManagementLambda.Repositories
             _logger.LogDebug("Trying to get product entitlement entity with id: {id}", id);
 
             ProductEntitlementDto entitlement = await _dynamoDbContext.LoadAsync<ProductEntitlementDto>(id);
+            if (entitlement is null)
+            {
+                throw new EntitlementNotFoundException();
+            }
 
             _logger.LogInformation("Successfully retrieved product entitlement entity: {@entity}", entitlement);
 
