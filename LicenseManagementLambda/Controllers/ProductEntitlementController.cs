@@ -57,4 +57,22 @@ public class ProductEntitlementController : ControllerBase
 
         return CreatedAtAction(nameof(CreateEntitlement), license);
     }
+
+    /// <summary>
+    /// Deletes product entitlement by ID.
+    /// </summary>
+    /// <param name="entitlementId">Product's entitlement unique identifier.</param>
+    /// <returns>Deleted product entitlement entity.</returns>
+    /// <remarks>
+    /// Example url call:
+    /// 
+    /// DELETE <code>license-management/license-api/entitlements?entitlementId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
+    /// </remarks>
+    [HttpGet]
+    public async Task<IActionResult> DeleteEntitlement([Required, FromQuery] Guid entitlementId)
+    {
+        var entitlement = await _productEntitlementManagementService.DeleteEntitlementAsync(entitlementId);
+
+        return Ok(entitlement);
+    }
 }

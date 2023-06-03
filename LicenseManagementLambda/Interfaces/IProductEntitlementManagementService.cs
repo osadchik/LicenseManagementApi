@@ -17,7 +17,7 @@ namespace LicenseManagementLambda.Interfaces
         /// <param name="licenseId">License's unqiue indentifier.</param>
         /// <param name="userId">Users's unqiue indentifier.</param>
         /// <returns>Created entity.</returns>
-        Task<ProductEntitlementDto> CreateEntitlementAsync(Guid licenseId, Guid userId);
+        Task<ProductEntitlementDto> CreateEntitlementAsync(Guid licenseId, Guid productId, Guid userId);
 
         /// <summary>
         /// Manages entitlement deletion operation.

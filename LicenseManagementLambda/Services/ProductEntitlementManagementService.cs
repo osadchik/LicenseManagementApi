@@ -35,12 +35,12 @@ namespace LicenseManagementLambda.Services
         }
 
         /// <inheritdoc/>
-        public async Task<ProductEntitlementDto> CreateEntitlementAsync(Guid licenseId, Guid userId)
+        public async Task<ProductEntitlementDto> CreateEntitlementAsync(Guid licenseId, Guid productId, Guid userId)
         {
             var license = await _licenseRepository.GetByIdAsync(licenseId);
             if (license is null) throw new LicenseNotFoundException();
 
-            var productsResponse = await _productsHttpClient.GetAsync($"products?id={license.ProductId}");
+            var productsResponse = await _productsHttpClient.GetAsync($"products?id={productId}");
             productsResponse.EnsureSuccessStatusCode();
 
             _logger.LogInformation("Received http response from Products API: {response}", productsResponse.StatusCode);
@@ -67,6 +67,7 @@ namespace LicenseManagementLambda.Services
             {
                 UserId = userId.ToString(),
                 LicenseId = licenseId.ToString(),
+                ProductId = productId.ToString(),
                 ProductName = productDetails.Name,
                 ProductDescription = productDetails.Description,
                 UserName = userDetails.Username
@@ -136,6 +137,7 @@ namespace LicenseManagementLambda.Services
                 case ProcessAction.Delete:
                     foreach (ProductEntitlementDto entry in entitlements)
                     {
+                        entry.ProductId = EntityTypes.Deleted;
                         entry.ProductDescription = EntityTypes.Deleted;
                         entry.ProductName = EntityTypes.Deleted;
                         await _productEntitlementRepository.SaveAsync(entry);
@@ -145,6 +147,7 @@ namespace LicenseManagementLambda.Services
                 case ProcessAction.Update:
                     foreach (ProductEntitlementDto entry in entitlements)
                     {
+                        entry.ProductId = content.ProductId.ToString();
                         entry.ProductDescription = content.Description;
                         entry.ProductName = content.Name;
                         await _productEntitlementRepository.SaveAsync(entry);
