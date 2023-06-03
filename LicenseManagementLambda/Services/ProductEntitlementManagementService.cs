@@ -115,7 +115,7 @@ namespace LicenseManagementLambda.Services
                 case ProcessAction.Update:
                     foreach (ProductEntitlementDto entry in entitlements)
                     {
-                        entry.UserId = details.EntityId;
+                        entry.UserId = content.Uuid.ToString();
                         entry.UserName = content.Username;
                         await _productEntitlementRepository.SaveAsync(entry);
                     }

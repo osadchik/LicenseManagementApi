@@ -1,5 +1,6 @@
 using Common.Extensions;
 using Common.Interfaces;
+using Common.Middleware;
 using Common.Services;
 using Microsoft.OpenApi.Models;
 using ProductManagementLambda.Interfaces;
@@ -62,6 +63,8 @@ public class Startup
         app.UseHttpsRedirection();
 
         app.UseRouting();
+
+        app.UseMiddleware<UnhandledExceptionLoggingMiddleware>();
 
         app.UseEndpoints(endpoints =>
         {

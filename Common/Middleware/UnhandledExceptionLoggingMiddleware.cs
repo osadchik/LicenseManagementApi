@@ -50,7 +50,8 @@ namespace Common.Middleware
             }
             catch (Exception ex) when (ex is UserNotFoundException || 
                                        ex is ProductNotFoundException || 
-                                       ex is LicenseNotFoundException)
+                                       ex is LicenseNotFoundException ||
+                                       ex is EntitlementNotFoundException)
             {
                 const string message = "Entity does not exist";
                 _logger.LogWarning(ex, message);
