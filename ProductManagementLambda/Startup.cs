@@ -38,6 +38,8 @@ public class Startup
 
         services.ConfigureLogging();
         services.ConfigureDynamoDB(_configuration);
+        services.ConfigureSns();
+
         services.AddControllers();
         services.ConfigureSwaggerServices(new OpenApiInfo
         {
