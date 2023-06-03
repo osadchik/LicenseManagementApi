@@ -1,6 +1,9 @@
 using Common.Extensions;
+using Common.Interfaces;
+using Common.Services;
 using Microsoft.OpenApi.Models;
 using ProductManagementLambda.Interfaces;
+using ProductManagementLambda.Options;
 using ProductManagementLambda.Repositories;
 using ProductManagementLambda.Services;
 using System.Diagnostics.CodeAnalysis;
@@ -13,7 +16,7 @@ namespace ProductManagementLambda;
 [ExcludeFromCodeCoverage]
 public class Startup
 {
-    private IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
 
     /// <summary>
     /// Intializes a new instance of <see cref="Startup"/> class.
@@ -31,6 +34,8 @@ public class Startup
     /// <param name="services"><see cref="IServiceCollection"/></param>
     public void ConfigureServices(IServiceCollection services)
     {
+        services.ConfigureLambdaVariables<LambdaParameters>(_configuration);
+
         services.ConfigureLogging();
         services.ConfigureDynamoDB(_configuration);
         services.AddControllers();
@@ -43,6 +48,7 @@ public class Startup
 
         services.AddScoped<IProductManagementService, ProductManagementService>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ISnsClient, SnsClient>();
     }
 
     /// <summary>

@@ -20,5 +20,6 @@ module "product-management-lambda" {
 
     environment_variables = { 
         "SWAGGER_ENABLED" = true
+        "Parameters__SnsTopicArn"    = module.product-management-lambda-sns.arn
     }  
 }

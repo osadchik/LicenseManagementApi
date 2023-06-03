@@ -31,8 +31,16 @@ module "license-management-lambda-dlq" {
     sqs_name = "${var.prefix}-${var.license_management_lambda_name}-deadletterqueue"
 }
 
-resource "aws_sns_topic_subscription" "license-management_sqs_target" {
+resource "aws_sns_topic_subscription" "license_management_sqs_users_target" {
     topic_arn            = module.user-management-lambda-sns.arn
+    protocol             = "sqs"
+    endpoint             = module.license-management-lambda-sqs.arn
+    raw_message_delivery = true
+    filter_policy   	 = "${jsonencode(tomap({"Action" = tolist(["Delete", "Update"])}))}"
+}
+
+resource "aws_sns_topic_subscription" "license_management_sqs_products_target" {
+    topic_arn            = module.product-management-lambda-sns.arn
     protocol             = "sqs"
     endpoint             = module.license-management-lambda-sqs.arn
     raw_message_delivery = true

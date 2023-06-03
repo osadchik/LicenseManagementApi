@@ -14,7 +14,7 @@ namespace UserManagementLambda.Services
     public class UserManagementService : IUserManagementService
     {
         private readonly IUsersReadRepository _usersRepository;
-        private readonly ISnsClient _snsService;
+        private readonly ISnsClient _snsClient;
         private readonly LambdaParameters _environmentVariables;
         private readonly ILogger<UserManagementService> _logger;
 
@@ -28,7 +28,7 @@ namespace UserManagementLambda.Services
         public UserManagementService(IUsersReadRepository usersRepository, ISnsClient snsService, IOptions<LambdaParameters> environmentVariables, ILogger<UserManagementService> logger)
         {
             _usersRepository = usersRepository;
-            _snsService = snsService;
+            _snsClient = snsService;
             _environmentVariables = environmentVariables.Value;
             _logger = logger;
         }
@@ -41,7 +41,7 @@ namespace UserManagementLambda.Services
                 Content = user
             };
 
-            await _snsService.PublishToTopicAsync(_environmentVariables.SnsTopicArn, userMessage);
+            await _snsClient.PublishToTopicAsync(_environmentVariables.SnsTopicArn, userMessage);
 
             return user;
         }
@@ -51,7 +51,7 @@ namespace UserManagementLambda.Services
         {
             var userMessage = new BaseMessage<UserDto>(uuid.ToString(), EntityTypes.User, ProcessAction.Delete);
 
-            await _snsService.PublishToTopicAsync(_environmentVariables.SnsTopicArn, userMessage);
+            await _snsClient.PublishToTopicAsync(_environmentVariables.SnsTopicArn, userMessage);
         }
 
         /// <inheritdoc/>
@@ -87,7 +87,7 @@ namespace UserManagementLambda.Services
                 Content = user
             };
 
-            await _snsService.PublishToTopicAsync(_environmentVariables.SnsTopicArn, userMessage);
+            await _snsClient.PublishToTopicAsync(_environmentVariables.SnsTopicArn, userMessage);
 
             return user;
         }

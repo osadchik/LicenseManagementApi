@@ -4,6 +4,12 @@ module "user-management-lambda-sns" {
     sns_name = "${var.prefix}-${var.user_management_lambda_name}-sns"
 }
 
+module "product-management-lambda-sns" {
+    source = "./modules/sns"
+
+    sns_name = "${var.prefix}-${var.product_management_lambda_name}-sns"
+}
+
 data "aws_iam_policy_document" "users_integration_put_to_sqs" {
   statement {
     sid    = "PutMessagesToSQS"
@@ -46,7 +52,7 @@ data "aws_iam_policy_document" "license_management_put_to_sqs" {
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [ module.user-management-lambda-sns.arn]
+      values   = [ module.user-management-lambda-sns.arn, product-management-lambda-sns.arn]
     }
   }
 }

@@ -13,6 +13,11 @@ namespace Common.Interfaces
         public string EntityId { get; }
 
         /// <summary>
+        /// Gets the type of entity message refers to.
+        /// </summary>
+        public string EntityType { get; }
+
+        /// <summary>
         /// Gets the action being performed of the Entity.
         /// </summary>
         public ProcessAction Action { get; }

@@ -35,7 +35,8 @@ namespace Common.Services
 
             Dictionary<string, MessageAttributeValue> messageAttributes = new()
             {
-                { "Action", new MessageAttributeValue() { StringValue = message.Action.ToString(), DataType = "String" } }
+                { "Action", new MessageAttributeValue() { StringValue = message.Action.ToString(), DataType = "String" } },
+                { "EntityType", new MessageAttributeValue() { StringValue = message.EntityType.ToString(), DataType = "String" } }
             };
 
             var request = new PublishRequest
