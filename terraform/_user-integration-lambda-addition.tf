@@ -34,6 +34,13 @@ resource "aws_iam_policy" "user_integration_sqs_policy" {
           "sqs:GetQueueAttributes"
         ]
         Resource = [ "${module.user-integration-lambda-sqs.arn}" ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:SendMessage"
+        ]
+        Resource = [ "${module.user-integration-lambda-dlq.arn}" ]
       }
     ]
   })
