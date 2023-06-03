@@ -2,7 +2,7 @@ module "user-integration-lambda-sqs" {
     source         = "./modules/sqs"
 
     sqs_name       = "${var.prefix}-${var.user_integration_lambda_name}-sqs"
-    redrive_policy = "{\"deadLetterTargetArn\" : \"${module.user-integration-lambda-dlq.arn}\", \"maxReceiveCount\": 4}"
+    redrive_policy = "{\"deadLetterTargetArn\" : \"${module.user-integration-lambda-dlq.arn}\", \"maxReceiveCount\": 10}"
 }
 
 module "user-integration-lambda-dlq" {
