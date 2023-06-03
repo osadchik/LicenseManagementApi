@@ -68,7 +68,7 @@ public class ProductEntitlementController : ControllerBase
     /// 
     /// DELETE <code>license-management/license-api/entitlements?entitlementId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
-    [HttpGet]
+    [HttpDelete]
     public async Task<IActionResult> DeleteEntitlement([Required, FromQuery] Guid entitlementId)
     {
         var entitlement = await _productEntitlementManagementService.DeleteEntitlementAsync(entitlementId);
