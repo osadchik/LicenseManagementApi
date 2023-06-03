@@ -146,7 +146,6 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
                 try
                 {
                     await ExecuteAsync(sqsMessage, action);
-                    await _sqsClient.DeleteMessageAsync(message.ReceiptHandle, _circuitBreakerOptions.SourceQueueUrl);
 
                     await _eventSourceMappingClient.EnableEventSourceMappingAsync();
                     await _circuitBreakerClosureScheduler.CancelCircuitClosureTrialAsync();
@@ -154,6 +153,7 @@ namespace UserIntegrationLambda.Services.CircuitBreaker
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Circuit Breaker Trial has failed.");
+                    await _sqsClient.EnqueueAsync(sqsMessage, _circuitBreakerOptions.SourceQueueUrl);
                     await _circuitBreakerClosureScheduler.ScheduleCircuitClosureTrialAsync(DateTimeOffset.UtcNow + _circuitBreakerOptions.Timeout);
                 }
             }
