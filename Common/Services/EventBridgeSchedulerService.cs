@@ -45,7 +45,7 @@ namespace Common.Services
 
         private async Task ChangeEventBridgeRuleStateAsync(RuleState state, string scheduleExpression)
         {
-            _logger.LogDebug("Changing EventBridge {rule} rule to state {state}", _eventBridgeOptions.RuleName, state);
+            _logger.LogDebug("Trying to change EventBridge {rule} rule to state {state}", _eventBridgeOptions.RuleName, state);
             var request = new PutRuleRequest
             {
                 Name = _eventBridgeOptions.RuleName,
@@ -58,7 +58,7 @@ namespace Common.Services
             {
                 throw new HttpRequestException($"Failed to change EventBridge {_eventBridgeOptions.RuleName} rule to {state} state", null, response.HttpStatusCode);
             }
-            _logger.LogInformation("Changed EventBridge {rule} rule to {state} state", _eventBridgeOptions.RuleName, state);
+            _logger.LogInformation("Changed EventBridge {rule} rule to {state}", _eventBridgeOptions.RuleName, state);
         }
 
         private static string GetCronExpression(DateTimeOffset trialDate)
