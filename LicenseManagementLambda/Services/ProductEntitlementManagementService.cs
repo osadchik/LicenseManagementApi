@@ -95,6 +95,7 @@ namespace LicenseManagementLambda.Services
             return await _productEntitlementRepository.SaveAsync(entitlementDto);
         }
 
+        /// <inheritdoc/>
         public async Task UpdateUserDetails(BaseMessage<UserDto> details)
         {
             _logger.LogDebug("Received user details: {@details}", details);
@@ -126,6 +127,7 @@ namespace LicenseManagementLambda.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task UpdateProductDetails(BaseMessage<ProductDto> details)
         {
             _logger.LogDebug("Received product details: {@details}", details);
@@ -156,6 +158,19 @@ namespace LicenseManagementLambda.Services
 
                 default:
                     break;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteLicenseDetails(LicenseDto details)
+        {
+            _logger.LogDebug("Received product details: {@details}", details);
+            IList<ProductEntitlementDto> entitlements = await _productEntitlementRepository.GetByLicenseIdAsync(details.LicenseId.ToString());
+
+            foreach (ProductEntitlementDto entry in entitlements)
+            {
+                entry.LicenseId = EntityTypes.Deleted;
+                await _productEntitlementRepository.SaveAsync(entry);
             }
         }
     }

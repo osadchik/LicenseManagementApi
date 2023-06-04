@@ -116,5 +116,24 @@ namespace LicenseManagementLambda.Repositories
 
             return scanResult;
         }
+
+        /// <inheritdoc/>
+        public async Task<IList<ProductEntitlementDto>> GetByLicenseIdAsync(string licenseId)
+        {
+            _logger.LogDebug("Trying to get product entitlement entity by license ID: {license}", licenseId);
+
+            List<ScanCondition> scanConditions = new() { new ScanCondition("LicenseId", ScanOperator.Equal, licenseId) };
+            var scanResult = await _dynamoDbContext.ScanAsync<ProductEntitlementDto>(scanConditions)
+                .GetRemainingAsync();
+
+            _logger.LogInformation("Retrieved product entitlements: {@searchResult}", scanResult);
+
+            if (scanResult is null || !scanResult.Any())
+            {
+                throw new EntitlementNotFoundException();
+            }
+
+            return scanResult;
+        }
     }
 }

@@ -46,5 +46,12 @@ namespace LicenseManagementLambda.Interfaces
         /// <param name="details"><see cref="BaseMessage{ProductDto}"/></param>
         /// <returns>Task.</returns>
         Task UpdateProductDetails(BaseMessage<ProductDto> details);
+
+        /// <summary>
+        /// Deletes entitlement license information.
+        /// </summary>
+        /// <param name="details"><see cref="LicenseDto"/></param>
+        /// <returns>Task.</returns>
+        Task DeleteLicenseDetails(LicenseDto details);
     }
 }

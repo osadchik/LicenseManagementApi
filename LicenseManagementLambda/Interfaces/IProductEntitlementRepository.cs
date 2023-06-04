@@ -22,5 +22,12 @@ namespace LicenseManagementLambda.Interfaces
         /// <param name="productId">Product's unique identifier.</param>
         /// <returns><see cref="ProductEntitlementDto"/></returns>
         Task<IList<ProductEntitlementDto>> GetByProductIdAsync(string productId);
+
+        /// <summary>
+        /// Return entitlements corresponding to license.
+        /// </summary>
+        /// <param name="licenseId">License's unique identifier.</param>
+        /// <returns><see cref="ProductEntitlementDto"/></returns>
+        Task<IList<ProductEntitlementDto>> GetByLicenseIdAsync(string licenseId);
     }
 }

@@ -13,8 +13,9 @@ namespace LicenseManagementLambda.Services
     public class LicenseManagementService : ILicenseManagementService
     {
         private readonly ILicenseRepository _licenseRepository;
+        private readonly IProductEntitlementManagementService _productEntitlementManagementService;
         private readonly HttpClient _httpClient;
-        private ILogger<LicenseManagementService> _logger;
+        private readonly ILogger<LicenseManagementService> _logger;
 
         /// <summary>
         /// Initializes a new instance of <see cref="LicenseManagementService"/> class.
@@ -23,11 +24,16 @@ namespace LicenseManagementLambda.Services
         /// <param name="httpCLientFactory"><see cref="IHttpClientFactory"/></param>
         /// <param name="lambdaParameters"><see cref="LambdaParameters"/></param>
         /// <param name="logger">Logger instance.</param>
-        public LicenseManagementService(ILicenseRepository licenseRepository, IHttpClientFactory httpCLientFactory, IOptions<LambdaParameters> lambdaParameters, ILogger<LicenseManagementService> logger)
+        public LicenseManagementService(
+            ILicenseRepository licenseRepository,
+            IHttpClientFactory httpCLientFactory,
+            ILogger<LicenseManagementService> logger,
+            IProductEntitlementManagementService productEntitlementManagementService)
         {
             _licenseRepository = licenseRepository;
             _httpClient = httpCLientFactory.CreateClient("ProductsAPI");
             _logger = logger;
+            _productEntitlementManagementService = productEntitlementManagementService;
         }
 
         /// <inheritdoc/>
@@ -51,7 +57,11 @@ namespace LicenseManagementLambda.Services
         /// <inheritdoc/>
         public async Task<LicenseDto> DeleteLicenseAsync(Guid licenseId)
         {
-            return await _licenseRepository.DeleteAsync(licenseId);
+            var license = await _licenseRepository.DeleteAsync(licenseId);
+
+            _productEntitlementManagementService.DeleteLicenseDetails(license);
+
+            return license;
         }
 
         /// <inheritdoc/>
