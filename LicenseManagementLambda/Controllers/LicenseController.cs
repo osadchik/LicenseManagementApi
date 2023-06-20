@@ -1,6 +1,7 @@
 using Common.Entities;
 using LicenseManagementLambda.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 
 namespace LicenseManagementLambda.Controllers;
@@ -38,6 +39,10 @@ public class LicenseController : ControllerBase
     /// GET <code>license-management/license-api/licenses?licenseId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
     [HttpGet]
+    [SwaggerResponse(StatusCodes.Status201Created, "Successfully returned item", typeof(LicenseDto))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Item does not present in the system")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
     public async Task<IActionResult> GetLicense([Required, FromQuery] Guid licenseId)
     {
         var license = await _licenseManagementService.GetLicenseByIdAsync(licenseId);
@@ -57,6 +62,9 @@ public class LicenseController : ControllerBase
     /// POST <code>license-management/license-api/licences?productId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
     [HttpPost]
+    [SwaggerResponse(StatusCodes.Status201Created, "Returned successfully created item", typeof(LicenseDto))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
     public async Task<IActionResult> CreateLicense([FromQuery, Required] Guid productId, [FromBody, Required]LicenseCreateModel licenseModel)
     {
         var license = await _licenseManagementService.CreateLicenseAsync(productId, licenseModel);
@@ -75,6 +83,10 @@ public class LicenseController : ControllerBase
     /// PUT <code>license-management/license-api/licences</code>
     /// </remarks>
     [HttpPut]
+    [SwaggerResponse(StatusCodes.Status201Created, "Returned successfully updated item", typeof(LicenseDto))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Item does not present in the system")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
     public async Task<IActionResult> UpdateLicense([FromBody, Required] LicenseDto licenseDto)
     {
         var license = await _licenseManagementService.UpdateLicenseAsync(licenseDto);
@@ -93,6 +105,10 @@ public class LicenseController : ControllerBase
     /// DELETE <code>license-management/license-api/licenses?licenseId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
     [HttpDelete]
+    [SwaggerResponse(StatusCodes.Status200OK, "Returned successfully deleted item", typeof(LicenseDto))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Item does not present in the system")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
     public async Task<IActionResult> DeleteLicense([Required, FromQuery] Guid licenseId)
     {
         var license = await _licenseManagementService.DeleteLicenseAsync(licenseId);

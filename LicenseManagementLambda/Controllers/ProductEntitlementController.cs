@@ -1,5 +1,7 @@
+using Common.Entities;
 using LicenseManagementLambda.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 
 namespace LicenseManagementLambda.Controllers;
@@ -32,6 +34,10 @@ public class ProductEntitlementController : ControllerBase
     /// GET <code>license-management/license-api/entitlements?entitlementId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
     [HttpGet]
+    [SwaggerResponse(StatusCodes.Status201Created, "Successfully returned item", typeof(ProductEntitlementDto))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Item does not present in the system")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
     public async Task<IActionResult> GetEntitlement([Required, FromQuery] Guid entitlementId)
     {
         var entitlement = await _productEntitlementManagementService.GetEntitlementByIdAsync(entitlementId);
@@ -51,6 +57,9 @@ public class ProductEntitlementController : ControllerBase
     /// POST <code>license-management/license-api/entitlements?licenseId={id}&amp;userId={id}</code>
     /// </remarks>
     [HttpPost]
+    [SwaggerResponse(StatusCodes.Status201Created, "Returned successfully created item", typeof(ProductEntitlementDto))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
     public async Task<IActionResult> CreateEntitlement([FromQuery, Required] Guid licenseId, [FromQuery, Required] Guid productId, [FromQuery, Required] Guid userId)
     {
         var license = await _productEntitlementManagementService.CreateEntitlementAsync(licenseId, productId, userId);
@@ -69,6 +78,10 @@ public class ProductEntitlementController : ControllerBase
     /// DELETE <code>license-management/license-api/entitlements?entitlementId=ebff8ad4-24f9-4be7-a15d-529f64ede7c6</code>
     /// </remarks>
     [HttpDelete]
+    [SwaggerResponse(StatusCodes.Status200OK, "Returned successfully deleted item", typeof(ProductEntitlementDto))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Incorrect input field value")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Item does not present in the system")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unhandled exception occured")]
     public async Task<IActionResult> DeleteEntitlement([Required, FromQuery] Guid entitlementId)
     {
         var entitlement = await _productEntitlementManagementService.DeleteEntitlementAsync(entitlementId);
