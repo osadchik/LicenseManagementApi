@@ -14,6 +14,7 @@ namespace Common.Extensions
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", swaggerInfo);
+                options.EnableAnnotations();
 
                 AddSwaggerXmlComments(options);
             });
